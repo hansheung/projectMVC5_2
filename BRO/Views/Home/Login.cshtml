@@ -1,0 +1,194 @@
+﻿@model BRO.Models.LoginModel
+
+@{
+    Layout = null;
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BRO | Log in</title>
+
+    <link rel="shortcut icon" href="~/Content/myPics/LOGOicon.ICO">
+
+    @Styles.Render("~/css")
+
+    <style>
+        input:focus ~ .floating-label,
+        input:not(:focus):valid ~ .floating-label {
+            top: 8px;
+            bottom: 10px;
+            left: 0px;
+            font-size: 11px;
+            opacity: 1;
+        }
+
+        .inputText {
+            font-size: 14px;
+            width: 200px;
+            height: 35px;
+        }
+
+        .floating-label {
+            position: absolute;
+            pointer-events: none;
+            left: 0px;
+            top: 0px;
+            transition: 0.2s ease all;
+        }
+
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+@using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id = "formLogin", name = "formLogin", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+   
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <p><b>BRO </b>Software House</p>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">Sign in to start your session</p>
+            <div class="form-group has-feedback">
+                <div id="divLoginID">
+                    <input class="form-control" id="txtLoginID" name="txtLoginID"
+                           onfocus="clearError('LoginID');" maxlength="10" placeholder="Login ID" value="BRO" primaryKey >
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    @*<span class="floating-label">Login ID</span>*@
+                    <span id="errorLoginID" class="help-block"></span>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <div id="divPassword" class="">
+                    <input type="password" class="form-control" id="txtPassword" name="txtPassword"
+                           onfocus="clearError('Password');" maxlength="10" value="ALAB" placeholder="Password">
+                </div>
+                <span toggle="#txtPassword" class="glyphicon glyphicon-eye-close field-icon toggle-password"></span>
+                <span id="errorPassword" class="help-block"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 pull-left">
+                    @*<a href="/Password/ForgotPassword" class="btn btn-link">Forgot password?</a>*@
+                </div>
+                <div class="col-xs-4 pull-right">
+                    <button type="button" id="btnSubmit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/javascript")
+
+    <script>
+    $('#txtLoginID').keyup(function () {
+        $(this).val($(this).val().toUpperCase());
+    });
+
+    $('#txtLoginID').focus ()
+
+    //=== Remove validation messages when a text-field is onfocus
+    function clearError(FieldName) {
+        $("#div" + FieldName).removeClass('has-error');
+        $("#error" + FieldName).html("");
+    };
+
+    //=== Show and unshow password
+    $(".toggle-password").click(function () {
+        //=== Proper way of doing toggleClass for glyphicon and font-awesome
+        $(this).toggleClass('glyphicon-eye-close', 'remove');
+        $(this).toggleClass('glyphicon-eye-open', 'add');
+        //=================================================================
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+
+    $('#btnSubmit').click(function () {
+
+        var FieldName = ['LoginID', 'Password'];
+        var Required = "N" 
+        for (var i = 0; (i < FieldName.length); i++) {
+
+            if ($("#txt" + FieldName[i]).val() == "") {
+
+                $("#div" + FieldName[i]).toggleClass('has-error', 'add');
+                $("#error" + FieldName[i]).html("Please enter a " + FieldName[i] );
+
+                Required = "Y"
+            }
+        }
+
+        if (Required == "N") {
+
+            var url = 'Home/Login'
+            var formData = $('#formLogin').serialize();
+
+            $.ajax({
+
+                url: url,
+                type: "POST",
+                data: formData,
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.status == "success") {
+
+                        window.location.href = 'Home/Company';
+
+                    } else if (response.status == "fail") {
+
+                        $("#div" + response.fieldname).toggleClass('has-error', 'add');
+                        $("#error" + response.fieldname).html(response.message);
+                        return false;
+                    }
+
+                },
+                error: function (response) {
+
+                    $("#div" + response.fieldname).toggleClass('has-error', 'add');
+                    $("#error" + response.fieldname).html("What's wrong");
+                    return false;
+
+                }
+            })
+
+        }else{
+
+            return false;
+        }
+
+    });
+
+    //===Allow enter to post-back form
+    $('#formLogin').on('keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) { 
+            $('#btnSubmit').focus(); //== Focus on button so the CSS will be correct
+            $('#btnSubmit').click();
+            return false;
+        }
+    });
+    </script>
+</body>
+}
+</html>
+
+

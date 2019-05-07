@@ -1,0 +1,149 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv=Content-Type content='text/html; charset=utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <title>BRO | @ViewBag.Title</title>
+
+    <link rel="shortcut icon" href="~/Content/myPics/LOGOicon.ICO">
+
+    @Styles.Render("~/css")
+
+    @Scripts.Render("~/javascript")
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="../../index2.html" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>BRO</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>BRO</b></span>
+            </a>
+
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="~/Content/myPics/LOGO.PNG" class="user-image" alt="User Image" />
+                                <span class="hidden-xs">@Session["USERID"]</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="~/Content/myPics/LOGO.PNG" class="img-circle" alt="User Image" />
+                                    <p>
+                                        <font size="3">@Session["USERNAME"]</font>
+                                        <br />
+                                        <a href="broprofile.asp" class="btn btn-info" style="width:120px;">View Profile</a>
+                                    </p>
+                                </li>
+
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat" style="width:150px;">Change Password</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="@Url.Action("Logout","Home")" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- =============================================== -->
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="margin: 0px; min-height: 1000px;">
+
+            @RenderBody()
+
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer" style="margin: 0px;">
+            <div class="pull-right hidden-xs">
+                <b>Date Modified</b> @String.Format("{0:dddd, MMMM d, yyyy HH:mm:ss}", File.GetLastWriteTime(ViewContext.Controller.GetType().Assembly.Location))
+            </div>
+            <strong>Copyright &copy; 2019 <a href="http://www.bro.com.my/">BRO Software House (M) Sdn Bhd</a>.</strong> All rights reserved.
+        </footer>
+
+        <!-- The Right Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li class="active"><a href="#control-sidebar-home-tab"><i class="fa fa-gears"></i></a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="control-sidebar" style="width:200px;margin: 50px 0px 0px 0px ">
+                <!-- Home tab content -->
+                <div class="tab-pane" id="control-sidebar-home-tab">
+                    <h3 class="control-sidebar-heading">General Settings</h3>
+                    <ul class="control-sidebar-menu">
+                        <li>
+                            <a href="@Url.Action("Password","Password")">
+                                <i class="menu-icon fa fa-gears bg-green"></i>
+
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Maintain Password</h4>
+
+                                    <p>To change and update password and to change access level of user</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Program","Program")">
+                                <i class="menu-icon fa fa-envelope bg-blue"></i>
+
+                                <div class="menu-info">
+                                    <h4 class="control-sidebar-subheading">Program Setup</h4>
+
+                                    <p>SMTP email, SSL, Password and Port setup</p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <!-- The sidebar's background -->
+        <!-- This div must placed right after the sidebar for it to work-->
+        <div class="control-sidebar-bg"></div>
+
+    </div>
+</body>
+</html>
+<script>
+    @*$.sessionTimeout({
+        keepAliveUrl:'Company',
+        //keepAliveUrl: '../../Content/bootstrap-session-timeout-master/examples/keep-alive.html',
+        //keepalive: 'onStayConnectedClick',
+        logoutUrl: '../Home/Logout',
+        redirUrl: '../Home/Logout',
+        warnAfter: 10000,
+        redirAfter: 15000,
+        countdownMessage: 'Redirecting in {timer} seconds.',
+        countdownBar: true,
+        ignoreUserActivity: true
+    });*@
+</script>

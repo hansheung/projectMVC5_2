@@ -1,0 +1,107 @@
+﻿@model BRO.Models.ProgramModel
+
+@{
+    ViewBag.Title = "Program Setup";
+    Layout = "~/Views/Shared/_LayoutPassword.cshtml";
+}
+
+<section class="content-header">
+    <h1>Program Setup</h1>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <input type="button" class="btn btn-default" value="Back"
+                           onclick="history.go(-1)" />
+                </div><!-- /.box-header -->
+                <!-- Horizontal Form -->
+                <!-- form start -->
+                @using (Html.BeginForm("Program", "Program", FormMethod.Post, new { id = "formProgram", name = "formProgram", role = "form", @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    //if(ViewBag.Message != null) {
+                    var data = ViewBag.FieldValue;
+                    //}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Company Name : </label>
+                            <div id="divCoName" class="col-sm-4">
+                                <input class="form-control" id="txtCoName" name="txtCoName" value="@data.txtCoName"
+                                    maxlength="30" primaryKey>
+                                <span id="errorCoName" class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Address : </label>
+                            <div id="divAdd1" class="col-sm-6">
+                                <input class="form-control" id="txtAdd1" name="txtAdd1" maxlength="40" value="@data.txtAdd1">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Length Menu : </label>
+                            <div id="divAdd1" class="col-sm-6">
+                                <input class="form-control" id="txtLengthMenu" name="txtLengthMenu" maxlength="3" value="@data.txtLengthMenu">
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="box-footer">
+                            <button type="button" id="btnSubmit" class="btn btn-warning pull-right" value="Update">Update</button>
+                    </div> <!-- /.box-footer -->
+                }
+            </div><!-- /.box -->
+        </div><!-- /.col-md-12 -->
+    </div><!-- /.row -->
+</section><!-- /.content -->
+
+
+<script>
+
+    $('#txtCoName').keyup(function () {
+        $(this).val($(this).val().toUpperCase());
+    });
+
+    $('#btnSubmit').click(function () {
+
+        if ($("#txtCoName").val() == "") {
+            document.getElementById("divCoName").className += ' has-error'
+            document.getElementById("errorCoName").innerHTML = "Please enter a Company Name"
+            return false;
+        }
+
+        var url = 'Program'
+        var formData = $('#formProgram').serialize();
+
+        $.ajax({
+
+            url: url,
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            success: function (response) {
+
+                if (response.status == "updated") {
+
+                    alert('Successfully updated! ');
+                    window.location.href = '../Home/Company';
+
+                }
+                else if (response.status == "fail") {
+
+                    $("#div" + response.fieldname).toggleClass('has-error', 'add');
+                    $("#error" + response.fieldname).html(response.message);
+                    return false;
+                }
+            },
+
+            error: function (response) {
+                    alert("Something went wrong somewhere");
+                    return false;
+            }
+        })
+    });
+</script>
