@@ -8675,6 +8675,7 @@
     <Content Include="Views\Shared\_LayoutApplications.cshtml" />
     <Content Include="Views\IC\Dash.cshtml" />
     <Content Include="Views\IC\Stock.cshtml" />
+    <Content Include="Views\IC\Test.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
