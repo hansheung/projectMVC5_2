@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "Group";
+}
+
+
+ <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" >Group Information</h4>
+            </div>
+            <div id="mycontent">
+                @*<section class="content-header">
+                    <h4>Group Information</h4>
+                </section>*@
+                <!-- Main content -->
+                <section class="content">
+                    @*<div class="row">
+                        <div class="col-md-12">
+                            <div class="box">*@
+                                <!-- Horizontal Form -->
+                                <!-- form start -->
+                                @using (Html.BeginForm("viewGrp", "PartialView", FormMethod.Post, new { id = "formViewGrp", name = "formViewGrp", role = "form", @class = "form-horizontal" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table id="viewGrp" class="table table-bordered" width="100%">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th class="NumCol">No</th>
+                                                            <th class="GrpCodeCol">Group Code</th>
+                                                            <th class="GrpDesc">Description</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr role="row">
+                                                            <td>1</td>
+                                                            <td>GRP_0001</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>2</td>
+                                                            <td>GRP_0002</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>3</td>
+                                                            <td>GRP_0003</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>4</td>
+                                                            <td>GRP_0004</td>
+                                                            <td>This is a group example</td>
+                                                        <tr role="row">
+                                                            <td>5</td>
+                                                            <td>GRP_0005</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>6</td>
+                                                            <td>GRP_0006</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>1</td>
+                                                            <td>GRP_0001</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>2</td>
+                                                            <td>GRP_0002</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>3</td>
+                                                            <td>GRP_0003</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>4</td>
+                                                            <td>GRP_0004</td>
+                                                            <td>This is a group example</td>
+                                                        <tr role="row">
+                                                            <td>5</td>
+                                                            <td>GRP_0005</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>6</td>
+                                                            <td>GRP_0006</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>1</td>
+                                                            <td>GRP_0001</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>2</td>
+                                                            <td>GRP_0002</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>3</td>
+                                                            <td>GRP_0003</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>4</td>
+                                                            <td>GRP_0004</td>
+                                                            <td>This is a group example</td>
+                                                        <tr role="row">
+                                                            <td>5</td>
+                                                            <td>GRP_0005</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                        <tr role="row">
+                                                            <td>6</td>
+                                                            <td>GRP_0006</td>
+                                                            <td>This is a group example</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            @*</div><!-- /.box -->
+                        </div><!-- /.col-md-12 -->
+                    </div><!-- /.row -->*@
+                </section><!-- /.content -->
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function () {
+        $('#viewGrp').DataTable();
+    });
+
+</script>
+

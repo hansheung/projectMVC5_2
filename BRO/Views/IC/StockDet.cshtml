@@ -1,0 +1,239 @@
+﻿@model BRO.Models.ICModel
+
+@{
+    ViewBag.Title = "Password Detail";
+    Layout = "~/Views/Shared/_LayoutIC.cshtml";
+}
+
+<section class="content-header">
+    <h1>Stock Detail</h1>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <input type="button" class="btn btn-default" value="Back"
+                           onclick="history.go(-1)" />
+                </div><!-- /.box-header -->
+                <!-- Horizontal Form -->
+                <!-- form start -->
+                @using (Html.BeginForm("StockDet", "IC", FormMethod.Post, new { id = "formStkDet", name = "formStkDet", role = "form", @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    //if(ViewBag.Message != null) {
+                    var data = ViewBag.FieldValue;
+                    //}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Stock Code : </label>
+                            <div id="divSTKCODE" class="col-sm-4">
+                                @if (data.STKCODE == "")
+                                {
+                                    <input class="form-control" id="txtSTKCODE" name="txtSTKCODE"
+                                           onfocus="clearError('STKCODE');" maxlength="10" primaryKey>
+                                    <span id="errorSTKCODE" class="help-block"></span>
+                                }
+                                else
+                                {
+                                    <span class="mod-form-control">@data.STKCODE</span>
+                                    <input type="hidden" id="txtSTKCODE" name="txtSTKCODE" value="@data.STKCODE">
+                                }
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Description : </label>
+                            <div id="divPART" class="col-sm-6">
+                                <input class="form-control" id="txtPART" name="txtPART" maxlength="30" value="@data.PART"><br />
+                                <input class="form-control" id="txtPART1" name="txtPART1" maxlength="30" value="@data.PART1"><br />
+                                <input class="form-control" id="txtPART2" name="txtPART2" maxlength="30" value="@data.PART2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Group : </label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input class="form-control pull-left" id="txtGRP" name="txtGRP" value="@data.GRP_CODE" maxlength="10" style="text-transform: uppercase">
+                                    <span class="input-group-btn">
+                                        <a href="javascript:void(0);" class="btn btn-default"
+                                           onclick="viewModal()">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <input class="form-control" id="txtGRP_PART" name="txtGRP_PART" value="@data.GRP_PART" READONLY>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Location : </label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input class="form-control pull-left" id="txtLOC" name="txtLOC" value="@data.LOC_CODE" maxlength="10" style="text-transform: uppercase">
+                                    <span class="input-group-btn">
+                                        <a href="javascript:void(0);" class="btn btn-default"
+                                           onclick="viewModal()">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <input class="form-control" id="txtLOC_PART" name="txtLOC_PART" value="@data.LOC_PART" READONLY>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-footer">
+                        @if (data.STKCODE == "")
+                        {
+                            <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save">Save</button>
+                        }
+                        else
+                        {
+                            <button type="button" id="btnDelete" class="btn btn-danger pull-left" value="Delete">Delete</button>
+                            <button type="button" id="btnSubmit" class="btn btn-warning pull-right" value="Update">Update</button>
+                        }
+                    </div> <!-- /.box-footer -->
+                }
+            </div><!-- /.box -->
+        </div><!-- /.col-md-12 -->
+    </div><!-- /.row -->
+</section><!-- /.content -->
+@*<div class="modal fade bd-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h2 class="modal-title">Group Information</h2>
+            </div>
+            <div id="mycontent">
+                - Content --
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
+<div class="modal fade bd-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+
+</div>
+<script>
+
+    //function viewModal() {
+    //    var xhttp;
+
+    //    xhttp = new XMLHttpRequest();
+    //    xhttp.onreadystatechange = function () {
+    //        if (xhttp.readyState == 4 && xhttp.status == 200) {
+    //            document.getElementById(mycontent).innerHTML = xhttp.responseText;
+    //        }
+    //    };
+
+    //    xhttp.open("GET", "/PartialView/viewGroup", true);
+    //    xhttp.send();
+
+    //    $("#viewModal").modal('show');
+    //}
+
+    function viewModal() {
+
+        var url = "/PartialView/viewGroup"
+
+        $.get(url, function(data){
+            $("#viewModal").html(data);
+            $("#viewModal").modal('show');
+        });
+    }
+
+    $('#txtSTKCODE').keyup(function () {
+        $(this).val($(this).val().toUpperCase());
+    });
+
+    //$('#btnSubmit').click(function () {
+
+    //    var sSaveOrUpdate = $("#btnSubmit").val()
+
+    //    if ($("#txtSTKCODE").val() == "") {
+    //        document.getElementById("divSTKCODE").className += ' has-error'
+    //        document.getElementById("errorSTKCODE").innerHTML = "Please enter a Stock Code"
+    //        return false;
+    //    }
+
+    //    if(sSaveOrUpdate == "Save"){
+
+    //        if ($("#txtPassword").val() == "") {
+    //            document.getElementById("divPassword").className += ' has-error'
+    //            document.getElementById("errorPassword").innerHTML = "Password cannot be empty"
+    //             document.getElementById("divConfirm").className += ' has-error'
+    //            return false;
+    //        }else if ($("#txtPassword").val() != $("#txtConfirm").val()) {
+    //            document.getElementById("divPassword").className += ' has-error'
+    //            document.getElementById("errorPassword").innerHTML = "Password does not match"
+    //            document.getElementById("divConfirm").className += ' has-error'
+    //            document.getElementById("errorConfirm").innerHTML = "Password does not match"
+    //            return false;
+    //        }else{
+    //            var url = 'PasswordDet/' + $("#btnSubmit").val();
+    //        }
+    //    }
+
+    //    if(sSaveOrUpdate == "Update"){
+
+    //        if ($("#txtPassword").val() != "" ){
+
+    //            if ($("#txtPassword").val() != $("#txtConfirm").val()) {
+    //                document.getElementById("divPassword").className += ' has-error'
+    //                document.getElementById("errorPassword").innerHTML = "Password does not match"
+    //                document.getElementById("divConfirm").className += ' has-error'
+    //                document.getElementById("errorConfirm").innerHTML = "Password does not match"
+    //                return false;
+    //            }else{
+    //                var url = $("#btnSubmit").val();
+    //            }
+    //        }
+    //    }
+
+    //    var formData = $('#formPassDet').serialize();
+
+    //    $.ajax({
+
+    //        url: url,
+    //        type: "POST",
+    //        data: formData,
+    //        dataType: "json",
+    //        success: function (response) {
+
+    //            if (response.status == "saved") {
+
+    //                alert($("#txtSTKCODE").val() + ' has been successfully created! ');
+    //                window.location.href = 'Password';
+
+    //            } else if (response.status == "updated") {
+
+    //                alert($("#txtSTKCODE").val() + ' has been successfully updated! ');
+    //                window.location.href = '../Password/';
+
+    //            }
+    //            else if (response.status == "fail") {
+
+    //                $("#div" + response.fieldname).toggleClass('has-error', 'add');
+    //                $("#error" + response.fieldname).html(response.message);
+    //                return false;
+    //            }
+    //        },
+
+    //        error: function (response) {
+    //                alert("Something went wrong somewhere");
+    //                return false;
+    //        }
+    //    })
+    //});
+</script>
+
+

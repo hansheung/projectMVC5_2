@@ -102,14 +102,14 @@
                                             <th class="CostCol">Cost</th>
                                             <th class="S_PriceCol">Selling Price</th>
                                             <th class="Avg_CostCol">Avg Cost</th>
-                                            <th class="ReorderCol">Reorder Level</th>
+                                            @*<th class="ReorderCol">Reorder Level</th>
                                             <th class="MaximumCol">Max Level</th>
                                             <th class="MinimumCol">Min Level</th>
                                             <th class="RemarkCol">Remark</th>
                                             <th class="BalQtyCol">Bal Qty</th>
                                             <th class="BalValueCol">Bal Value</th>
                                             <th class="Dt_EditCol">Date Updated</th>
-                                            <th class="Edit_IDCol">User ID</th>
+                                            <th class="Edit_IDCol">User ID</th>*@
                                             <th style="text-align:center" class="EditCol">Edit</th>
                                         </tr>
                                     </thead>
@@ -126,14 +126,14 @@
                                             <th>Cost</th>
                                             <th>Selling Price</th>
                                             <th>Avg Cost</th>
-                                            <th>Reorder Level</th>
+                                            @*<th>Reorder Level</th>
                                             <th>Max Level</th>
                                             <th>Min Level</th>
                                             <th>Remark</th>
                                             <th>Bal Qty</th>
                                             <th>Bal Value</th>
                                             <th>Date Updated</th>
-                                            <th>User ID</th>
+                                            <th>User ID</th>*@
                                             <th></th>
                                         </tr>
                                     </tfoot>
@@ -146,30 +146,14 @@
         </div><!-- /.col-md-12 -->
     </div><!-- /.row -->
 </section><!-- /.content -->
-<script>
 
-    //=== Setup - add a text input to each footer cell
-    $('#tableicstk tfoot th').each(function () {
-        var title = $(this).text();
-        //var title = $('#tableicstk tfoot th').eq($(this).index()).text();
-        if (title) {
-            $(this).html('<input type="search" class="form-control input-sm" placeholder="Search ' + title + '" aria-controls="tableicstk" />');
-        }
-    });
+<script>
 
     $(document).ready(function () {
 
         var Length1 = 5; //@Session["LENGTH1"];
         var Length2 = parseInt(Length1) * 2;
         var Length3 = parseInt(Length1) * 5;
-
-        $('div.dataTables_filter input').focus() //=== set focus on Search field
-
-        $('#tableicstk tbody').on('click', 'tr', function () {
-            //=== DEBUG PURPOSE: console.log(table.row(this).data());
-            var data = table.row(this).data();
-            window.location.href = '@Url.Action("StockDet", "Stock")/' + data["AutoINC"];
-        });
 
         var table = $('#tableicstk').DataTable({
 
@@ -190,11 +174,11 @@
             "language": {
                 searchPlaceholder: "Search records"
             },
-            "bFilter": true,
+            
             "order": [["3", "desc"]], //=== Not working during stateSave
 
             "ajax":{
-                "url": "/Stock/AjaxGetJsonData",
+                "url": "/IC/AjaxGetJsonData",
                 "type": "POST"
             },
 
@@ -216,6 +200,18 @@
                 { "targets": 'CostCol', "data": "COST", "orderable": true },
                 { "targets": 'S_PriceCol', "data": "S_PRICE", "orderable": true },
                 { "targets": 'Avg_CostCol', "data": "AVG_COST", "orderable": true },
+
+                //{ "targets": 'StkCodeCol', "data": "STKCODE", "orderable": true, "width": "10%" },
+                //{ "targets": 'PartCol', "data": "PART", "orderable": true, "width": "10%" },
+                //{ "targets": 'Part1Col', "data": "PART1", "orderable": true, "width": "10%" },
+                //{ "targets": 'Part2Col', "data": "PART2", "orderable": true, "width": "10%" },
+                //{ "targets": 'UnitCol', "data": "UNIT", "orderable": true, "width": "10%" },
+                //{ "targets": 'LocCol', "data": "LOC", "orderable": true, "width": "10%" },
+                //{ "targets": 'GrpCol', "data": "GRP", "orderable": true, "width": "10%" },
+                //{ "targets": 'CostCol', "data": "COST", "orderable": true, "width": "10%" },
+                //{ "targets": 'S_PriceCol', "data": "S_PRICE", "orderable": true, "width": "10%" },
+                //{ "targets": 'Avg_CostCol', "data": "AVG_COST", "orderable": true, "width": "10%" },
+
                 { "targets": 'ReorderCol', "data": "REORDER", "orderable": true },
                 { "targets": 'MaximumCol', "data": "MAXIMUM", "orderable": true },
                 { "targets": 'MinimumCol', "data": "MINIMUM", "orderable": true },
@@ -244,7 +240,7 @@
                     text: 'New',
                     className: "btn btn-primary",
                     action: function (e, dt, node, config) {
-                        window.location.href = '@Url.Action("StockDet", "Stock")';
+                        window.location.href = '@Url.Action("StockDet", "IC")';
                     },
                 },
                 {
@@ -280,77 +276,35 @@
             //select: true,
 
             initComplete: function () {
-                var r = $('#tableicstk tfoot tr');
+                //var r = $('#tableicstk tfoot tr');
 
-                r.find('th').each(function () {
-                    $(this).css('padding', 8);
-                });
+                //r.find('th').each(function () {
+                //    $(this).css('padding', 8);
+                //});
 
-                $('#tableicstk thead').append(r);
+                //$('#tableicstk thead').append(r);
 
                 $(".dt-button").removeClass("dt-button");
             },
 
         });
 
-        table.columns().eq(0).each(function (colIdx) {
-            $('input', $('.filters td')[colIdx]).bind('keyup change', function () {
-
-                table.column(0).search(colIdx + '|' + this.value).draw();
-                //table.column(0).search($(this).val()).draw();
-                //table
-                //    .column(colIdx)
-                //    .search(this.value)
-                //    .draw();
-            });
-        });
-
-        //table.columns('.select-filter').every(function () {
-        //    var that = this;
-
-        //    // Create the select list and search operation
-        //    var select = $('<select />')
-        //        .appendTo(
-        //            this.footer()
-        //        )
-        //        .on('change', function () {
-        //            that
-        //                .search($(this).val())
-        //                .draw();
-        //        });
-
-        //    // Get the search data for the first column and add to the select list
-        //    this
-        //        .cache('search')
-        //        .sort()
-        //        .unique()
-        //        .each(function (d) {
-        //            select.append($('<option value="' + d + '">' + d + '</option>'));
-        //        });
-        //});
-
-
-
-        
-
-        // Setup - add a text input to each footer cell
-        //$('#example tfoot th').each(function () {
+        //=== Setup - add a text input to each footer cell
+        //$('#tableicstk tfoot th').each(function () {
         //    var title = $(this).text();
-        //    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        //    //var title = $('#tableicstk tfoot th').eq($(this).index()).text();
+        //    if (title) {
+        //        $(this).html('<input type="search" placeholder="Search ' + title + '" aria-controls="tableicstk" />');
+        //    }
         //});
 
-        // Apply the search
-        //table.columns().every(function () {
-        //    var that = this;
+        $('div.dataTables_filter input').focus() //=== set focus on Search field
 
-        //    $('input', this.footer()).on('keyup change', function () {
-        //        if (that.search() !== this.value) {
-        //            that
-        //                .search(this.value)
-        //                .draw();
-        //        }
-        //    });
-        //});
+        $('#tableicstk tbody').on('click', 'tr', function () {
+            //=== DEBUG PURPOSE: console.log(table.row(this).data());
+            var data = table.row(this).data();
+            window.location.href = '@Url.Action("StockDet", "IC")/' + data["AutoINC"];
+        });
 
     });
 </script>

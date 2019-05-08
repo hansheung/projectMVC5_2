@@ -11,6 +11,13 @@ namespace BRO.Controllers
 {
     public class ICController : Controller
     {
+        private ConDB conn = new ConDB();
+        public Proc proc = new Proc();
+
+        static int TOTAL_ROWS;
+
+        static readonly List<DataItem> _data = CreateData();
+
         // GET: IC
         public ActionResult Index()
         {
@@ -22,12 +29,10 @@ namespace BRO.Controllers
             return View();
         }
 
-        private ConDB conn = new ConDB();
-        public Proc proc = new Proc();
-
-        static int TOTAL_ROWS;
-
-        static readonly List<DataItem> _data = CreateData();
+        public ActionResult Stock()
+        {
+            return View();
+        }
 
         public class DataItem
         {
@@ -200,5 +205,54 @@ namespace BRO.Controllers
             return Json(dataTableData, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult StockDet(string id)
+        {
+            if (id is null)
+            {
+
+                ICModel rec = new ICModel
+                {
+                    STKCODE = "",
+                    PART = "",
+                    PART1 = "",
+                    PART2 = "",
+                    GRP_CODE = "",
+                    GRP_PART = "",
+                    LOC_CODE ="",
+                    LOC_PART = "",
+                };
+
+                ViewBag.FieldValue = rec;
+                return View();
+            }
+            else
+            {
+                ConDB conn = new ConDB();
+                //Proc proc = new Proc();
+
+                string sSQL = " SELECT * FROM mainpass where AUTOINC ='" + id + "'";
+                DataTable dt = conn.GetData(sSQL);
+                if (dt.Rows.Count > 0)
+                {
+                    PasswordModel rec = new PasswordModel
+                    {
+                        txtLoginID = dt.Rows[0]["ID"].ToString(),
+                        txtName = dt.Rows[0]["NAME"].ToString(),
+                        txtPassword = dt.Rows[0]["PASSWORD"].ToString(),
+                    };
+
+                    ViewBag.FieldValue = rec;
+                    return View();
+
+                }
+            }
+
+            return View();
+        }
+
+        public ActionResult viewGRP()
+        {
+            return View();
+        }
     }
 }

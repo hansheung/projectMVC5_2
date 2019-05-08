@@ -7999,6 +7999,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ICController.cs" />
+    <Compile Include="Controllers\PartialViewController.cs" />
     <Compile Include="Controllers\PasswordController.cs" />
     <Compile Include="Controllers\ProgramController.cs" />
     <Compile Include="Global.asax.cs">
@@ -8675,6 +8676,9 @@
     <Content Include="Views\Shared\_LayoutApplications.cshtml" />
     <Content Include="Views\IC\Dash.cshtml" />
     <Content Include="Views\IC\Stock.cshtml" />
+    <Content Include="Views\IC\StockDet.cshtml" />
+    <Content Include="Views\PartialView\viewGroup.cshtml" />
+    <Content Include="Views\Shared\_LayoutModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
