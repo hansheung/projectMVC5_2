@@ -8677,6 +8677,7 @@
     <Content Include="Views\IC\Stock.cshtml" />
     <Content Include="Views\IC\Test.cshtml" />
     <Content Include="Views\IC\ThirdView.cshtml" />
+    <Content Include="Views\IC\AfterDeleteBranch.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
