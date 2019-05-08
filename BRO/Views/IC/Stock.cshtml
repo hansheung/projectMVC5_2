@@ -1,7 +1,7 @@
 ﻿@{
 
-    ViewBag.Title = "Password";
-    Layout = "~/Views/Shared/_LayoutPassword.cshtml";
+    ViewBag.Title = "Stock";
+    Layout = "~/Views/Shared/_LayoutIC.cshtml";
 }
 
 <style>
@@ -38,12 +38,12 @@
     }
 
     /*=== Hover*/
-    #tablePassword tbody tr.odd:hover {
+    #tableicstk tbody tr.odd:hover {
         background-color: lightgray;
         cursor: pointer;
     }
 
-    #tablePassword tbody tr.even:hover {
+    #tableicstk tbody tr.even:hover {
         background-color: lightgray;
         cursor: pointer;
     }
@@ -71,7 +71,7 @@
 
 
 <section class="content-header">
-    <h1>Password Information</h1>
+    <h1>Stock Information</h1>
 </section>
 <!-- Main content -->
 <section class="content">
@@ -80,7 +80,7 @@
             <div class="box">
                 <!-- Horizontal Form -->
                 <!-- form start -->
-                @using (Html.BeginForm("Password", "Password", FormMethod.Post, new { id = "formPassword", name = "formPassword", role = "form", @class = "form-horizontal" }))
+                @using (Html.BeginForm("Stock", "Stock", FormMethod.Post, new { id = "formStock", name = "formStock", role = "form", @class = "form-horizontal" }))
                 {
                     var data = ViewBag.FieldValue;
                     @Html.AntiForgeryToken()
@@ -88,22 +88,52 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="tablePassword" class="table table-bordered" width="100%">
+                                <table id="tableicstk" class="table table-bordered" width="100%">
                                     <thead>
                                         <tr role="row">
                                             <th class="NumCol">No</th>
-                                            <th class="LoginCol">* Login ID</th>
-                                            <th class="NameCol">* Name</th>
-                                            <th class="DtCreatedCol">Date Created</th>
+                                            <th class="StkCodeCol">Stock Code</th>
+                                            <th class="PartCol">Description 1</th>
+                                            <th class="Part1Col">Description 2</th>
+                                            <th class="Part2Col">Description 3</th>
+                                            <th class="UnitCol">Unit</th>
+                                            <th class="LocCol">Location</th>
+                                            <th class="GrpCol">Group</th>
+                                            <th class="CostCol">Cost</th>
+                                            <th class="S_PriceCol">Selling Price</th>
+                                            <th class="Avg_CostCol">Avg Cost</th>
+                                            <th class="ReorderCol">Reorder Level</th>
+                                            <th class="MaximumCol">Max Level</th>
+                                            <th class="MinimumCol">Min Level</th>
+                                            <th class="RemarkCol">Remark</th>
+                                            <th class="BalQtyCol">Bal Qty</th>
+                                            <th class="BalValueCol">Bal Value</th>
+                                            <th class="Dt_EditCol">Date Updated</th>
+                                            <th class="Edit_IDCol">User ID</th>
                                             <th style="text-align:center" class="EditCol">Edit</th>
                                         </tr>
                                     </thead>
                                     <tfoot class="filters">
                                         <tr role="row">
                                             <th></th>
-                                            <th>Login ID</th>
-                                            <th>Name</th>
-                                            <th>Date Created</th>
+                                            <th>Stock Code</th>
+                                            <th>Description 1</th>
+                                            <th>Description 2</th>
+                                            <th>Description 3</th>
+                                            <th>Unit</th>
+                                            <th>Location</th>
+                                            <th>Group</th>
+                                            <th>Cost</th>
+                                            <th>Selling Price</th>
+                                            <th>Avg Cost</th>
+                                            <th>Reorder Level</th>
+                                            <th>Max Level</th>
+                                            <th>Min Level</th>
+                                            <th>Remark</th>
+                                            <th>Bal Qty</th>
+                                            <th>Bal Value</th>
+                                            <th>Date Updated</th>
+                                            <th>User ID</th>
                                             <th></th>
                                         </tr>
                                     </tfoot>
@@ -119,11 +149,11 @@
 <script>
 
     //=== Setup - add a text input to each footer cell
-    $('#tablePassword tfoot th').each(function () {
+    $('#tableicstk tfoot th').each(function () {
         var title = $(this).text();
-        //var title = $('#tablePassword tfoot th').eq($(this).index()).text();
+        //var title = $('#tableicstk tfoot th').eq($(this).index()).text();
         if (title) {
-            $(this).html('<input type="search" name="search" class="form-control input-sm" placeholder="Search ' + title + ' " aria-controls="tablePassword" />');
+            $(this).html('<input type="search" class="form-control input-sm" placeholder="Search ' + title + '" aria-controls="tableicstk" />');
         }
     });
 
@@ -135,17 +165,17 @@
 
         $('div.dataTables_filter input').focus() //=== set focus on Search field
 
-        $('#tablePassword tbody').on('click', 'tr', function () {
+        $('#tableicstk tbody').on('click', 'tr', function () {
             //=== DEBUG PURPOSE: console.log(table.row(this).data());
             var data = table.row(this).data();
-            window.location.href = '@Url.Action("PasswordDet", "Password")/' + data["AutoINC"];
+            window.location.href = '@Url.Action("StockDet", "Stock")/' + data["AutoINC"];
         });
 
-        var table = $('#tablePassword').DataTable({
+        var table = $('#tableicstk').DataTable({
 
             "paging": true,
             "ordering": true,
-            //"filter": false,
+            "filter": false,
             "destroy": true,
             "processing": true, // control the processing indicator.
             "serverSide": true, // recommended to use serverSide when data is more than 10000 rows for performance reasons
@@ -160,20 +190,13 @@
             "language": {
                 searchPlaceholder: "Search records"
             },
-            //"bFilter": true,
+            "bFilter": true,
             "order": [["3", "desc"]], //=== Not working during stateSave
 
             "ajax":{
-                "url": "/Password/AjaxGetJsonData",
+                "url": "/Stock/AjaxGetJsonData",
                 "type": "POST"
             },
-            //"sAjaxSource": "/Password/AjaxGetJsonData",
-            //"fnServerData": function (sSource, aoData, fnCallback) {
-            //    aoData.push({ "name": "all", "value": true });
-            //    $.getJSON(sSource, aoData, function (json) {
-            //        fnCallback(json)
-            //    });
-            //},
 
             "columnDefs": [
                 {
@@ -183,24 +206,30 @@
                         return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
+                { "targets": 'StkCodeCol', "data": "STKCODE", "orderable": true },
+                { "targets": 'PartCol', "data": "PART", "orderable": true },
+                { "targets": 'Part1Col', "data": "PART1", "orderable": true },
+                { "targets": 'Part2Col', "data": "PART2", "orderable": true },
+                { "targets": 'UnitCol', "data": "UNIT", "orderable": true },
+                { "targets": 'LocCol', "data": "LOC", "orderable": true },
+                { "targets": 'GrpCol', "data": "GRP", "orderable": true },
+                { "targets": 'CostCol', "data": "COST", "orderable": true },
+                { "targets": 'S_PriceCol', "data": "S_PRICE", "orderable": true },
+                { "targets": 'Avg_CostCol', "data": "AVG_COST", "orderable": true },
+                { "targets": 'ReorderCol', "data": "REORDER", "orderable": true },
+                { "targets": 'MaximumCol', "data": "MAXIMUM", "orderable": true },
+                { "targets": 'MinimumCol', "data": "MINIMUM", "orderable": true },
+                { "targets": 'RemarkCol', "data": "REMARK", "orderable": true },
+                { "targets": 'BalQtyCol', "data": "BALQTY", "orderable": true },
+                { "targets": 'BalValueCol', "data": "BALVALUE", "orderable": true },
+                { "targets": 'Dt_EditCol', "data": "DT_EDIT", "orderable": true },
+                { "targets": 'Edit_IDCol', "data": "EDIT_ID", "orderable": true },
                 {
-                    "targets": 'LoginCol', // The third column
-                    "data": "LoginID", "orderable": true
-                },
-                {
-                    "targets": 'NameCol', // The third column
-                    "data": "Name", "orderable": true
-                },
-                {
-                    "targets": 'DtCreatedCol', // The third column
-                    "data": "DateCreated", "orderable": true
-                },
-                {
-                    "targets": 'EditCol', // The third column
+                    "targets": 'EditCol', 
                     "className": "text-center",
                     "orderable": false,
                     "render": function (data, type, full, meta) {
-                        return '<a href="/Password/PasswordDet/' + full.AutoINC + '"><img src="../../Content/myPics/edit-2-24.png" ></a>';
+                        return '<a href="/Stock/StockDet/' + full.AutoINC + '"><img src="../../Content/myPics/edit-2-24.png" ></a>';
                     }
                 }
             ],
@@ -215,7 +244,7 @@
                     text: 'New',
                     className: "btn btn-primary",
                     action: function (e, dt, node, config) {
-                        window.location.href = '@Url.Action("PasswordDet", "Password")';
+                        window.location.href = '@Url.Action("StockDet", "Stock")';
                     },
                 },
                 {
@@ -251,41 +280,68 @@
             //select: true,
 
             initComplete: function () {
-                var r = $('#tablePassword tfoot tr');
+                var r = $('#tableicstk tfoot tr');
 
                 r.find('th').each(function () {
                     $(this).css('padding', 8);
                 });
 
-                $('#tablePassword thead').append(r);
+                $('#tableicstk thead').append(r);
 
                 $(".dt-button").removeClass("dt-button");
             },
 
-            
-
         });
 
-        @*function search(){
-            table.draw();
-        }*@
-        //$('body').on('click', '#btnGet', function () {
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters td')[colIdx]).bind('keyup change', function () {
 
-        //    //to get currently clicked row object
-        //    var row = $(this).parents('tr')[0];
+                table.column(0).search(colIdx + '|' + this.value).draw();
+                //table.column(0).search($(this).val()).draw();
+                //table
+                //    .column(colIdx)
+                //    .search(this.value)
+                //    .draw();
+            });
+        });
 
-        //    //to get currently clicked row data
-        //    var rowData = table.row(row).data();
+        //table.columns('.select-filter').every(function () {
+        //    var that = this;
 
-        //    //to get currently clicked row id (first column value (at index [0])
-        //    var rowId = rowData[0];
+        //    // Create the select list and search operation
+        //    var select = $('<select />')
+        //        .appendTo(
+        //            this.footer()
+        //        )
+        //        .on('change', function () {
+        //            that
+        //                .search($(this).val())
+        //                .draw();
+        //        });
+
+        //    // Get the search data for the first column and add to the select list
+        //    this
+        //        .cache('search')
+        //        .sort()
+        //        .unique()
+        //        .each(function (d) {
+        //            select.append($('<option value="' + d + '">' + d + '</option>'));
+        //        });
         //});
 
-        //table.columns().every(function () {
 
+
+        
+
+        // Setup - add a text input to each footer cell
+        //$('#example tfoot th').each(function () {
+        //    var title = $(this).text();
+        //    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        //});
+
+        // Apply the search
+        //table.columns().every(function () {
         //    var that = this;
-        //    var valuedata = $(this).val();
-        //    var thatSearch = that.search();
 
         //    $('input', this.footer()).on('keyup change', function () {
         //        if (that.search() !== this.value) {
@@ -296,23 +352,6 @@
         //    });
         //});
 
-        table.columns().eq(0).each(function (colIdx) {
-
-            $('input', $('.filters td')[colIdx]).bind('keyup change', function () {
-                var searchColIndex = $(this).parent().index();
-                var columnIndex = colIdx;
-                
-                if (searchColIndex == columnIndex) {
-
-                    var valuedata = $(this).val();
-                    //table.column(0).search($(this).val()).draw();
-                    table
-                     .column(colIdx)
-                     .search(valuedata)
-                     .draw();
-                }
-            });
-        });
     });
 </script>
 

@@ -7988,6 +7988,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Views\Home\Company.cshtml" />
+    <Content Include="Views\Shared\_LayoutIC.cshtml" />
+    <Content Include="Views\Shared\_LayoutPassword.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -7996,11 +7998,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ICController.cs" />
     <Compile Include="Controllers\PasswordController.cs" />
     <Compile Include="Controllers\ProgramController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ICModel.cs" />
     <Compile Include="Models\PasswordModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProgramModel.cs" />
@@ -8659,17 +8663,18 @@
     <None Include="packages.config" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Applications.cshtml" />
-    <Content Include="Views\Shared\_LayoutNoLftSB.cshtml" />
-    <Content Include="Views\Shared\_LayoutNoLftSBMenu.cshtml" />
+    <Content Include="Views\Shared\_LayoutTop.cshtml" />
+    <Content Include="Views\Shared\_LayoutForgotPassword.cshtml" />
     <Content Include="Views\Password\ForgotPassword.cshtml" />
-    <Content Include="Views\Shared\_LayoutPassword.cshtml" />
     <Content Include="Views\Password\Password.cshtml" />
     <Content Include="Views\Password\PasswordDet.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Program\Program.cshtml" />
+    <Content Include="Views\Shared\_LayoutApplications.cshtml" />
+    <Content Include="Views\IC\Dash.cshtml" />
+    <Content Include="Views\IC\Stock.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

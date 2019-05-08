@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Company";
-    Layout = "~/Views/Shared/_LayoutNoLftSB.cshtml";
+    Layout = "~/Views/Shared/_LayoutTop.cshtml";
 }
 <style>
     i.adjust {
@@ -16,7 +16,7 @@
     <!-- Info boxes -->
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            <a href="Applications">
+            <a href=@Url.Action("Applications", "Home")>
                 <div class="info-box" style="min-height:50px">
                     <span class="info-box-icon bg-aqua" style="height:55px;"><i class="fa fa-building adjust"></i></span>
                     <div class="info-box-content" style="margin-left:100px">

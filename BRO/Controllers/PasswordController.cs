@@ -66,21 +66,7 @@ namespace BRO.Controllers
             }
             mysqlconn.Close();
 
-            //ConDB conn = new ConDB();
-
-            //string sSQL2 = " SELECT * FROM mainpath ";
-            //DataTable dt2 = conn.GetData(sSQL2);
-            //if (dt2.Rows.Count > 0)
-            //{
-            //    txtLengthMenu = dt.Rows[0]["LENGTHMENU"].ToString(),
-            //    ViewBag.FieldValue = rec;
-            //}
             return list;
-        }
-
-        public static string Length1
-        {
-            get { return "7"; }
         }
 
         private int SortString(string s1, string s2, string sortDirection)
@@ -153,13 +139,19 @@ namespace BRO.Controllers
         // this ajax function is called by the client for each draw of the information on the page (i.e. when paging, ordering, searching, etc.). 
         public ActionResult AjaxGetJsonData(int draw, int start, int length)
         {
-            var searchParam = Request.QueryString["columns[1]search[value]"];
-            System.Diagnostics.Debug.WriteLine(" Search Param : ");
-            System.Diagnostics.Debug.WriteLine(searchParam);
-            System.Diagnostics.Debug.WriteLine(" Search : ");
-            string search = Request["search[value]"];
+            //int i = 0;
+            System.Diagnostics.Debug.WriteLine(" Draw : " + draw);
 
-            System.Diagnostics.Debug.WriteLine(search);
+            var searchParam = Request.QueryString["columns[1]search[value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestQueryString : " + searchParam);
+
+            string search = Request.Form["search[value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestForm : " + search);
+            
+            string search2 = Request.QueryString["search[value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestQueryString2 : " + search2);
+            
+            //i = i + 1;
             int sortColumn = -1;
             string sortDirection = "asc";
             if (length == -1)
