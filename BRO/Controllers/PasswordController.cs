@@ -139,7 +139,6 @@ namespace BRO.Controllers
         // this ajax function is called by the client for each draw of the information on the page (i.e. when paging, ordering, searching, etc.). 
         public ActionResult AjaxGetJsonData(int draw, int start, int length)
         {
-            //int i = 0;
             System.Diagnostics.Debug.WriteLine(" Draw : " + draw);
 
             var searchParam = Request.QueryString["columns[1]search[value]"];
@@ -151,7 +150,6 @@ namespace BRO.Controllers
             string search2 = Request.QueryString["search[value]"];
             System.Diagnostics.Debug.WriteLine(" RequestQueryString2 : " + search2);
             
-            //i = i + 1;
             int sortColumn = -1;
             string sortDirection = "asc";
             if (length == -1)
