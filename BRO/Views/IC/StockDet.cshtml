@@ -52,10 +52,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Group : </label>
+                            <label class="col-sm-3 control-label">Vendor : </label>
                             <div class="col-sm-3">
                                 <div class="input-group">
-                                    <input class="form-control pull-left" id="txtGRP" name="txtGRP" value="@data.GRP_CODE" maxlength="10" style="text-transform: uppercase">
+                                    <input class="form-control pull-left" id="txtVEN" name="txtVEN" value="@data.VEN_CODE" maxlength="10" style="text-transform: uppercase">
                                     <span class="input-group-btn">
                                         <a href="javascript:void(0);" class="btn btn-default"
                                            onclick="viewModal()">
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-5">
-                                <input class="form-control" id="txtGRP_PART" name="txtGRP_PART" value="@data.GRP_PART" READONLY>
+                                <input class="form-control" id="txtVEN_PART" name="txtVEN_PART" value="@data.VEN_NAME" READONLY>
                             </div>
                         </div>
                         <div class="form-group">
@@ -82,26 +82,187 @@
                                 </div>
                             </div>
                             <div class="col-sm-5">
-                                <input class="form-control" id="txtLOC_PART" name="txtLOC_PART" value="@data.LOC_PART" READONLY>
+                                <input class="form-control" id="txtLOC_PART" name="txtLOC_PART" value="@data.LOC_DESC" READONLY>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="box-footer">
-                        @if (data.STKCODE == "")
-                        {
-                            <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save">Save</button>
-                        }
-                        else
-                        {
-                            <button type="button" id="btnDelete" class="btn btn-danger pull-left" value="Delete">Delete</button>
-                            <button type="button" id="btnSubmit" class="btn btn-warning pull-right" value="Update">Update</button>
-                        }
-                    </div> <!-- /.box-footer -->
+                        <div class="col-sm-12">
+                            <div class="col-sm-2"></div>
+                            <div class="nav-tabs-custom col-sm-10">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#Det">Details</a></li>
+                                    <li><a data-toggle="tab" href="#VenPriceDet">Vendor Price Details</a></li>
+                                    <li><a data-toggle="tab" href="#DebPriceDet">Debtor Price Details</a></li>
+                                </ul>
+                                <div class="tab-content">
+
+                                    <div id="Det" class="tab-pane fade in">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Stock Type : </label>
+                                            <div class="col-sm-4">
+                                                <select name="selStkType" class="form-control">
+                                                    <option value="RM">Raw Material</option>
+                                                    <option value="FG" selected>Finished Goods</option>
+                                                    <option value="SFG">Semi-finished Goods</option>
+                                                    <option value="OTH">Others</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Category : </label>
+                                            <div class="col-sm-4">
+                                                <select name="selCat" class="form-control">
+                                                    <option value="D">Direct</option>
+                                                    <option value="I">Indirect</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="VenPriceDet" class="tab-pane fade active">
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="tblVenPrcDet" class="table table-bordered" width="100%">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th class="NumCol">No</th>
+                                                                <th class="Ven_CodeCol">Vendor</th>
+                                                                <th class="Ven_Name">Name</th>
+                                                                <th class="MOQCol">MOQ</th>
+                                                                <th class="SellPrcCol">Selling Price</th>
+                                                                <th class="EditDelCol"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr role="row">
+                                                                <td>1</td>
+                                                                <td>VEN_0001</td>
+                                                                <td>This is a vendor example</td>
+                                                                <td>MOQ</td>
+                                                                <td>
+                                                                    <a href="/Password/PasswordDet/' + @data.AUTOINC + '"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="/Password/PasswordDet/' + @data.AUTOINC + '"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>2</td>
+                                                                <td>VEN_0002</td>
+                                                                <td>This is a vendor example</td>
+                                                                <td>MOQ</td>
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>3</td>
+                                                                <td>VEN_0003</td>
+                                                                <td>This is a vendor example</td>
+                                                                <td>MOQ</td>
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>4</td>
+                                                                <td>VEN_0004</td>
+                                                                <td>This is a vendor example</td>
+                                                                <td>MOQ</td>
+                                                            <tr role="row">
+                                                                <td>5</td>
+                                                                <td>VEN_0005</td>
+                                                                <td>This is a vendor example</td>
+                                                                <td>MOQ</td>
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>6</td>
+                                                                <td>VEN_0006</td>
+                                                                <td>This is a vendor example</td>
+                                                                <td>MOQ</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="DebPriceDet" class="tab-pane fade">
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="tblDebPrcDet" class="table table-bordered" width="100%">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th class="NumCol">No</th>
+                                                                <th class="Deb_CodeCol">Debtor</th>
+                                                                <th class="Deb_Name">Name</th>
+                                                                <th class="MOQCol">MOQ</th>
+                                                                <th class="SellPrcCol">Selling Price</th>
+                                                                <th class="EditDelCol"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr role="row">
+                                                                <td>1</td>
+                                                                <td>Deb_0001</td>
+                                                                <td>This is a Debtor example</td>
+                                                                <td>MOQ</td>
+                                                                <td>
+                                                                    <a href="/Password/PasswordDet/' + @data.AUTOINC + '"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="/Password/PasswordDet/' + @data.AUTOINC + '"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>2</td>
+                                                                <td>Deb_0002</td>
+                                                                <td>This is a Debtor example</td>
+                                                                <td>MOQ</td>
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>3</td>
+                                                                <td>Deb_0003</td>
+                                                                <td>This is a Debtor example</td>
+                                                                <td>MOQ</td>
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>4</td>
+                                                                <td>Deb_0004</td>
+                                                                <td>This is a Debtor example</td>
+                                                                <td>MOQ</td>
+                                                            <tr role="row">
+                                                                <td>5</td>
+                                                                <td>Deb_0005</td>
+                                                                <td>This is a Debtor example</td>
+                                                                <td>MOQ</td>
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>6</td>
+                                                                <td>Deb_0006</td>
+                                                                <td>This is a Debtor example</td>
+                                                                <td>MOQ</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="box-footer">
+                                @if (data.STKCODE == "")
+                                {
+                                    <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save">Save</button>
+                                }
+                                else
+                                {
+                                    <button type="button" id="btnDelete" class="btn btn-danger pull-left" value="Delete">Delete</button>
+                                    <button type="button" id="btnSubmit" class="btn btn-warning pull-right" value="Update">Update</button>
+                                }
+                            </div> <!-- /.box-footer -->
+                        </div><!-- /.col-md-12 -->
+                    </div><!-- /.box-body -->
                 }
-            </div><!-- /.box -->
-        </div><!-- /.col-md-12 -->
-    </div><!-- /.row -->
+            </div><!-- /.box-body -->
+        </div><!-- /.col-md-12-->
+    </div><!--/.row-->
 </section><!-- /.content -->
 @*<div class="modal fade bd-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -110,7 +271,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h2 class="modal-title">Group Information</h2>
+                <h2 class="modal-title">vendor Information</h2>
             </div>
             <div id="mycontent">
                 - Content --
@@ -124,7 +285,9 @@
 
 </div>
 <script>
-
+    $(document).ready(function () {
+        $('#tblVenPrcDet').DataTable();
+    });
     //function viewModal() {
     //    var xhttp;
 
@@ -135,7 +298,7 @@
     //        }
     //    };
 
-    //    xhttp.open("GET", "/PartialView/viewGroup", true);
+    //    xhttp.open("GET", "/PartialView/viewvendor", true);
     //    xhttp.send();
 
     //    $("#viewModal").modal('show');
@@ -143,7 +306,7 @@
 
     function viewModal() {
 
-        var url = "/PartialView/viewGroup"
+        var url = "/PartialView/viewvendor"
 
         $.get(url, function(data){
             $("#viewModal").html(data);
