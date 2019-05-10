@@ -30,7 +30,7 @@ namespace BRO.Controllers
 
         public ActionResult Logout()
         {
-            Session["USERID"] = null; //it's my session variable
+            Session["USER_ID"] = null; //it's my session variable
             Session.Clear();
             Session.Abandon();
             FormsAuthentication.SignOut(); //you write this when you use FormsAuthentication
@@ -48,7 +48,10 @@ namespace BRO.Controllers
         {
             if (ModelState.IsValid)
             {
-                string sSQL = " SELECT * FROM mainpass where ID ='" + viewModel.txtLoginID + "'";
+                var sLOGIN_ID = Request.Form["txtLOGIN_ID"];
+                var sPASSWORD = Request.Form["txtPASSWORD"];
+
+                string sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + sLOGIN_ID + "'";
                 DataTable dt = conn.GetData(sSQL);
 
                 if (dt.Rows.Count > 0)
@@ -58,7 +61,7 @@ namespace BRO.Controllers
                     string sdtLastUse = dt.Rows[0]["DATELASTUSE"].ToString();
                     string sPassword = dt.Rows[0]["PASSWORD"].ToString();
 
-                    int iPassword = proc.pPassConv(viewModel.txtPassword);
+                    int iPassword = proc.pPassConv(sPASSWORD);
 
                     if (DBNull.Value.Equals(dt.Rows[0]["DATELASTUSE"]))
                     {
@@ -87,15 +90,15 @@ namespace BRO.Controllers
                         using (MySqlConnection con = new MySqlConnection(constr))
                         {
                             using (MySqlCommand cmd = new MySqlCommand("UPDATE mainpass " +
-                                "set DATELASTUSE = @DateLastUse, " +
-                                "PASSWORD=@Password " +
-                                "WHERE ID = @LoginID"))
+                                "set DATELASTUSE = @DATELASTUSE, " +
+                                "PASSWORD=@PASSWORD " +
+                                "WHERE LOGIN_ID = @LOGIN_ID"))
                             {
                                 using (MySqlDataAdapter sda = new MySqlDataAdapter())
                                 {
-                                    cmd.Parameters.AddWithValue("@DateLastUse", DateTime.Now);
-                                    cmd.Parameters.AddWithValue("@Password", iUpdatedPass.ToString());
-                                    cmd.Parameters.AddWithValue("@LoginID", viewModel.txtLoginID);
+                                    cmd.Parameters.AddWithValue("@DATELASTUSE", DateTime.Now);
+                                    cmd.Parameters.AddWithValue("@PASSWORD", iUpdatedPass.ToString());
+                                    cmd.Parameters.AddWithValue("@LOGIN_ID", sLOGIN_ID);
                                     cmd.Connection = con;
                                     con.Open();
                                     cmd.ExecuteNonQuery();
@@ -104,8 +107,8 @@ namespace BRO.Controllers
                             }
                         }
 
-                        Session["USERID"] = dt.Rows[0]["ID"].ToString();
-                        Session["USERNAME"] = dt.Rows[0]["NAME"].ToString();
+                        Session["USER_ID"] = dt.Rows[0]["LOGIN_ID"].ToString();
+                        Session["USER_NAME"] = dt.Rows[0]["NAME"].ToString();
 
                         string sSQL2 = " SELECT * FROM mainpath";
                         DataTable dt2 = conn.GetData(sSQL2);
@@ -119,12 +122,12 @@ namespace BRO.Controllers
                     }
                     else
                     {
-                        return Json(new { status = "fail", message = "Password is incorrect", fieldname = "Password" });
+                        return Json(new { status = "fail", message = "Password is incorrect", fieldname = "PASSWORD" });
                     }
                 }
                 else
                 {
-                    return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LoginID" });
+                    return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LOGIN_ID" });
                 }
             }
 

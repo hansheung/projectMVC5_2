@@ -8,9 +8,7 @@ namespace BRO.Models
 {
     public class LoginModel
     {
-        //[Required(ErrorMessage = "Please enter your Login ID")]
-        public string txtLoginID { get; set; }
-        //[Required(ErrorMessage = "Please enter your Password")]
-        public string txtPassword { get; set; }
+        public string txtLOGIN_ID { get; set; }
+        public string txtPASSWORD { get; set; }
     }
 }

@@ -52,10 +52,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Vendor : </label>
+                            <label class="col-sm-3 control-label">Group : </label>
                             <div class="col-sm-3">
                                 <div class="input-group">
-                                    <input class="form-control pull-left" id="txtVEN" name="txtVEN" value="@data.VEN_CODE" maxlength="10" style="text-transform: uppercase">
+                                    <input class="form-control pull-left" id="txtGRP_CODE" name="txtGRP_CODE" value="@data.GRP_CODE" maxlength="10" style="text-transform: uppercase">
                                     <span class="input-group-btn">
                                         <a href="javascript:void(0);" class="btn btn-default"
                                            onclick="viewModal()">
@@ -65,9 +65,10 @@
                                 </div>
                             </div>
                             <div class="col-sm-5">
-                                <input class="form-control" id="txtVEN_PART" name="txtVEN_PART" value="@data.VEN_NAME" READONLY>
+                                <input class="form-control" id="txtVEN_PART" name="txtVEN_PART" value="@data.GRP_DESC" READONLY>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Location : </label>
                             <div class="col-sm-3">
@@ -86,17 +87,45 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Unit of Measure : </label>
+                            <div id="divUNIT" class="col-sm-2">
+                                <input class="form-control" id="txtUNIT" name="txtUNIT" maxlength="30" value="@data.UNIT">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Tariff : </label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input class="form-control pull-left" id="txtTAR_CODE" name="txtTAR_CODE" value="@data.TAR_CODE" maxlength="10" style="text-transform: uppercase">
+                                    <span class="input-group-btn">
+                                        <a href="javascript:void(0);" class="btn btn-default"
+                                           onclick="viewModal()">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <input class="form-control" id="txtLOC_PART" name="txtLOC_PART" value="@data.TAR_DESC" READONLY>
+                            </div>
+                        </div>
+                
+                        <br />
+
                         <div class="col-sm-12">
-                            <div class="col-sm-2"></div>
-                            <div class="nav-tabs-custom col-sm-10">
+                            <div class="col-sm-1"></div>
+                            <div class="nav-tabs-custom col-sm-11">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#Det">Details</a></li>
-                                    <li><a data-toggle="tab" href="#VenPriceDet">Vendor Price Details</a></li>
+                                    <li><a data-toggle="tab" href="#Det">Details</a></li>
+                                    <li class="active"><a data-toggle="tab" href="#VenPriceDet">Vendor Price Details</a></li>
                                     <li><a data-toggle="tab" href="#DebPriceDet">Debtor Price Details</a></li>
                                 </ul>
+
                                 <div class="tab-content">
 
-                                    <div id="Det" class="tab-pane fade in">
+                                    <div id="Det" class="tab-pane fade">
                                         <div class="form-group">
                                             <label class="col-sm-2 control-label">Stock Type : </label>
                                             <div class="col-sm-4">
@@ -119,7 +148,7 @@
                                         </div>
                                     </div>
 
-                                    <div id="VenPriceDet" class="tab-pane fade active">
+                                    <div id="VenPriceDet" class="tab-pane fade in active">
                                         <div class="box-body">
                                             <div class="row">
                                                 <div class="col-sm-12">
@@ -140,9 +169,10 @@
                                                                 <td>VEN_0001</td>
                                                                 <td>This is a vendor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>12.00</td>
                                                                 <td>
-                                                                    <a href="/Password/PasswordDet/' + @data.AUTOINC + '"><img src="../../Content/myPics/edit-2-24.png"></a>
-                                                                    <a href="/Password/PasswordDet/' + @data.AUTOINC + '"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
                                                                 </td>
                                                             </tr>
                                                             <tr role="row">
@@ -150,29 +180,54 @@
                                                                 <td>VEN_0002</td>
                                                                 <td>This is a vendor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>22.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             </tr>
                                                             <tr role="row">
                                                                 <td>3</td>
                                                                 <td>VEN_0003</td>
                                                                 <td>This is a vendor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>21.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             </tr>
                                                             <tr role="row">
                                                                 <td>4</td>
                                                                 <td>VEN_0004</td>
                                                                 <td>This is a vendor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>32.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             <tr role="row">
                                                                 <td>5</td>
                                                                 <td>VEN_0005</td>
                                                                 <td>This is a vendor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>42.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             </tr>
                                                             <tr role="row">
                                                                 <td>6</td>
                                                                 <td>VEN_0006</td>
                                                                 <td>This is a vendor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>52.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -202,9 +257,10 @@
                                                                 <td>Deb_0001</td>
                                                                 <td>This is a Debtor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>11.00</td>
                                                                 <td>
-                                                                    <a href="/Password/PasswordDet/' + @data.AUTOINC + '"><img src="../../Content/myPics/edit-2-24.png"></a>
-                                                                    <a href="/Password/PasswordDet/' + @data.AUTOINC + '"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
                                                                 </td>
                                                             </tr>
                                                             <tr role="row">
@@ -212,29 +268,54 @@
                                                                 <td>Deb_0002</td>
                                                                 <td>This is a Debtor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>12.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             </tr>
                                                             <tr role="row">
                                                                 <td>3</td>
                                                                 <td>Deb_0003</td>
                                                                 <td>This is a Debtor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>12.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             </tr>
                                                             <tr role="row">
                                                                 <td>4</td>
                                                                 <td>Deb_0004</td>
                                                                 <td>This is a Debtor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>12.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             <tr role="row">
                                                                 <td>5</td>
                                                                 <td>Deb_0005</td>
                                                                 <td>This is a Debtor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>12.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             </tr>
                                                             <tr role="row">
                                                                 <td>6</td>
                                                                 <td>Deb_0006</td>
                                                                 <td>This is a Debtor example</td>
                                                                 <td>MOQ</td>
+                                                                <td>12.00</td>
+                                                                <td>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/edit-2-24.png"></a>
+                                                                    <a href="javascript:void(0);" onclick="viewModal()"><img src="../../Content/myPics/x-mark-24.png"></a>
+                                                                </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -245,22 +326,22 @@
 
                                 </div>
                             </div>
-
-                            <div class="box-footer">
-                                @if (data.STKCODE == "")
-                                {
-                                    <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save">Save</button>
-                                }
-                                else
-                                {
-                                    <button type="button" id="btnDelete" class="btn btn-danger pull-left" value="Delete">Delete</button>
-                                    <button type="button" id="btnSubmit" class="btn btn-warning pull-right" value="Update">Update</button>
-                                }
-                            </div> <!-- /.box-footer -->
                         </div><!-- /.col-md-12 -->
                     </div><!-- /.box-body -->
+
+                    <div class="box-footer">
+                        @if (data.STKCODE == "")
+                        {
+                            <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save">Save</button>
+                        }
+                        else
+                        {
+                            <button type="button" id="btnDelete" class="btn btn-danger pull-left" value="Delete">Delete</button>
+                            <button type="button" id="btnSubmit" class="btn btn-warning pull-right" value="Update">Update</button>
+                        }
+                    </div> <!-- /.box-footer -->
                 }
-            </div><!-- /.box-body -->
+            </div><!-- /.box box-info -->
         </div><!-- /.col-md-12-->
     </div><!--/.row-->
 </section><!-- /.content -->
@@ -286,27 +367,141 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('#tblVenPrcDet').DataTable();
+       // $('#tblVenPrcDet').DataTable();
+        $('#tblDebPrcDet').DataTable();
     });
-    //function viewModal() {
-    //    var xhttp;
 
-    //    xhttp = new XMLHttpRequest();
-    //    xhttp.onreadystatechange = function () {
-    //        if (xhttp.readyState == 4 && xhttp.status == 200) {
-    //            document.getElementById(mycontent).innerHTML = xhttp.responseText;
-    //        }
-    //    };
+    var tblVenPrcDet= $('#tblVenPrcDet').DataTable({
 
-    //    xhttp.open("GET", "/PartialView/viewvendor", true);
-    //    xhttp.send();
+        "paging": true,
+        "ordering": true,
+        //"filter": false,
+        //"destroy": true,
+        "processing": true, // control the processing indicator.
+        //"serverSide": true, // recommended to use serverSide when data is more than 10000 rows for performance reasons
+        "info": true,   // control table information display field
+        //"stateSave": true,  //remain table state on AFTER SAVE OR UPDATE OR BACK
+        "lengthChange": true,
+        "lengthMenu": [[2, 4, 10, -1], [2, 4, 10, "All"]],    // use the first inner array as the page length values and the second inner array as the displayed options
+        "colReorder": true,
+        "orderMulti": true, // for disable multiple column at once
+        //"order": [[ 2, "asc" ], [ 1, "desc" ]],
 
-    //    $("#viewModal").modal('show');
-    //}
+        "language": {
+            searchPlaceholder: "Search records"
+        },
+        //"bFilter": true,
+        "order": [["3", "desc"]], //=== Not working during stateSave
+
+        //"ajax":{
+        //    "url": "/Password/AjaxGetJsonData",
+        //    "type": "POST"
+        //},
+        //"AjaxSource": "/Password/AjaxGetJsonData",
+        //"fnServerData": function (sSource, aoData, fnCallback) {
+        //    aoData.push({ "name": "all", "value": true });
+        //    $.getJSON(sSource, aoData, function (json) {
+        //        fnCallback(json)
+        //    });
+        //},
+
+        "columnDefs": [
+            {
+                "width": "5%", "targets": 'NumCol', //"data": "id",
+                "orderable": false,
+                //"render": function (data, type, row, meta) {
+                 //   return meta.row + meta.settings._iDisplayStart + 1;
+                //}
+            },
+        //    {
+        //        "targets": 'LoginCol', // The third column
+        //        "data": "LoginID", "orderable": true
+        //    },
+        //    {
+        //        "targets": 'NameCol', // The third column
+        //        "data": "Name", "orderable": true
+        //    },
+        //    {
+        //        "targets": 'DtCreatedCol', // The third column
+        //        "data": "DateCreated", "orderable": true
+        //    },
+            {
+                "targets": 'EditDelCol', // The third column
+                "className": "text-center",
+                "orderable": false,
+               // "render": function (data, type, full, meta) {
+               //     return '<a href="/Password/PasswordDet/' + full.AutoINC + '"><img src="../../Content/myPics/edit-2-24.png" ></a>';
+               // }
+            }
+        ],
+
+        "dom":
+            "<'row'<'col-sm-3'l><'col-sm-5'B><'col-sm-4'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+        "buttons": [
+            {
+                text: 'New',
+                className: "btn btn-primary",
+                action: function () {
+                    viewModal();
+                },
+                //render: function (data, type, full, meta) {
+                //     return '<a href="javascript:void(0);" onclick="viewModal()"></a>';
+                //},
+
+//                "defaultContent": '<a href="javascript:void(0);" onclick="viewModal()"></a>',
+            },
+            //{
+            //    extend: 'copy',
+            //    text: 'Copy',
+            //    className: "btn btn-info",
+            //    exportOptions: {
+            //        columns: [0, 1, 2, 3],
+            //    },
+            //},
+            //{
+            //    extend: 'excel',
+            //    text: 'Excel',
+            //    className: "btn btn-success",
+            //    exportOptions: {
+            //        columns: [0, 1, 2, 3],
+            //    },
+            //},
+            //{
+            //    extend: 'print',
+            //    text: 'Print all',
+            //    className: "btn btn-warning",
+            //    exportOptions: {
+            //        modifier: {
+            //            selected: null
+            //        },
+            //        columns: [0, 1, 2, 3],
+            //    },
+            //    autoPrint: false,
+            //}
+        ],
+
+        //select: true,
+
+        initComplete: function () {
+            //var r = $('#tablePassword tfoot tr');
+
+            //r.find('th').each(function () {
+            //    $(this).css('padding', 8);
+            //});
+
+            //$('#tablePassword thead').append(r);
+
+            $(".dt-button").removeClass("dt-button");
+        },
+
+    });
 
     function viewModal() {
 
-        var url = "/PartialView/viewvendor"
+        var url = "/PartialView/viewGroup"
 
         $.get(url, function(data){
             $("#viewModal").html(data);

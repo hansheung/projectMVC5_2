@@ -56,7 +56,7 @@ namespace BRO.Controllers
                         cmd.Parameters.AddWithValue("@CoName", viewModel.txtCoName);
                         cmd.Parameters.AddWithValue("@Add1", viewModel.txtAdd1);
                         cmd.Parameters.AddWithValue("@LengthMenu", viewModel.txtLengthMenu);
-                        cmd.Parameters.AddWithValue("@EditID", Session["USERID"]);
+                        cmd.Parameters.AddWithValue("@EditID", Session["USER_ID"]);
                         cmd.Parameters.AddWithValue("@DtEdit", DateTime.Now);
                         System.Diagnostics.Debug.WriteLine(" sSQL : ");
                         System.Diagnostics.Debug.WriteLine(cmd);

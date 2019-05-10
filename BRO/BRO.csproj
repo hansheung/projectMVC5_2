@@ -8679,6 +8679,7 @@
     <Content Include="Views\IC\StockDet.cshtml" />
     <Content Include="Views\PartialView\viewGroup.cshtml" />
     <Content Include="Views\Shared\_LayoutModal.cshtml" />
+    <Content Include="Views\IC\Group.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

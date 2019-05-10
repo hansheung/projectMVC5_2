@@ -14,3 +14,54 @@
     background-image: none;
 }
 
+    /*=== Header */
+    table.dataTable thead tr th {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        background-color: #3c8dbc;
+        color: white;
+    }
+
+    /*=== Row tr */
+    table.dataTable tbody td {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    /*=== Sorting glyphicon*/
+    table.dataTable thead th.sorting:after,
+    table.dataTable thead th.sorting_asc:after,
+    table.dataTable thead th.sorting_desc:after {
+        top: 3px;
+        opacity: 1;
+    }
+
+    /*=== Odd row color*/
+    .odd {
+        background-color: lightskyblue;
+    }
+
+    /*=== Even row color*/
+    .even {
+        background-color: #ecf0f5;
+    }
+
+    /*=== Hover*/
+    #tablePassword tbody tr.odd:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
+
+    #tablePassword tbody tr.even:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
+
+    /*=== Pagingnation background color*/
+    .pagination li a {
+        background-color: #ecf0f5;
+    }
+
+    .pagination .disabled a {
+        background-color: #ecf0f5;
+    }

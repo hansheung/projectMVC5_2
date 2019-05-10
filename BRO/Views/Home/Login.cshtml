@@ -55,7 +55,7 @@
 {
     @Html.AntiForgeryToken()
    
-<body class="hold-transition login-page">
+    <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
             <p><b>BRO </b>Software House</p>
@@ -64,25 +64,24 @@
         <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
             <div class="form-group has-feedback">
-                <div id="divLoginID">
-                    <input class="form-control" id="txtLoginID" name="txtLoginID"
-                           onfocus="clearError('LoginID');" maxlength="10" placeholder="Login ID" value="BRO" primaryKey >
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    @*<span class="floating-label">Login ID</span>*@
-                    <span id="errorLoginID" class="help-block"></span>
+                <div id="divLOGIN_ID">
+                    <input class="form-control" id="txtLOGIN_ID" name="txtLOGIN_ID"
+                           onfocus="clearBoth('LOGIN_ID','PASSWORD');" maxlength="10" placeholder="Login ID" value="BRO" primaryKey>
+                    <span class="glyphicon glyphicon-user field-icon"></span>
+                    <span id="errorLOGIN_ID" class="help-block"></span>
                 </div>
             </div>
             <div class="form-group has-feedback">
-                <div id="divPassword" class="">
-                    <input type="password" class="form-control" id="txtPassword" name="txtPassword"
-                           onfocus="clearError('Password');" maxlength="10" value="ALAB" placeholder="Password">
+                <div id="divPASSWORD" class="">
+                    <input type="password" class="form-control" id="txtPASSWORD" name="txtPASSWORD"
+                           onfocus="clearBoth('LOGIN_ID', 'PASSWORD');" maxlength="10" value="ALAB" placeholder="Password">
+                    <span toggle="#txtPASSWORD" class="glyphicon glyphicon-eye-close field-icon toggle-PASSWORD"></span>
+                    <span id="errorPASSWORD" class="help-block"></span>
                 </div>
-                <span toggle="#txtPassword" class="glyphicon glyphicon-eye-close field-icon toggle-password"></span>
-                <span id="errorPassword" class="help-block"></span>
             </div>
             <div class="row">
                 <div class="col-xs-4 pull-left">
-                    @*<a href="/Password/ForgotPassword" class="btn btn-link">Forgot password?</a>*@
+                    @*<a href="/Password/ForgotPassword" class="btn btn-link">Forgot Password?</a>*@
                 </div>
                 <div class="col-xs-4 pull-right">
                     <button type="button" id="btnSubmit" class="btn btn-primary btn-block btn-flat">Sign In</button>
@@ -93,50 +92,26 @@
     </div>
 
     @Scripts.Render("~/javascript")
+    <script src="~/Content/myJavascripts/myJavascripts.js"></script>
 
     <script>
-    $('#txtLoginID').keyup(function () {
-        $(this).val($(this).val().toUpperCase());
-    });
-
-    $('#txtLoginID').focus ()
-
-    //=== Remove validation messages when a text-field is onfocus
-    function clearError(FieldName) {
-        $("#div" + FieldName).removeClass('has-error');
-        $("#error" + FieldName).html("");
-    };
-
-    //=== Show and unshow password
-    $(".toggle-password").click(function () {
-        //=== Proper way of doing toggleClass for glyphicon and font-awesome
-        $(this).toggleClass('glyphicon-eye-close', 'remove');
-        $(this).toggleClass('glyphicon-eye-open', 'add');
-        //=================================================================
-        var input = $($(this).attr("toggle"));
-        if (input.attr("type") == "password") {
-            input.attr("type", "text");
-        } else {
-            input.attr("type", "password");
-        }
-    });
-
     $('#btnSubmit').click(function () {
 
-        var FieldName = ['LoginID', 'Password'];
-        var Required = "N" 
-        for (var i = 0; (i < FieldName.length); i++) {
+        var FieldName = ['LOGIN_ID', 'PASSWORD'];
+        var sMessage = ['Login ID', 'Password'];
+
+        for (var i = 0; (i < FieldName.length) ; i++) {
 
             if ($("#txt" + FieldName[i]).val() == "") {
 
                 $("#div" + FieldName[i]).toggleClass('has-error', 'add');
-                $("#error" + FieldName[i]).html("Please enter a " + FieldName[i] );
+                $("#error" + FieldName[i]).html("Please enter a " + sMessage[i] );
 
-                Required = "Y"
+                var gotEmptyField = "Y"
             }
         }
 
-        if (Required == "N") {
+       if (gotEmptyField != "Y") {
 
             var url = 'Home/Login'
             var formData = $('#formLogin').serialize();
@@ -161,6 +136,7 @@
                     }
 
                 },
+
                 error: function (response) {
 
                     $("#div" + response.fieldname).toggleClass('has-error', 'add');
@@ -180,14 +156,15 @@
     //===Allow enter to post-back form
     $('#formLogin').on('keypress', function(e) {
         var keyCode = e.keyCode || e.which;
-        if (keyCode === 13) { 
+        if (keyCode === 13) {
             $('#btnSubmit').focus(); //== Focus on button so the CSS will be correct
             $('#btnSubmit').click();
             return false;
         }
     });
+
     </script>
-</body>
+    </body>
 }
 </html>
 

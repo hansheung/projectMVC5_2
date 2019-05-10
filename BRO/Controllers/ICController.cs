@@ -41,10 +41,13 @@ namespace BRO.Controllers
             public string PART { get; set; }
             public string PART1 { get; set; }
             public string PART2 { get; set; }
-            public string UNIT { get; set; }
+            public string GRP_CODE { get; set; }
+            public string GRP_DESC { get; set; }
             public string LOC_CODE { get; set; }
             public string LOC_DESC { get; set; }
-            public string GRP { get; set; }
+            public string UNIT { get; set; }
+            public string TAR_CODE { get; set; }
+            public string TAR_DESC { get; set; }
             public string COST { get; set; }
             public string S_PRICE { get; set; }
             public string AVG_COST { get; set; }
@@ -222,7 +225,7 @@ namespace BRO.Controllers
                     PART1 = "",
                     PART2 = "",
                     GRP_CODE = "",
-                    GRP_PART = "",
+                    GRP_DESC = "",
                     LOC_CODE ="",
                     LOC_DESC = "",
                 };
@@ -232,24 +235,24 @@ namespace BRO.Controllers
             }
             else
             {
-                ConDB conn = new ConDB();
-                //Proc proc = new Proc();
+                //ConDB conn = new ConDB();
+                ////Proc proc = new Proc();
 
-                string sSQL = " SELECT * FROM mainpass where AUTOINC ='" + id + "'";
-                DataTable dt = conn.GetData(sSQL);
-                if (dt.Rows.Count > 0)
-                {
-                    PasswordModel rec = new PasswordModel
-                    {
-                        txtLoginID = dt.Rows[0]["ID"].ToString(),
-                        txtName = dt.Rows[0]["NAME"].ToString(),
-                        txtPassword = dt.Rows[0]["PASSWORD"].ToString(),
-                    };
+                //string sSQL = " SELECT * FROM mainpass where AUTOINC ='" + id + "'";
+                //DataTable dt = conn.GetData(sSQL);
+                //if (dt.Rows.Count > 0)
+                //{
+                //    PasswordModel rec = new PasswordModel
+                //    {
+                //        txtLoginID = dt.Rows[0]["ID"].ToString(),
+                //        txtName = dt.Rows[0]["NAME"].ToString(),
+                //        txtPassword = dt.Rows[0]["PASSWORD"].ToString(),
+                //    };
 
-                    ViewBag.FieldValue = rec;
-                    return View();
+                //    ViewBag.FieldValue = rec;
+                //    return View();
 
-                }
+                //}
             }
 
             return View();
