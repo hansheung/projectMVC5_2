@@ -8001,6 +8001,7 @@
     <Compile Include="Controllers\ICController.cs" />
     <Compile Include="Controllers\PartialViewController.cs" />
     <Compile Include="Controllers\PasswordController.cs" />
+    <Compile Include="Controllers\PasswordController2.cs" />
     <Compile Include="Controllers\ProgramController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -8667,8 +8668,8 @@
     <Content Include="Views\Shared\_LayoutTop.cshtml" />
     <Content Include="Views\Shared\_LayoutForgotPassword.cshtml" />
     <Content Include="Views\Password\ForgotPassword.cshtml" />
-    <Content Include="Views\Password\Password.cshtml" />
-    <Content Include="Views\Password\PasswordDet.cshtml" />
+    <Content Include="Views\Password\Password2.cshtml" />
+    <Content Include="Views\Password\PasswordDet2.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
@@ -8680,6 +8681,8 @@
     <Content Include="Views\PartialView\viewGroup.cshtml" />
     <Content Include="Views\Shared\_LayoutModal.cshtml" />
     <Content Include="Views\IC\Group.cshtml" />
+    <Content Include="Views\Password\Password.cshtml" />
+    <Content Include="Views\Password\PasswordDet.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

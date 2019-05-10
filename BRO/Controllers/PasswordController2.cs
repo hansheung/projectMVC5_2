@@ -21,10 +21,10 @@ namespace BRO.Controllers
 
         public class DataItem
         {
-            public string AutoINC { get; set; }
-            public string LoginID { get; set; }
-            public string Name { get; set; }
-            public string DateCreated { get; set; }
+            public string AUTOINC { get; set; }
+            public string LOGIN_ID { get; set; }
+            public string NAME { get; set; }
+            public string DT_CREATE { get; set; }
         }
 
         public class DataTableData
@@ -58,10 +58,10 @@ namespace BRO.Controllers
             {
                 DataItem item = new DataItem();
 
-                item.AutoINC = dr["AUTOINC"].ToString();
-                item.LoginID = dr["ID"].ToString();
-                item.Name = dr["NAME"].ToString();
-                item.DateCreated = dr["DT_CREATE"].ToString();
+                item.AUTOINC = dr["AUTOINC"].ToString();
+                item.LOGIN_ID = dr["LOGIN_ID"].ToString();
+                item.NAME = dr["NAME"].ToString();
+                item.DT_CREATE = dr["DT_CREATE"].ToString();
                 list.Add(item);
             }
             mysqlconn.Close();
@@ -103,9 +103,9 @@ namespace BRO.Controllers
                 foreach (DataItem dataItem in _data)
                 {
                     if (
-                        dataItem.LoginID.ToUpper().Contains(search.ToUpper()) ||
-                        dataItem.Name.ToString().Contains(search.ToUpper()) ||
-                        dataItem.DateCreated.ToString().Contains(search.ToUpper())
+                        dataItem.LOGIN_ID.ToUpper().Contains(search.ToUpper()) ||
+                        dataItem.NAME.ToString().Contains(search.ToUpper()) ||
+                        dataItem.DT_CREATE.ToString().Contains(search.ToUpper())
                         )
                     {
                         list.Add(dataItem);
@@ -116,16 +116,16 @@ namespace BRO.Controllers
             // simulate sort
             //=== sortColumn need to change additional column
             if (sortColumn == 1)
-            {   // sort LoginID
-                list.Sort((x, y) => SortString(x.LoginID, y.LoginID, sortDirection));
+            {   // sort LOGIN_ID
+                list.Sort((x, y) => SortString(x.LOGIN_ID, y.LOGIN_ID, sortDirection));
             }
             else if (sortColumn == 2)
-            {   // sort Name
-                list.Sort((x, y) => SortString(x.Name, y.Name, sortDirection));
+            {   // sort NAME
+                list.Sort((x, y) => SortString(x.NAME, y.NAME, sortDirection));
             }
             else if (sortColumn == 3)
-            {   // sort DateCreated
-                list.Sort((x, y) => SortDateTime(x.DateCreated, y.DateCreated, sortDirection));
+            {   // sort DT_CREATE
+                list.Sort((x, y) => SortDateTime(x.DT_CREATE, y.DT_CREATE, sortDirection));
             }
 
             recordFiltered = list.Count;
@@ -146,10 +146,10 @@ namespace BRO.Controllers
 
             string search = Request.Form["search[value]"];
             System.Diagnostics.Debug.WriteLine(" RequestForm : " + search);
-
+            
             string search2 = Request.QueryString["search[value]"];
             System.Diagnostics.Debug.WriteLine(" RequestQueryString2 : " + search2);
-
+            
             int sortColumn = -1;
             string sortDirection = "asc";
             if (length == -1)
@@ -189,16 +189,16 @@ namespace BRO.Controllers
             return View();
         }
 
-        public ActionResult PasswordDet(string id)
+        public ActionResult PasswordDet(string AUTOINC)
         {
-            if (id is null)
+            if (AUTOINC is null)
             {
 
                 PasswordModel rec = new PasswordModel
                 {
-                    txtLoginID = "",
-                    txtName = "",
-                    txtPassword = "",
+                    txtLOGIN_ID = "",
+                    txtNAME = "",
+                    txtPASSWORD = "",
                 };
 
                 ViewBag.FieldValue = rec;
@@ -209,15 +209,15 @@ namespace BRO.Controllers
                 ConDB conn = new ConDB();
                 //Proc proc = new Proc();
 
-                string sSQL = " SELECT * FROM mainpass where AUTOINC ='" + id + "'";
+                string sSQL = " SELECT * FROM mainpass where AUTOINC ='" + AUTOINC + "'";
                 DataTable dt = conn.GetData(sSQL);
                 if (dt.Rows.Count > 0)
                 {
                     PasswordModel rec = new PasswordModel
                     {
-                        txtLoginID = dt.Rows[0]["ID"].ToString(),
-                        txtName = dt.Rows[0]["NAME"].ToString(),
-                        txtPassword = dt.Rows[0]["PASSWORD"].ToString(),
+                        txtLOGIN_ID = dt.Rows[0]["LOGIN_ID"].ToString(),
+                        txtNAME = dt.Rows[0]["NAME"].ToString(),
+                        txtPASSWORD = dt.Rows[0]["PASSWORD"].ToString(),
                     };
 
                     ViewBag.FieldValue = rec;
@@ -236,7 +236,7 @@ namespace BRO.Controllers
             //Proc proc = new Proc();
             if (id == "Save")
             {
-                int iPassword = proc.pPassConv(viewModel.txtPassword.ToString());
+                int iPassword = proc.pPassConv(viewModel.txtPASSWORD.ToString());
 
                 DateTime d1 = DateTime.Now;
                 DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
@@ -244,11 +244,11 @@ namespace BRO.Controllers
                 double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
                 int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
 
-                string sSQL = " SELECT * FROM mainpass where ID ='" + viewModel.txtLoginID + "'";
+                string sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + viewModel.txtLOGIN_ID + "'";
                 DataTable dt = conn.GetData(sSQL);
                 if (dt.Rows.Count > 0)
                 {
-                    return Json(new { status = "fail", message = "Login ID already exists", fieldname = "LoginID" });
+                    return Json(new { status = "fail", message = "Login ID already exists", fieldname = "LOGIN_ID" });
 
                 }
                 else
@@ -258,21 +258,21 @@ namespace BRO.Controllers
                     {
                         using (MySqlCommand cmd = new MySqlCommand(
                                 " INSERT into mainpass" +
-                                " (ID, NAME, PASSWORD,DATELASTUSE,EDIT_ID,DT_EDIT,CREATE_ID,DT_CREATE)" +
+                                " (LOGIN_ID, NAME, PASSWORD,DATELASTUSE,EDIT_ID,DT_EDIT,CREATE_ID,DT_CREATE)" +
                                 " values " +
-                                " (@ID,@Name, @Password, @DateLastUse, @EditID, @DtEdit, @CreateID, @DtCreate)"
+                                " (@LOGIN_ID,@NAME, @PASSWORD, @DATELASTUSE, @EDIT_ID, @DT_EDIT, @CREATE_ID, @DT_CREATE)"
                             ))
                         {
                             using (MySqlDataAdapter sda = new MySqlDataAdapter())
                             {
-                                cmd.Parameters.AddWithValue("@ID", viewModel.txtLoginID);
-                                cmd.Parameters.AddWithValue("@Name", viewModel.txtName);
-                                cmd.Parameters.AddWithValue("@Password", iUpdatedPass);
-                                cmd.Parameters.AddWithValue("@DateLastUse", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@EditID", Session["USERID"]);
-                                cmd.Parameters.AddWithValue("@DtEdit", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@CreateID", Session["USERID"]);
-                                cmd.Parameters.AddWithValue("@DtCreate", DateTime.Now);
+                                cmd.Parameters.AddWithValue("@LOGIN_ID", viewModel.txtLOGIN_ID);
+                                cmd.Parameters.AddWithValue("@NAME", viewModel.txtNAME);
+                                cmd.Parameters.AddWithValue("@PASSWORD", iUpdatedPass);
+                                cmd.Parameters.AddWithValue("@DATELASTUSE", DateTime.Now);
+                                cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
+                                cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
+                                cmd.Parameters.AddWithValue("@CREATE_ID", Session["USER_ID"]);
+                                cmd.Parameters.AddWithValue("@DT_CREATE", DateTime.Now);
 
                                 cmd.Connection = con;
                                 con.Open();
@@ -292,22 +292,22 @@ namespace BRO.Controllers
                 string constr = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString;
                 using (MySqlConnection con = new MySqlConnection(constr))
                 {
-                    if (string.IsNullOrEmpty(viewModel.txtPassword))
+                    if (string.IsNullOrEmpty(viewModel.txtPASSWORD))
                     {
                         using (MySqlCommand cmd = new MySqlCommand("UPDATE mainpass " +
-                        "set NAME=@Name, " +
-                        "DATELASTUSE = @DateLastUse, " +
-                        "EDIT_ID=@EditID, " +
-                        "DT_EDIT=@DtEdit " +
-                        "WHERE ID = @LoginID"))
+                        "set NAME=@NAME, " +
+                        "DATELASTUSE = @DATELASTUSE, " +
+                        "EDIT_ID=@EDIT_ID, " +
+                        "DT_EDIT=@DT_EDIT " +
+                        "WHERE LOGIN_ID = @LOGIN_ID"))
                         {
                             using (MySqlDataAdapter sda = new MySqlDataAdapter())
                             {
-                                cmd.Parameters.AddWithValue("@Name", viewModel.txtName);
-                                cmd.Parameters.AddWithValue("@DateLastUse", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@EditID", Session["USERID"]);
-                                cmd.Parameters.AddWithValue("@DtEdit", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@LoginID", viewModel.txtLoginID);
+                                cmd.Parameters.AddWithValue("@NAME", viewModel.txtNAME);
+                                cmd.Parameters.AddWithValue("@DATELASTUSE", DateTime.Now);
+                                cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
+                                cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
+                                cmd.Parameters.AddWithValue("@LOGIN_ID", viewModel.txtLOGIN_ID);
 
                                 cmd.Connection = con;
                                 con.Open();
@@ -320,7 +320,7 @@ namespace BRO.Controllers
                     }
                     else
                     {
-                        int iPassword = proc.pPassConv(viewModel.txtPassword.ToString());
+                        int iPassword = proc.pPassConv(viewModel.txtPASSWORD.ToString());
 
                         DateTime d1 = DateTime.Now;
                         DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
@@ -329,21 +329,21 @@ namespace BRO.Controllers
                         int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
 
                         using (MySqlCommand cmd = new MySqlCommand("UPDATE mainpass " +
-                        "set NAME=@Name, " +
-                        "PASSWORD=@Password, " +
-                        "DATELASTUSE = @DateLastUse, " +
-                        "EDIT_ID=@EditID, " +
-                        "DT_EDIT=@DtEdit " +
-                        "WHERE ID = @LoginID"))
+                        "set NAME=@NAME, " +
+                        "PASSWORD=@PASSWORD, " +
+                        "DATELASTUSE = @DATELASTUSE, " +
+                        "EDIT_ID=@EDIT_ID, " +
+                        "DT_EDIT=@DT_EDIT " +
+                        "WHERE LOGIN_ID = @LOGIN_ID"))
                         {
                             using (MySqlDataAdapter sda = new MySqlDataAdapter())
                             {
-                                cmd.Parameters.AddWithValue("@Name", viewModel.txtName);
-                                cmd.Parameters.AddWithValue("@Password", iUpdatedPass);
-                                cmd.Parameters.AddWithValue("@DateLastUse", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@EditID", Session["USERID"]);
-                                cmd.Parameters.AddWithValue("@DtEdit", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@LoginID", viewModel.txtLoginID);
+                                cmd.Parameters.AddWithValue("@NAME", viewModel.txtNAME);
+                                cmd.Parameters.AddWithValue("@PASSWORD", iUpdatedPass);
+                                cmd.Parameters.AddWithValue("@DATELASTUSE", DateTime.Now);
+                                cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
+                                cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
+                                cmd.Parameters.AddWithValue("@LOGIN_ID", viewModel.txtLOGIN_ID);
 
                                 cmd.Connection = con;
                                 con.Open();
@@ -371,7 +371,7 @@ namespace BRO.Controllers
         {
             if (ModelState.IsValid)
             {
-                string sSQL = " SELECT * FROM mainpass where ID ='" + model.txtLoginID + "'";
+                string sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + model.txtLOGIN_ID + "'";
                 DataTable dt = conn.GetData(sSQL);
 
                 if (dt.Rows.Count > 0)
@@ -381,7 +381,7 @@ namespace BRO.Controllers
                 }
                 else
                 {
-                    return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LoginID" });
+                    return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LOGIN_ID" });
                 }
             }
 
