@@ -73,11 +73,11 @@
             </div>
             <div class="form-group has-feedback">
                 <div id="divPASSWORD" class="">
-                    <input type="password" class="form-control" id="txtPASSWORD" name="txtPASSWORD"
-                           onfocus="clearBoth('LOGIN_ID', 'PASSWORD');" maxlength="10" value="ALAB" placeholder="Password">
-                    <span toggle="#txtPASSWORD" class="glyphicon glyphicon-eye-close field-icon toggle-PASSWORD"></span>
-                    <span id="errorPASSWORD" class="help-block"></span>
+                    <input type="password" class="form-control" id="txtPASSWORD" name="txtPASSWORD" value="ALAB"
+                           onfocus="clearError('PASSWORD');" maxlength="30" placeholder="Password">
                 </div>
+                <span toggle="#txtPASSWORD" class="glyphicon glyphicon-eye-close field-icon toggle-password"></span>
+                <span id="errorPASSWORD" class="help-block"></span>
             </div>
             <div class="row">
                 <div class="col-xs-4 pull-left">
@@ -95,6 +95,21 @@
     <script src="~/Content/myJavascripts/myJavascripts.js"></script>
 
     <script>
+
+    //=== Show and unshow password
+    $(".toggle-password").click(function () {
+        //=== Proper way of doing toggleClass for glyphicon and font-awesome
+        $(this).toggleClass('glyphicon-eye-close', 'remove');
+        $(this).toggleClass('glyphicon-eye-open', 'add');
+        //=================================================================
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+
     $('#btnSubmit').click(function () {
 
         var FieldName = ['LOGIN_ID', 'PASSWORD'];

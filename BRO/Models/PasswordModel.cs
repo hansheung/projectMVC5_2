@@ -8,9 +8,9 @@ namespace BRO.Models
 {
     public class PasswordModel
     {
-        public string txtLoginID { get; set; }
-        public string txtName { get; set; }
-        public string txtPassword { get; set; }
-        public string txtConfirm { get; set; }
+        public string txtLOGIN_ID { get; set; }
+        public string txtNAME { get; set; }
+        public string txtPASSWORD { get; set; }
+        public string txtCONFIRM { get; set; }
     }
 }

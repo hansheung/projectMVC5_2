@@ -35,7 +35,6 @@ namespace BRO.App_Start
                         "~/Content/AdminLTE-2.4.8/dist/js/adminlte.min.js",
                         "~/Content/myJavascripts/DataTables_1.5.6/dataTables.buttons.min.js",
                         "~/Content/bootstrap-session-timeout-master/dist/bootstrap-session-timeout.js"
-                        //"~/Content/myJavascripts/myJavascripts.js"
                         ));
 
             BundleTable.EnableOptimizations = true;
