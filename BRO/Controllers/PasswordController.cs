@@ -143,18 +143,23 @@ namespace BRO.Controllers
         // this ajax function is called by the client for each draw of the information on the page (i.e. when paging, ordering, searching, etc.). 
         public ActionResult AjaxGetJsonData(int draw, int start, int length)
         {
-            //System.Diagnostics.Debug.WriteLine(" Draw : " + draw);
+            System.Diagnostics.Debug.WriteLine(" Draw : " + draw);
 
-            //var searchParam = Request.QueryString["columns[1]search[value]"];
-            //System.Diagnostics.Debug.WriteLine(" RequestQueryString : " + searchParam);
+            var searchParam = Request.QueryString["columns[1]search[value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestQueryString : " + searchParam);
 
-            //string search = Request.Form["search[value]"];
-            //System.Diagnostics.Debug.WriteLine(" RequestForm : " + search);
+            string search1 = Request.Form["search[value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestForm1 : " + search1);
 
-            //string search2 = Request.QueryString["search[value]"];
-            //System.Diagnostics.Debug.WriteLine(" RequestQueryString2 : " + search2);
+            string search2 = Request.QueryString["search[value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestQueryString2 : " + search2);
+
+            string whichcolumn = Request.QueryString["order[0][column]"];
+            System.Diagnostics.Debug.WriteLine(" Which Column : " + whichcolumn);
 
             string search = Request.QueryString["search[value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestQueryString : " + search);
+
             int sortColumn = -1;
             string sortDirection = "asc";
             if (length == -1)
@@ -282,7 +287,7 @@ namespace BRO.Controllers
                                 cmd.ExecuteNonQuery();
                                 con.Close();
 
-                                return Json(new { status = "saved", message = "Successfully saved" });
+                                return Json(new { status = "saved", message = viewModel.txtLOGIN_ID });
 
                             }
                         }
@@ -317,7 +322,7 @@ namespace BRO.Controllers
                                 cmd.ExecuteNonQuery();
                                 con.Close();
 
-                                return Json(new { status = "updated", message = "Successfully updated" });
+                                return Json(new { status = "updated", message = viewModel.txtLOGIN_ID });
                             }
                         }
                     }
@@ -353,7 +358,7 @@ namespace BRO.Controllers
                                 cmd.ExecuteNonQuery();
                                 con.Close();
 
-                                return Json(new { status = "updated", message = "Successfully updated" });
+                                return Json(new { status = "updated", message = viewModel.txtLOGIN_ID });
 
                             }
                         }
@@ -378,7 +383,7 @@ namespace BRO.Controllers
                             cmd.ExecuteNonQuery();
                             con.Close();
 
-                            return Json(new { status = "deleted", message = "Successfully deleted" });
+                            return Json(new { status = "deleted", message = viewModel.txtLOGIN_ID });
                         }
                     }
                 }
