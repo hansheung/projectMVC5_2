@@ -47,12 +47,12 @@ table.dataTable thead th.sorting_desc:after {
 }
 
 /*=== Hover*/
-#tablePassword tbody tr.odd:hover {
+.table tbody tr.odd:hover {
     background-color: lightgray;
     cursor: pointer;
 }
 
-#tablePassword tbody tr.even:hover {
+.table tbody tr.even:hover {
     background-color: lightgray;
     cursor: pointer;
 }

@@ -1,0 +1,204 @@
+﻿﻿@model BRO.Models.ICModel
+@{
+    ViewBag.Title = "Group Details";
+    Layout = "~/Views/Shared/_LayoutIC.cshtml";
+}
+<style>
+    .swal2-popup {
+        font-size: 1.6rem !important;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.10.7/dist/sweetalert2.all.min.js"></script>
+<section class="content-header">
+    <h1>Group Details</h1>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <input type="button" class="btn btn-default" value="Back"
+                           onclick="history.go(-1)" />
+                </div><!-- /.box-header -->
+                <!-- Horizontal Form -->
+                <!-- form start -->
+                @using (Html.BeginForm("GroupDet", "Group", FormMethod.Post, new { id = "formGrpDet", name = "formGrpDet", role = "form", @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    //if(ViewBag.Message != null) {
+                    var data = ViewBag.FieldValue;
+                    //}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Group Code : </label>
+                            <div id="divGRP_CODE" class="col-sm-3">
+                                @if (data.GRP_CODE == "")
+                                {
+                                    <input class="form-control" id="GRP_CODE" name="GRP_CODE"
+                                           onfocus="clearError('GRP_CODE');" maxlength="10" primaryKey>
+                                    <span id="errorGRP_CODE" class="help-block"></span>
+                                }
+                                else
+                                {
+                                    <span class="mod-form-control">@data.GRP_CODE</span>
+                                    <input type="hidden" id="GRP_CODE" name="GRP_CODE" value="@data.GRP_CODE">
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Description : </label>
+                            <div id="divGRP_CODE" class="col-sm-5">
+                                <input class="form-control" id="GRP_PART" name="GRP_PART" maxlength="30" value="@data.GRP_PART">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-footer">
+                        @if (data.GRP_CODE == "")
+                        {
+                            <button type="button" class="btn btn-info pull-right" value="Save" onclick="fSaveUpDel('Save');">Save</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-danger pull-left" value="Delete" onclick="fSaveUpDel('Delete');">Delete</button>
+                            <button type="button" class="btn btn-warning pull-right" value="Update" onclick="fSaveUpDel('Update');">Update</button>
+                        }
+                    </div> <!-- /.box-footer -->
+                }
+            </div><!-- /.box -->
+        </div><!-- /.col-md-12 -->
+    </div><!-- /.row -->
+</section><!-- /.content -->
+
+<script src="~/Content/myJavascripts/myJavascripts.js"></script>
+
+
+<script>
+
+    function fSaveUpDel(sSaveUpDel) {
+
+        //console.log(sSaveUpDel);
+        var sURL;
+        var formData = $('#formGrpDet').serialize();
+
+        if (sSaveUpDel == "Save") {
+
+            if ($("#GRP_CODE").val() == "") {
+                document.getElementById("divGRP_CODE").className += ' has-error'
+                document.getElementById("errorGRP_CODE").innerHTML = "Please enter a Group Code"
+                return false;
+            } else {
+                sURL = 'GroupDet/' + sSaveUpDel;
+            }
+
+        } else if (sSaveUpDel == "Update") {
+
+            sURL = sSaveUpDel;
+
+        } else {
+
+            sURL = sSaveUpDel;
+
+            Swal.fire({
+
+                //title: 'Are you sure?',
+                title: $('#GRP_CODE').val() + ' will be deleted! ',
+                //text: $('#txtGRP_CODE').val() + ' will be deleted! ',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then((result) => {
+
+                if (result.value) {
+
+                    $.ajax({
+
+                        url: sURL,
+                        type: "POST",
+                        data: formData,
+                        dataType: "json",
+                        success: function (response) {
+
+                            if (response.status == "deleted") {
+                                Swal.fire(
+                                    'DELETED!',
+                                     response.message + ' has been deleted.',
+                                    'success'
+                                ).then((result) => {
+                                    if (result.value) {
+                                        window.location.href = '../Group/';
+                                    }
+                                })
+                            }
+                        },
+
+                        error: function (response) {
+                            alert("Something went wrong somewhere");
+                            return false;
+                        }
+                    })
+                }
+            })
+        }
+
+        
+        $.ajax({
+
+            url: sURL,
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            success: function (response) {
+
+                if (response.status == "saved") {
+
+                    Swal.fire({
+                        type: 'success',
+                        //title: 'CREATED!',
+                        title: response.message + ' has been successfully CREATED!',
+                        showConfirmButton : 'true',
+                        //text: $("#txtGRP_CODE").val() + ' has been successfully created!',
+                        //footer: '<a href>Why do I have this issue?</a>'
+                    }).then((result) => {
+                        if (result.value) {
+                            window.location.href = 'Group';
+                        }
+                    })
+
+                } else if (response.status == "updated") {
+
+                    Swal.fire({
+                        type: 'success',
+                        //title: 'UPDATED!',
+                        title: response.message + ' has been successfully UPDATED!',
+                        showConfirmButton: 'true',
+                        //text: response.message + ' has been successfully updated!',
+
+                    }).then((result) => {
+                        if (result.value) {
+                            window.location.href = '../Group/';
+                        }
+                    })
+
+                } 
+                else if (response.status == "fail") {
+
+                    $("#div" + response.fieldname).toggleClass('has-error', 'add');
+                    $("#error" + response.fieldname).html(response.message);
+                    return false;
+                }
+            },
+
+            error: function (response) {
+                    alert("Something went wrong somewhere");
+                    return false;
+            }
+        })
+    }
+
+</script>
+

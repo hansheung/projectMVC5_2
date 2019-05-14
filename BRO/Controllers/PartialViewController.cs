@@ -18,5 +18,10 @@ namespace BRO.Controllers
         {
             return View();
         }
+
+        public ActionResult VenPrcDetEnt()
+        {
+            return View();
+        }
     }
 }

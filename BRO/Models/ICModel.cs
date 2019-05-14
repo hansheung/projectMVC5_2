@@ -13,12 +13,12 @@ namespace BRO.Models
         public string PART1 { get; set; }
         public string PART2 { get; set; }
         public string GRP_CODE { get; set; }
-        public string GRP_DESC { get; set; }
+        public string GRP_PART { get; set; }
         public string LOC_CODE { get; set; }
-        public string LOC_DESC { get; set; }
+        public string LOC_PART { get; set; }
         public string UNIT { get; set; }
         public string TAR_CODE { get; set; }
-        public string TAR_DESC { get; set; }
+        public string TAR_PART { get; set; }
         public string COST { get; set; }
         public string S_PRICE { get; set; }
         public string AVG_COST { get; set; }

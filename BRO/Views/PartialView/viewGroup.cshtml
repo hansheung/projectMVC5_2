@@ -29,7 +29,7 @@
                                     <div class="box-body">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table id="viewGrp" class="table table-bordered" width="100%">
+                                                <table id="tblViewGrp" class="table table-bordered" width="100%">
                                                     <thead>
                                                         <tr role="row">
                                                             <th class="NumCol">No</th>
@@ -139,10 +139,15 @@
         </div>
     </div>
 
-<script>
+ <script>
     $(document).ready(function () {
-        $('#viewGrp').DataTable();
+        $('#tblViewGrp').DataTable();
+        $('#tblViewGrp tbody').on('click', 'tr', function () {
+            //=== DEBUG PURPOSE: console.log(table.row(this).data());
+            var data = table.row(this).data();
+            window.location.href = '@Url.Action("PasswordDet", "Password")/' + data["AUTOINC"];
+        });
     });
 
-</script>
+ </script>
 

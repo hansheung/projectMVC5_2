@@ -115,19 +115,19 @@
                         <br />
 
                         <div class="col-sm-12">
-                            <div class="col-sm-1"></div>
-                            <div class="nav-tabs-custom col-sm-11">
+                            <div class="col-sm-2"></div>
+                            <div class="nav-tabs-custom col-sm-9">
                                 <ul class="nav nav-tabs">
-                                    <li><a data-toggle="tab" href="#Det">Details</a></li>
-                                    <li class="active"><a data-toggle="tab" href="#VenPriceDet">Vendor Price Details</a></li>
-                                    <li><a data-toggle="tab" href="#DebPriceDet">Debtor Price Details</a></li>
+                                    <li class="active"><a data-toggle="tab" href="#Det"><b>Details</b></a></li>
+                                    <li><a data-toggle="tab" href="#VenPrcDet"><b>Vendor Price Details</b></a></li>
+                                    <li><a data-toggle="tab" href="#DebPrcDet"><b>Debtor Price Details</b></a></li>
                                 </ul>
 
                                 <div class="tab-content">
 
-                                    <div id="Det" class="tab-pane fade">
+                                    <div id="Det" class="tab-pane fade in active">
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Stock Type : </label>
+                                            <label class="col-sm-3 control-label">Stock Type : </label>
                                             <div class="col-sm-4">
                                                 <select name="selStkType" class="form-control">
                                                     <option value="RM">Raw Material</option>
@@ -138,17 +138,111 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label">Category : </label>
-                                            <div class="col-sm-4">
+                                            <label class="col-sm-3 control-label">Category : </label>
+                                            <div class="col-sm-3">
                                                 <select name="selCat" class="form-control">
                                                     <option value="D">Direct</option>
                                                     <option value="I">Indirect</option>
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Purchase Tax ID : </label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input class="form-control" id="txtPTAX_ID" name="txtPTAX_ID" value="@data.LOC_CODE" maxlength="10" primarykey>
+                                                    <span class="input-group-btn">
+                                                        <a href="javascript:void(0);" class="btn btn-default"
+                                                           onclick="viewModal()">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-3 control-label pull-left">Supply Tax ID : </label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input class="form-control pull-left" id="txtSTAX_ID" name="txtSTAX_ID" value="@data.LOC_CODE" maxlength="10" primarykey>
+                                                    <span class="input-group-btn">
+                                                        <a href="javascript:void(0);" class="btn btn-default"
+                                                           onclick="viewModal()">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Purchase Tax Code : </label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="txtPTAX_PART" name="txtPTAX_PART" value="@data.LOC_DESC" READONLY>
+                                            </div>
+                                            <label class="col-sm-3 control-label">Supply Tax Code : </label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="txtSTAX_PART" name="txtSTAX_PART" value="@data.LOC_DESC" READONLY>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Purchase Tax Rate : </label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="txtPTAX" name="txtPTAX" value="@data.LOC_DESC" READONLY>
+                                            </div>
+                                            <label class="col-sm-3 control-label">Supply Tax Rate : </label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="txtSTAX" name="txtSTAX" value="@data.LOC_DESC" READONLY>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Standard Cost : </label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input class="form-control pull-left" id="txtPTAX_ID" name="txtPTAX_ID" value="@data.LOC_CODE" maxlength="10" primarykey>
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-3 control-label">Selling Price : </label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input class="form-control pull-left" id="txtSTAX_ID" name="txtSTAX_ID" value="@data.LOC_CODE" maxlength="10" primarykey>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Standard Cost : </label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="txtPTAX" name="txtPTAX" value="@data.LOC_DESC" READONLY>
+                                            </div>
+                                            <label class="col-sm-3 control-label">Selling Price : </label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="txtSTAX" name="txtSTAX" value="@data.LOC_DESC" READONLY>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Maximum Level : </label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input class="form-control pull-left" id="txtPTAX_ID" name="txtPTAX_ID" value="@data.LOC_CODE" maxlength="10" primarykey>
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-3 control-label">Minimum Level : </label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input class="form-control" id="txtSTAX_ID" name="txtSTAX_ID" value="@data.LOC_CODE" maxlength="10">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Reorder Level : </label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <input class="form-control" id="txtPTAX_ID" name="txtPTAX_ID" value="@data.LOC_CODE" maxlength="10">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    
 
-                                    <div id="VenPriceDet" class="tab-pane fade in active">
+
+                                    <div id="VenPrcDet" class="tab-pane fade">
                                         <div class="box-body">
                                             <div class="row">
                                                 <div class="col-sm-12">
@@ -236,7 +330,7 @@
                                         </div>
                                     </div>
 
-                                    <div id="DebPriceDet" class="tab-pane fade">
+                                    <div id="DebPrcDet" class="tab-pane fade">
                                         <div class="box-body">
                                             <div class="row">
                                                 <div class="col-sm-12">
@@ -365,139 +459,183 @@
 <div class="modal fade bd-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 
 </div>
+
+<div class="modal fade bd-example-modal-lg" id="viewModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+
+</div>
 <script>
     $(document).ready(function () {
-       // $('#tblVenPrcDet').DataTable();
-        $('#tblDebPrcDet').DataTable();
-    });
 
-    var tblVenPrcDet= $('#tblVenPrcDet').DataTable({
+        var tblVenPrcDet = $('#tblVenPrcDet').DataTable({
 
-        "paging": true,
-        "ordering": true,
-        //"filter": false,
-        //"destroy": true,
-        "processing": true, // control the processing indicator.
-        //"serverSide": true, // recommended to use serverSide when data is more than 10000 rows for performance reasons
-        "info": true,   // control table information display field
-        //"stateSave": true,  //remain table state on AFTER SAVE OR UPDATE OR BACK
-        "lengthChange": true,
-        "lengthMenu": [[2, 4, 10, -1], [2, 4, 10, "All"]],    // use the first inner array as the page length values and the second inner array as the displayed options
-        "colReorder": true,
-        "orderMulti": true, // for disable multiple column at once
-        //"order": [[ 2, "asc" ], [ 1, "desc" ]],
-
-        "language": {
-            searchPlaceholder: "Search records"
-        },
-        //"bFilter": true,
-        "order": [["3", "desc"]], //=== Not working during stateSave
-
-        //"ajax":{
-        //    "url": "/Password/AjaxGetJsonData",
-        //    "type": "POST"
-        //},
-        //"AjaxSource": "/Password/AjaxGetJsonData",
-        //"fnServerData": function (sSource, aoData, fnCallback) {
-        //    aoData.push({ "name": "all", "value": true });
-        //    $.getJSON(sSource, aoData, function (json) {
-        //        fnCallback(json)
-        //    });
-        //},
-
-        "columnDefs": [
-            {
-                "width": "5%", "targets": 'NumCol', //"data": "id",
-                "orderable": false,
-                //"render": function (data, type, row, meta) {
-                 //   return meta.row + meta.settings._iDisplayStart + 1;
-                //}
+            "paging": true,
+            "ordering": true,
+            "processing": true, // control the processing indicator.
+            //"serverSide": true, // recommended to use serverSide when data is more than 10000 rows for performance reasons
+            "info": true,   // control table information display field
+            //"stateSave": true,  //remain table state on AFTER SAVE OR UPDATE OR BACK
+            "lengthChange": true,
+            "lengthMenu": [[2, 4, 10, -1], [2, 4, 10, "All"]],    // use the first inner array as the page length values and the second inner array as the displayed options
+            "colReorder": true,
+            "orderMulti": true, // for disable multiple column at once
+            "order": [["3", "desc"]], //=== Not working during stateSave
+            //"order": [[ 2, "asc" ], [ 1, "desc" ]],
+            "language": {
+                searchPlaceholder: "Search records"
             },
-        //    {
-        //        "targets": 'LoginCol', // The third column
-        //        "data": "LoginID", "orderable": true
-        //    },
-        //    {
-        //        "targets": 'NameCol', // The third column
-        //        "data": "Name", "orderable": true
-        //    },
-        //    {
-        //        "targets": 'DtCreatedCol', // The third column
-        //        "data": "DateCreated", "orderable": true
-        //    },
-            {
-                "targets": 'EditDelCol', // The third column
-                "className": "text-center",
-                "orderable": false,
-               // "render": function (data, type, full, meta) {
-               //     return '<a href="/Password/PasswordDet/' + full.AutoINC + '"><img src="../../Content/myPics/edit-2-24.png" ></a>';
-               // }
-            }
-        ],
 
-        "dom":
-            "<'row'<'col-sm-3'l><'col-sm-5'B><'col-sm-4'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            //"ajax":{
+            //    "url": "/Password/AjaxGetJsonData",
+            //    "type": "POST"
+            //},
 
-        "buttons": [
-            {
-                text: 'New',
-                className: "btn btn-primary",
-                action: function () {
-                    viewModal();
+            "columnDefs": [
+                {
+                    "width": "5%", "targets": 'NumCol', //"data": "id",
+                    "orderable": false,
+                    //"render": function (data, type, row, meta) {
+                    //   return meta.row + meta.settings._iDisplayStart + 1;
+                    //}
                 },
-                //render: function (data, type, full, meta) {
-                //     return '<a href="javascript:void(0);" onclick="viewModal()"></a>';
-                //},
+            //    {
+            //        "targets": 'LoginCol', // The third column
+            //        "data": "LoginID", "orderable": true
+            //    },
+            //    {
+            //        "targets": 'NameCol', // The third column
+            //        "data": "Name", "orderable": true
+            //    },
+            //    {
+            //        "targets": 'DtCreatedCol', // The third column
+            //        "data": "DateCreated", "orderable": true
+            //    },
+                {
+                    "targets": 'EditDelCol', // The third column
+                    "className": "text-center",
+                    "orderable": false,
+                    // "render": function (data, type, full, meta) {
+                    //     return '<a href="/Password/PasswordDet/' + full.AutoINC + '"><img src="../../Content/myPics/edit-2-24.png" ></a>';
+                    // }
+                }
+            ],
 
-//                "defaultContent": '<a href="javascript:void(0);" onclick="viewModal()"></a>',
+            "dom":
+                "<'row'<'col-sm-3'l><'col-sm-5'B><'col-sm-4'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+            "buttons": [
+                {
+                    text: 'New',
+                    className: "btn btn-primary",
+                    action: function () {
+                        viewDebPrcEnt();
+                    },
+                    //render: function (data, type, full, meta) {
+                    //     return '<a href="javascript:void(0);" onclick="viewModal()"></a>';
+                    //},
+                },
+            ],
+
+            initComplete: function () {
+
+                $(".dt-button").removeClass("dt-button");
             },
-            //{
-            //    extend: 'copy',
-            //    text: 'Copy',
-            //    className: "btn btn-info",
-            //    exportOptions: {
-            //        columns: [0, 1, 2, 3],
-            //    },
+
+        });
+
+        $('#tblVenPrcEnt tbody').on('click', 'tr', function () {
+            //=== DEBUG PURPOSE: console.log(table.row(this).data());
+            var data = table.row(this).data();
+            window.location.href = '@Url.Action("PasswordDet", "Password")/' + data["AUTOINC"];
+        });
+
+        var tblDebPrcDet = $('#tblDebPrcDet').DataTable({
+
+            "paging": true,
+            "ordering": true,
+            "processing": true, // control the processing indicator.
+            //"serverSide": true, // recommended to use serverSide when data is more than 10000 rows for performance reasons
+            "info": true,   // control table information display field
+            //"stateSave": true,  //remain table state on AFTER SAVE OR UPDATE OR BACK
+            "lengthChange": true,
+            "lengthMenu": [[2, 4, 10, -1], [2, 4, 10, "All"]],    // use the first inner array as the page length values and the second inner array as the displayed options
+            "colReorder": true,
+            "orderMulti": true, // for disable multiple column at once
+            "order": [["3", "desc"]], //=== Not working during stateSave
+            //"order": [[ 2, "asc" ], [ 1, "desc" ]],
+            "language": {
+                searchPlaceholder: "Search records"
+            },
+
+            //"ajax":{
+            //    "url": "/Password/AjaxGetJsonData",
+            //    "type": "POST"
             //},
-            //{
-            //    extend: 'excel',
-            //    text: 'Excel',
-            //    className: "btn btn-success",
-            //    exportOptions: {
-            //        columns: [0, 1, 2, 3],
+
+            "columnDefs": [
+                {
+                    "width": "5%", "targets": 'NumCol', //"data": "id",
+                    "orderable": false,
+                    //"render": function (data, type, row, meta) {
+                    //   return meta.row + meta.settings._iDisplayStart + 1;
+                    //}
+                },
+            //    {
+            //        "targets": 'LoginCol', // The third column
+            //        "data": "LoginID", "orderable": true
             //    },
-            //},
-            //{
-            //    extend: 'print',
-            //    text: 'Print all',
-            //    className: "btn btn-warning",
-            //    exportOptions: {
-            //        modifier: {
-            //            selected: null
-            //        },
-            //        columns: [0, 1, 2, 3],
+            //    {
+            //        "targets": 'NameCol', // The third column
+            //        "data": "Name", "orderable": true
             //    },
-            //    autoPrint: false,
-            //}
-        ],
+            //    {
+            //        "targets": 'DtCreatedCol', // The third column
+            //        "data": "DateCreated", "orderable": true
+            //    },
+                {
+                    "targets": 'EditDelCol', // The third column
+                    "className": "text-center",
+                    "orderable": false,
+                    // "render": function (data, type, full, meta) {
+                    //     return '<a href="/Password/PasswordDet/' + full.AutoINC + '"><img src="../../Content/myPics/edit-2-24.png" ></a>';
+                    // }
+                }
+            ],
 
-        //select: true,
+            "dom":
+                "<'row'<'col-sm-3'l><'col-sm-5'B><'col-sm-4'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
-        initComplete: function () {
-            //var r = $('#tablePassword tfoot tr');
+            "buttons": [
+                {
+                    text: 'New',
+                    className: "btn btn-primary",
+                    action: function () {
+                        viewVenPrcEnt();
+                    },
+                    //render: function (data, type, full, meta) {
+                    //     return '<a href="javascript:void(0);" onclick="viewModal()"></a>';
+                    //},
+                },
+            ],
 
-            //r.find('th').each(function () {
-            //    $(this).css('padding', 8);
-            //});
+            initComplete: function () {
 
-            //$('#tablePassword thead').append(r);
+                $(".dt-button").removeClass("dt-button");
+            },
 
-            $(".dt-button").removeClass("dt-button");
-        },
+        });
 
+
+        $('#tblDebPrcEnt tbody').on('click', 'tr', function () {
+            //=== DEBUG PURPOSE: console.log(table.row(this).data());
+            var data = table.row(this).data();
+            window.location.href = '@Url.Action("PasswordDet", "Password")/' + data["AUTOINC"];
+        });
     });
+
 
     function viewModal() {
 
@@ -509,89 +647,56 @@
         });
     }
 
-    $('#txtSTKCODE').keyup(function () {
-        $(this).val($(this).val().toUpperCase());
-    });
+    function viewModal2() {
 
-    //$('#btnSubmit').click(function () {
+        var url = "/PartialView/viewGroup"
 
-    //    var sSaveOrUpdate = $("#btnSubmit").val()
+        $.get(url, function (data) {
+            $("#viewModal2").html(data);
+            $("#viewModal2").modal('show');
 
-    //    if ($("#txtSTKCODE").val() == "") {
-    //        document.getElementById("divSTKCODE").className += ' has-error'
-    //        document.getElementById("errorSTKCODE").innerHTML = "Please enter a Stock Code"
-    //        return false;
-    //    }
+            $(".modal-header").on("mousedown", function (mousedownEvt) {
+                var $draggable = $(this);
+                var x = mousedownEvt.pageX - $draggable.offset().left,
+                    y = mousedownEvt.pageY - $draggable.offset().top;
+                $("body").on("mousemove.draggable", function (mousemoveEvt) {
+                    $draggable.closest(".modal-dialog").offset({
+                        "left": mousemoveEvt.pageX - x,
+                        "top": mousemoveEvt.pageY - y
+                    });
+                });
+                $("body").one("mouseup", function () {
+                    $("body").off("mousemove.draggable");
+                });
+                $draggable.closest(".modal").one("bs.modal.hide", function () {
+                    $("body").off("mousemove.draggable");
+                });
+            });
+        });
+    }
 
-    //    if(sSaveOrUpdate == "Save"){
 
-    //        if ($("#txtPassword").val() == "") {
-    //            document.getElementById("divPassword").className += ' has-error'
-    //            document.getElementById("errorPassword").innerHTML = "Password cannot be empty"
-    //             document.getElementById("divConfirm").className += ' has-error'
-    //            return false;
-    //        }else if ($("#txtPassword").val() != $("#txtConfirm").val()) {
-    //            document.getElementById("divPassword").className += ' has-error'
-    //            document.getElementById("errorPassword").innerHTML = "Password does not match"
-    //            document.getElementById("divConfirm").className += ' has-error'
-    //            document.getElementById("errorConfirm").innerHTML = "Password does not match"
-    //            return false;
-    //        }else{
-    //            var url = 'PasswordDet/' + $("#btnSubmit").val();
-    //        }
-    //    }
 
-    //    if(sSaveOrUpdate == "Update"){
+    function viewVenPrcDetEnt() {
 
-    //        if ($("#txtPassword").val() != "" ){
+        var url = "/PartialView/VenPrcDetEnt"
 
-    //            if ($("#txtPassword").val() != $("#txtConfirm").val()) {
-    //                document.getElementById("divPassword").className += ' has-error'
-    //                document.getElementById("errorPassword").innerHTML = "Password does not match"
-    //                document.getElementById("divConfirm").className += ' has-error'
-    //                document.getElementById("errorConfirm").innerHTML = "Password does not match"
-    //                return false;
-    //            }else{
-    //                var url = $("#btnSubmit").val();
-    //            }
-    //        }
-    //    }
+        $.get(url, function (data) {
+            $("#viewModal").html(data);
+            $("#viewModal").modal('show');
+        });
+    }
 
-    //    var formData = $('#formPassDet').serialize();
+    function viewDebPrcDetEnt() {
 
-    //    $.ajax({
+        var url = "/PartialView/DebPrcDetEnt"
 
-    //        url: url,
-    //        type: "POST",
-    //        data: formData,
-    //        dataType: "json",
-    //        success: function (response) {
+        $.get(url, function (data) {
+            $("#viewModal").html(data);
+            $("#viewModal").modal('show');
+        });
+    }
 
-    //            if (response.status == "saved") {
-
-    //                alert($("#txtSTKCODE").val() + ' has been successfully created! ');
-    //                window.location.href = 'Password';
-
-    //            } else if (response.status == "updated") {
-
-    //                alert($("#txtSTKCODE").val() + ' has been successfully updated! ');
-    //                window.location.href = '../Password/';
-
-    //            }
-    //            else if (response.status == "fail") {
-
-    //                $("#div" + response.fieldname).toggleClass('has-error', 'add');
-    //                $("#error" + response.fieldname).html(response.message);
-    //                return false;
-    //            }
-    //        },
-
-    //        error: function (response) {
-    //                alert("Something went wrong somewhere");
-    //                return false;
-    //        }
-    //    })
-    //});
 </script>
 
 

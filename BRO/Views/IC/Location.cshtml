@@ -1,6 +1,6 @@
 ﻿@{
 
-    ViewBag.Title = "Group";
+    ViewBag.Title = "Location";
     Layout = "~/Views/Shared/_LayoutIC.cshtml";
 }
 
@@ -21,7 +21,7 @@
 
 
 <section class="content-header">
-    <h1>Group Information</h1>
+    <h1>Location Information</h1>
 </section>
 <!-- Main content -->
 <section class="content">
@@ -30,7 +30,7 @@
             <div class="box">
                 <!-- Horizontal Form -->
                 <!-- form start -->
-                @using (Html.BeginForm("Group", "IC", FormMethod.Post, new { id = "formGroup", name = "formGroup", role = "form", @class = "form-horizontal" }))
+                @using (Html.BeginForm("Location", "IC", FormMethod.Post, new { id = "formLocation", name = "formLocation", role = "form", @class = "form-horizontal" }))
                 {
                     var data = ViewBag.FieldValue;
                     @Html.AntiForgeryToken()
@@ -38,12 +38,12 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="tableGroup" class="table table-bordered" width="100%">
+                                <table id="tableLocation" class="table table-bordered" width="100%">
                                     <thead>
                                         <tr role="row">
                                             <th class="NoCol">No</th>
-                                            <th class="GRP_CODECol">Group Code</th>
-                                            <th class="GRP_PARTCol">Description</th>
+                                            <th class="LOC_CODECol">Location Code</th>
+                                            <th class="LOC_PARTCol">Description</th>
                                             <th class="DT_EDITCol">Date Modified</th>
                                             <th style="text-align:center" class="EditCol">Edit</th>
                                         </tr>
@@ -76,13 +76,13 @@
 
         $('div.dataTables_filter input').focus() //=== set focus on Search field
 
-        $('#tableGroup tbody').on('click', 'tr', function () {
+        $('#tableLocation tbody').on('click', 'tr', function () {
             //=== DEBUG PURPOSE: console.log(table.row(this).data());
             var data = table.row(this).data();
-            window.location.href = '@Url.Action("GroupDet", "IC")/' + data["AUTOINC"];
+            window.location.href = '@Url.Action("LocationDet", "IC")/' + data["AUTOINC"];
         });
 
-        var table = $('#tableGroup').DataTable({
+        var table = $('#tableLocation').DataTable({
 
             "paging": true,
             "processing": true, // control the processing indicator.
@@ -100,7 +100,7 @@
             },
             
             "ajax":{
-                "url": "/IC/AjaxGetJsonDataGrp",
+                "url": "/IC/AjaxGetJsonDataLoc",
                 "type": "GET"
             },
 
@@ -113,12 +113,12 @@
                     }
                 },
                 {
-                    "targets": 'GRP_CODECol',
-                    "data": "GRP_CODE", "orderable": true
+                    "targets": 'LOC_CODECol',
+                    "data": "LOC_CODE", "orderable": true
                 },
                 {
-                    "targets": 'GRP_PARTCol',
-                    "data": "GRP_PART", "orderable": true
+                    "targets": 'LOC_PARTCol',
+                    "data": "LOC_PART", "orderable": true
                 },
                 {
                     "targets": 'DT_EDITCol',
@@ -129,7 +129,7 @@
                     "className": "text-center",
                     "orderable": false,
                     "render": function (data, type, full, meta) {
-                        return '<a href="/IC/GroupDet/' + full.AUTOINC + '"><img src="../../Content/myPics/edit-2-24.png" ></a>';
+                        return '<a href="/IC/LocationDet/' + full.AUTOINC + '"><img src="../../Content/myPics/edit-2-24.png" ></a>';
                     }
                 }
             ],
@@ -144,7 +144,7 @@
                     text: 'New',
                     className: "btn btn-primary",
                     action: function (e, dt, node, config) {
-                        window.location.href = '@Url.Action("GroupDet", "IC")';
+                        window.location.href = '@Url.Action("LocationDet", "IC")';
                     },
                 },
                 {

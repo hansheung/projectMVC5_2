@@ -143,6 +143,15 @@ namespace BRO.Controllers
         // this ajax function is called by the client for each draw of the information on the page (i.e. when paging, ordering, searching, etc.). 
         public ActionResult AjaxGetJsonData(int draw, int start, int length)
         {
+            //string search4 = Request.Form.GetValues("search[value]")[0];
+            //string draw4 = Request.Form.GetValues("draw")[0];
+            //string order4 = Request.Form.GetValues("order[0][column]")[0];
+            //string orderDir4 = Request.Form.GetValues("order[0][dir]")[0];
+            //System.Diagnostics.Debug.WriteLine(" search4 : " + search4);
+            //System.Diagnostics.Debug.WriteLine(" draw4 : " + draw4);
+            //System.Diagnostics.Debug.WriteLine(" oreder4 : " + order4);
+            //System.Diagnostics.Debug.WriteLine(" direction4 : " + orderDir4);
+
             System.Diagnostics.Debug.WriteLine(" Draw : " + draw);
 
             var searchParam = Request.QueryString["columns[1]search[value]"];

@@ -8009,6 +8009,7 @@
     <Compile Include="Models\PasswordModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProgramModel.cs" />
+    <Compile Include="MyClass\ConDB2.cs" />
     <Compile Include="MyClass\Constant.cs" />
     <Compile Include="MyClass\Proc.cs" />
     <Compile Include="MyClass\ConDB.cs" />
@@ -8680,6 +8681,10 @@
     <Content Include="Views\IC\Group.cshtml" />
     <Content Include="Views\Password\Password.cshtml" />
     <Content Include="Views\Password\PasswordDet.cshtml" />
+    <Content Include="Views\PartialView\VenPrcDetEnt.cshtml" />
+    <Content Include="Views\IC\GroupDet.cshtml" />
+    <Content Include="Views\IC\Location.cshtml" />
+    <Content Include="Views\IC\LocationDet.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

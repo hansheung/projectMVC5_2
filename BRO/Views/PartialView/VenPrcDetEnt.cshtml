@@ -1,0 +1,123 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Price Detail Entry</h4>
+        </div>
+        <div id="mycontent">
+            @*<section class="content-header">
+                    <h4>Group Information</h4>
+                </section>*@
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        @*<div class="box">*@
+                        <!-- Horizontal Form -->
+                        <!-- form start -->
+                        @using (Html.BeginForm("PrcDetEnt", "PartialView", FormMethod.Post, new { id = "formPrcDetEnt", name = "formPrcDetEnt", role = "form", @class = "form-horizontal" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            //if(ViewBag.Message != null) {
+                            //var data = ViewBag.FieldValue;
+                            //}
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Vendor Code : </label>
+                                    <div class="col-sm-3">
+                                        <div class="input-group">
+                                            <input class="form-control pull-left" id="txtVEN_CODE" name="txtVEN_CODE" maxlength="10" style="text-transform: uppercase">
+                                            <span class="input-group-btn">
+                                                <a href="javascript:void(0);" class="btn btn-default"
+                                                   onclick="viewModal2()">
+                                                    <i class="fa fa-search"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" id="txtVEN_PART" name="txtVEN_PART" READONLY>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Currency : </label>
+                                    <div id="divUNIT" class="col-sm-2">
+                                        <input class="form-control" id="txtCURRENCY" name="txtCURRENCY" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-6">
+                                        <table id="tblDebPrcDet" class="table table-bordered" >
+                                            <tbody>
+                                                <tr role="row">
+                                                    <td colspan="4" style="text-align:center"><b>Fill in All the S/Price (Foreign)</b></td>
+                                                </tr>
+                                                <tr role="row" >
+                                                    <td></td>
+                                                    <td style="text-align:center"><b>Min Order Qty :</b></td>
+                                                    <td></td>
+                                                    <td style="text-align:center"><b>S/Price : </b></td>
+                                                </tr>
+                                                <tr role="row">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><input class="form-control" id="txtSPRICE" name="txtSPRICE" maxlength="15"></td>
+                                                </tr>
+                                                <tr role="row">
+                                                    <td>>=</td>
+                                                    <td><input class="form-control" id="txtSPRICE1" name="txtSPRICE1" maxlength="15"></td>
+                                                    <td>=</td>
+                                                    <td><input class="form-control" id="txtSPRICE1" name="txtSPRICE1" maxlength="15"></td>
+                                                </tr>
+                                                <tr role="row">
+                                                    <td>>=</td>
+                                                    <td><input class="form-control" id="txtSPRICE1" name="txtSPRICE1" maxlength="15"></td>
+                                                    <td>=</td>
+                                                    <td><input class="form-control" id="txtSPRICE1" name="txtSPRICE1" maxlength="15"></td>
+                                                </tr>
+                                                <tr role="row">
+                                                    <td>>=</td>
+                                                    <td><input class="form-control" id="txtSPRICE1" name="txtSPRICE1" maxlength="15"></td>
+                                                    <td>=</td>
+                                                    <td><input class="form-control" id="txtSPRICE1" name="txtSPRICE1" maxlength="15"></td>
+                                                </tr>
+                                                <tr role="row">
+                                                    <td>>=</td>
+                                                    <td><input class="form-control" id="txtSPRICE1" name="txtSPRICE1" maxlength="15"></td>
+                                                    <td>=</td>
+                                                    <td><input class="form-control" id="txtSPRICE1" name="txtSPRICE1" maxlength="15"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div><!-- /.box-body -->
+
+                            <div class="box-footer">
+                                @*@if (data.STKCODE == "")
+                                {*@
+                                    <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save">Save</button>
+                                @*}
+                                else
+                                {
+                                    <button type="button" id="btnDelete" class="btn btn-danger pull-left" value="Delete">Delete</button>
+                                    <button type="button" id="btnSubmit" class="btn btn-warning pull-right" value="Update">Update</button>
+                                }*@
+                            </div> <!-- /.box-footer -->
+                        }
+                        @*</div>*@<!-- /.box box-info -->
+                    </div><!-- /.col-md-12-->
+                </div><!--/.row-->
+            </section><!-- /.content -->
+        </div>
+    </div>
+</div>
