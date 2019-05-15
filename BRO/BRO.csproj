@@ -6568,6 +6568,8 @@
     <Content Include="Content\bootstrap-session-timeout-master\examples\login.html" />
     <Content Include="Content\bootstrap-session-timeout-master\Gruntfile.js" />
     <Content Include="Content\bootstrap-session-timeout-master\index.html" />
+    <Content Include="Content\colreorder-1.5.1\colReorder.bootstrap4.min.css" />
+    <Content Include="Content\colreorder-1.5.1\dataTables.colReorder.min.js" />
     <Content Include="Content\fontawesome-4.7.0\font-awesome.css" />
     <Content Include="Content\fontawesome-4.7.0\font-awesome.min.css" />
     <Content Include="Content\fontawesome-4.7.0\fonts\fontawesome-webfont.svg" />
@@ -7912,7 +7914,16 @@
     <Content Include="Content\ionicons-2.0.1\src\xbox.svg" />
     <Content Include="Content\myCSS\DataTables_1.5.6\buttons.dataTables.css" />
     <Content Include="Content\myCSS\myCSS.css" />
+    <Content Include="Content\myJavascripts\DataTables_1.10.19\jquery.dataTables.min.js" />
+    <Content Include="Content\myJavascripts\DataTables_1.5.6\buttons.flash.min.js" />
+    <Content Include="Content\myJavascripts\DataTables_1.5.6\buttons.html5.min.js" />
+    <Content Include="Content\myJavascripts\DataTables_1.5.6\buttons.print.min.js" />
     <Content Include="Content\myJavascripts\DataTables_1.5.6\dataTables.buttons.min.js" />
+    <Content Include="Content\myJavascripts\DataTables_1.5.6\jszip-3.1.3\jszip.min.js" />
+    <Content Include="Content\myJavascripts\DataTables_1.5.6\pdfmake-0.1.53\pdfmake.min.js" />
+    <Content Include="Content\myJavascripts\DataTables_1.5.6\pdfmake-0.1.53\vfs_fonts.js" />
+    <Content Include="Content\myJavascripts\DataTables_1.5.6\select-1.3.0\dataTables.select.min.js" />
+    <Content Include="Content\myJavascripts\jQuery-3.3.1\jquery-3.3.1.js" />
     <Content Include="Content\myJavascripts\myJavascripts.js" />
     <Content Include="Content\myPics\BRO.ICO" />
     <Content Include="Content\myPics\edit-2-24.png" />
@@ -7921,6 +7932,7 @@
     <Content Include="Content\myPics\LOGOicon.ico" />
     <Content Include="Content\myPics\LOGOicon.png" />
     <Content Include="Content\myPics\x-mark-24.png" />
+    <Content Include="Content\sweetalert-8.10.7\dist\sweetalert2.all.min.js" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />

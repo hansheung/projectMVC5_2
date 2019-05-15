@@ -66,3 +66,6 @@ table.dataTable thead th.sorting_desc:after {
     background-color: #ecf0f5;
 }*/
 
+.swal2-popup {
+    font-size: 1.6rem !important;
+}
