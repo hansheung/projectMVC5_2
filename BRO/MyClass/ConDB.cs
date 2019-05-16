@@ -14,33 +14,25 @@ namespace BRO.MyClass
         private bool connection_open;
         private MySqlConnection connection;
 
-        public ConDB()
+        public ConDB(string sMySQLConn)
         {
-            //myConnection = new MySqlConnection();
-            //myConnection.Open();
-
             connection_open = false;
 
             connection = new MySqlConnection();
-            //connection = DB_Connect.Make_Connnection(ConfigurationManager.ConnectionStrings["SQLConnection"].ConnectionString);
-            connection.ConnectionString = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString;
-
-            //            if (db_manage_connnection.DB_Connect.OpenTheConnection(connection))
-            //if (Open_Local_Connection())
-            //{
-            //    connection_open = true;
-            //}
-            //else
-            //{
-            //    				//MessageBox::Show("No database connection connection made...\n Exiting now", "Database Connection Error");
-            //    				//	 Application::Exit();
-            //}
+            connection.ConnectionString = ConfigurationManager.ConnectionStrings[sMySQLConn].ConnectionString;
+            
+            if (Open_Local_Connection())
+            {
+                connection_open = true;
+            }
+            else
+            {
+                Console.Error.WriteLine("Error - Database Connection Error");
+            }
         }
-        
+
         public DataTable GetData(string sSQL)
         {
-
-
             MySqlCommand command = new MySqlCommand(sSQL, connection);
             MySqlDataAdapter adapter = new MySqlDataAdapter(command);
             DataTable dt = new DataTable();
@@ -57,6 +49,13 @@ namespace BRO.MyClass
             command.ExecuteNonQuery();
         }
 
+        public MySqlDataReader ExecuteReader(string sSQL)
+        {
+            MySqlCommand command = new MySqlCommand(sSQL, connection);
+            MySqlDataReader dr = command.ExecuteReader();
+            return dr;
+        }
+
         private bool Open_Local_Connection()
         {
             try
@@ -66,9 +65,23 @@ namespace BRO.MyClass
             }
             catch (Exception e)
             {
+                Console.Error.WriteLine("Error Connection Open: " + e);
                 return false;
             }
         }
 
+        public void Close()
+        {
+            try
+            {
+                connection.Close();
+                
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("Error Connection Close: " + e);
+                
+            }
+        }
     }
 }

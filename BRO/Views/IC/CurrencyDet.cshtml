@@ -1,6 +1,5 @@
 ﻿﻿@model BRO.Models.ICModel
 @{
-    ViewBag.Title = "Group Details";
     Layout = "~/Views/Shared/_LayoutIC.cshtml";
 }
 
@@ -18,7 +17,7 @@
                 </div><!-- /.box-header -->
                 <!-- Horizontal Form -->
                 <!-- form start -->
-                @using (Html.BeginForm("GroupDet", "Group", FormMethod.Post, new { id = "formGrpDet", name = "formGrpDet", role = "form", @class = "form-horizontal" }))
+                @using (Html.BeginForm("CurrencyDet", "IC", FormMethod.Post, new { id = "formCurrDet", name = "formCurrDet", role = "form", @class = "form-horizontal" }))
                 {
                     @Html.AntiForgeryToken()
                     //if(ViewBag.Message != null) {
@@ -26,31 +25,37 @@
                     //}
                     <div class="box-body">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Group Code : </label>
-                            <div id="divGRP_CODE" class="col-sm-3">
-                                @if (data.GRP_CODE == "")
+                            <label class="col-sm-3 control-label">Currency Code : </label>
+                            <div id="divCURR_CODE" class="col-sm-3">
+                                @if (data.CURR_CODE == "")
                                 {
-                                    <input class="form-control" id="GRP_CODE" name="GRP_CODE"
-                                           onfocus="clearError('GRP_CODE');" maxlength="10" primaryKey>
-                                    <span id="errorGRP_CODE" class="help-block"></span>
+                                    <input class="form-control" id="CURR_CODE" name="CURR_CODE"
+                                           onfocus="clearError('CURR_CODE');" maxlength="10" primaryKey>
+                                    <span id="errorCURR_CODE" class="help-block"></span>
                                 }
                                 else
                                 {
-                                    <span class="mod-form-control">@data.GRP_CODE</span>
-                                    <input type="hidden" id="GRP_CODE" name="GRP_CODE" value="@data.GRP_CODE">
+                                    <span class="mod-form-control">@data.CURR_CODE</span>
+                                    <input type="hidden" id="CURR_CODE" name="CURR_CODE" value="@data.CURR_CODE">
                                 }
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Description : </label>
-                            <div id="divGRP_CODE" class="col-sm-5">
-                                <input class="form-control" id="GRP_PART" name="GRP_PART" maxlength="30" value="@data.GRP_PART" autofocus>
+                            <div id="divCURR_CODE" class="col-sm-5">
+                                <input class="form-control" id="CURR_PART" name="CURR_PART" maxlength="30" value="@data.CURR_PART" autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Rate : </label>
+                            <div id="divCURR_CODE" class="col-sm-5">
+                                <input class="form-control" id="RATE" name="RATE" maxlength="30" value="@data.RATE" onkeypress='return isAmountKey(event,this)'>
                             </div>
                         </div>
                     </div>
 
                     <div class="box-footer">
-                        @if (data.GRP_CODE == "")
+                        @if (data.CURR_CODE == "")
                         {
                             <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save" onclick="fSaveUpDel('Save');">Save</button>
                         }
@@ -74,16 +79,16 @@
 
         //console.log(sSaveUpDel);
         var sURL;
-        var formData = $('#formGrpDet').serialize();
+        var formData = $('#formCurrDet').serialize();
 
         if (sSaveUpDel == "Save") {
 
-            if ($("#GRP_CODE").val() == "") {
-                document.getElementById("divGRP_CODE").className += ' has-error'
-                document.getElementById("errorGRP_CODE").innerHTML = "Please enter a Group Code"
+            if ($("#CURR_CODE").val() == "") {
+                document.getElementById("divCURR_CODE").className += ' has-error'
+                document.getElementById("errorCURR_CODE").innerHTML = "Please enter a Currency Code"
                 return false;
             } else {
-                sURL = 'GroupDet/' + sSaveUpDel;
+                sURL = 'CurrencyDet/' + sSaveUpDel;
             }
 
         } else if (sSaveUpDel == "Update") {
@@ -97,8 +102,8 @@
             Swal.fire({
 
                 //title: 'Are you sure?',
-                title: $('#GRP_CODE').val() + ' will be deleted! ',
-                //text: $('#txtGRP_CODE').val() + ' will be deleted! ',
+                title: $('#CURR_CODE').val() + ' will be deleted! ',
+                //text: $('#txtCURR_CODE').val() + ' will be deleted! ',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -124,7 +129,9 @@
                                     'success'
                                 ).then((result) => {
                                     if (result.value) {
-                                        window.location.href = '../Group/';
+                                        url = '@Url.Action("Currency","IC", new {id="replaceToken"})';
+                                        url = url.replace("replaceToken", response.DebOrVen);
+                                        window.location.href = url;
                                     }
                                 })
                             }
@@ -139,7 +146,7 @@
             })
         }
 
-        
+
         $.ajax({
 
             url: sURL,
@@ -155,11 +162,13 @@
                         //title: 'CREATED!',
                         title: response.message + ' has been successfully CREATED!',
                         showConfirmButton : 'true',
-                        //text: $("#txtGRP_CODE").val() + ' has been successfully created!',
+                        //text: $("#txtCURR_CODE").val() + ' has been successfully created!',
                         //footer: '<a href>Why do I have this issue?</a>'
                     }).then((result) => {
                         if (result.value) {
-                            window.location.href = 'Group';
+                            url = '@Url.Action("Currency","IC", new {id="replaceToken"})';
+                            url = url.replace("replaceToken", response.DebOrVen);
+                            window.location.href = url;
                         }
                     })
 
@@ -174,11 +183,13 @@
 
                     }).then((result) => {
                         if (result.value) {
-                            window.location.href = '../Group/';
+                            url = '@Url.Action("Currency","IC", new {id="replaceToken"})';
+                            url = url.replace("replaceToken", response.DebOrVen);
+                            window.location.href = url;
                         }
                     })
 
-                } 
+                }
                 else if (response.status == "fail") {
 
                     $("#div" + response.fieldname).toggleClass('has-error', 'add');

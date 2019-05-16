@@ -16,6 +16,9 @@ namespace BRO.Models
         public string GRP_PART { get; set; }
         public string LOC_CODE { get; set; }
         public string LOC_PART { get; set; }
+        public string CURR_CODE { get; set; }
+        public string CURR_PART { get; set; }
+        public string RATE { get; set; }
         public string UNIT { get; set; }
         public string TAR_CODE { get; set; }
         public string TAR_PART { get; set; }

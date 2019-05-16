@@ -36,4 +36,34 @@ function clearBoth(FieldName1, FieldName2) {
 
 };
 
+//===Allow enter to post-back form
+$('.form-horizontal').on('keypress', function (e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode === 13) {
+        $('#btnSubmit').focus(); //== Focus on button so the CSS will be correct
+        $('#btnSubmit').click();
+        return false;
+    }
+});
 
+
+function isAmountKey(evt, element) {
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode == 46 || charCode == 8))
+        return false;
+    else {
+        var len = $(element).val().length;
+        var index = $(element).val().indexOf('.');
+        if (index > 0 && charCode == 46) {
+            return false;
+        }
+        //if (index > 0) {
+        //  var CharAfterdot = (len + 1) - index;
+        //  if (CharAfterdot > 4) {
+        //    return false;
+        //  }
+        // }
+
+    }
+    return true;
+}

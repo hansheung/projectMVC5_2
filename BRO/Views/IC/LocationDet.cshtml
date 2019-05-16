@@ -43,7 +43,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Description : </label>
                             <div id="divLOC_CODE" class="col-sm-5">
-                                <input class="form-control" id="LOC_PART" name="LOC_PART" maxlength="30" value="@data.LOC_PART">
+                                <input class="form-control" id="LOC_PART" name="LOC_PART" maxlength="30" value="@data.LOC_PART" autofocus>
                             </div>
                         </div>
                     </div>
@@ -51,12 +51,12 @@
                     <div class="box-footer">
                         @if (data.LOC_CODE == "")
                         {
-                            <button type="button" class="btn btn-info pull-right" value="Save" onclick="fSaveUpDel('Save');">Save</button>
+                            <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save" onclick="fSaveUpDel('Save');">Save</button>
                         }
                         else
                         {
                             <button type="button" class="btn btn-danger pull-left" value="Delete" onclick="fSaveUpDel('Delete');">Delete</button>
-                            <button type="button" class="btn btn-warning pull-right" value="Update" onclick="fSaveUpDel('Update');">Update</button>
+                            <button type="button" id="btnSubmit" class="btn btn-warning pull-right" value="Update" onclick="fSaveUpDel('Update');">Update</button>
                         }
                     </div> <!-- /.box-footer -->
                 }
@@ -138,7 +138,6 @@
             })
         }
 
-        
         $.ajax({
 
             url: sURL,

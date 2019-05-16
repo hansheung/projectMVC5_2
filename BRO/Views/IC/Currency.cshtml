@@ -1,0 +1,209 @@
+﻿@{
+    ViewBag.Title = "Currency";
+    Layout = "~/Views/Shared/_LayoutIC.cshtml";
+}
+
+<style>
+    .skin-blue .sidebar-menu > li.active > a {
+        border-left-color: #1e282c;
+    }
+</style>
+
+<section class="content-header">
+    <h1>@ViewBag.sHeaderName @ViewBag.Title Information</h1>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <!-- Horizontal Form -->
+                <!-- form start -->
+                @using (Html.BeginForm("Currency", "IC", FormMethod.Post, new { id = "formCurrency", name = "formCurrency", role = "form", @class = "form-horizontal" }))
+                {
+                    var data = ViewBag.FieldValue;
+                    @Html.AntiForgeryToken()
+
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="hidden" id="txtTableName" value="@ViewBag.sTableName" />
+                                <table id="tableCurrency" class="table table-bordered" width="100%">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="NoCol">No</th>
+                                            <th class="CURR_CODECol">Currency Code</th>
+                                            <th class="CURR_PARTCol">Description</th>
+                                            <th class="RATECol">Rate</th>
+                                            <th class="DT_EDITCol">Date Modified</th>
+                                            <th style="text-align:center" class="EditCol">Edit</th>
+                                        </tr>
+                                    </thead>
+                                    @*<tfoot class="filters">
+                                        <tr role="row">
+                                            <th></th>
+                                            <th>Login ID</th>
+                                            <th>Name</th>
+                                            <th>Date Created</th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>*@
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div><!-- /.box -->
+        </div><!-- /.col-md-12 -->
+    </div><!-- /.row -->
+</section><!-- /.content -->
+<script>
+
+
+    /** add active class and stay opened when selected */
+    var url = window.location;
+
+    // for sidebar menu entirely but not cover treeview
+    $('ul.sidebar-menu a').filter(function () {
+        return this.href == url;
+    }).parent().addClass('active');
+
+    // for treeview
+    $('ul.treeview-menu a').filter(function () {
+        return this.href == url;
+    }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+
+    $(document).ready(function () {
+
+        var sTableName = $('#txtTableName').val();
+
+        var Length1 = 5; //@Session["LENGTH1"];
+        var Length2 = parseInt(Length1) * 2;
+        var Length3 = parseInt(Length1) * 5;
+
+        $('div.dataTables_filter input').focus() //=== set focus on Search field
+
+        $('#tableCurrency tbody').on('click', 'tr', function () {
+            //=== DEBUG PURPOSE: console.log(table.row(this).data());
+            var data = table.row(this).data();
+            window.location.href = '@Url.Action("CurrencyDet", "IC")/' + sTableName + data["AUTOINC"];
+        });
+
+        var table = $('#tableCurrency').DataTable({
+
+            "paging": true,
+            "processing": true, // control the processing indicator.
+            "serverSide": true, // recommended to use serverSide when data is more than 10000 rows for performance reasons
+            "info": true,   // control table information display field
+            //"stateSave": true,  //remain table state on AFTER SAVE OR UPDATE OR BACK
+            "lengthChange": true,
+            "lengthMenu": [[Length1, Length2, Length3, -1], [Length1, Length2, Length3, "All"]],    // use the first inner array as the page length values and the second inner array as the displayed options
+            "colReorder": true,
+            "ordering": true,
+            "orderMulti": true, // for disable multiple column at once
+            "order": [["3", "desc"]], //=== Not working during stateSave
+            "language": {
+                searchPlaceholder: "Search records"
+            },
+
+            "ajax":{
+                "url": "/IC/AjaxGetJsonDataCurr/" + sTableName,
+                "type": "GET"
+            },
+
+            "columnDefs": [
+                {
+                    "targets": 'NoCol',
+                    "orderable": false, "width": "5%",
+                    "render": function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    "targets": 'CURR_CODECol',
+                    "data": "CURR_CODE", "orderable": true
+                },
+                {
+                    "targets": 'CURR_PARTCol',
+                    "data": "CURR_PART", "orderable": true
+                },
+                {
+                    "targets": 'RATECol',
+                    "className": "text-right",
+                    "data": "RATE", "orderable": true
+                },
+                {
+                    "targets": 'DT_EDITCol',
+                    "data": "DT_EDIT", "orderable": true
+                },
+                {
+                    "targets": 'EditCol',
+                    "className": "text-center",
+                    "orderable": false,
+                    "render": function (data, type, full, meta) {
+                        return '<a href="/IC/CurrencyDet/' + full.AUTOINC + "/" + sTableName + '"><img src="../../Content/myPics/edit-2-24.png" ></a>';
+                    }
+                }
+            ],
+
+            "dom":
+                "<'row'<'col-sm-2'l><'col-sm-7'B><'col-sm-3'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+            "buttons" : [
+                {
+                    text: 'New',
+                    className: "btn btn-primary",
+                    action: function (e, dt, node, config) {
+                        url = '@Url.Action("CurrencyDet","IC", new {sTableName="replaceToken"})';
+                        url = url.replace("replaceToken",sTableName);
+                        window.location.href = url;
+                    },
+                },
+                {
+                    extend: 'copy',
+                    text: 'Copy',
+                    className: "btn btn-info",
+                    exportOptions: {
+                        columns: [0, 1, 2, 3],
+                    },
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: "btn btn-success",
+                    exportOptions: {
+                        columns: [0, 1, 2, 3],
+                    },
+                },
+                {
+                    extend: 'print',
+                    text: 'Print all',
+                    className: "btn btn-warning",
+                    exportOptions: {
+                        modifier: {
+                            selected: null
+                        },
+                        columns: [0, 1, 2, 3],
+                    },
+                    autoPrint: false,
+                }
+            ],
+
+            initComplete: function () {
+                $(".dt-button").removeClass("dt-button");
+                         },
+
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+

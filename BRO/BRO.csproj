@@ -8021,7 +8021,6 @@
     <Compile Include="Models\PasswordModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProgramModel.cs" />
-    <Compile Include="MyClass\ConDB2.cs" />
     <Compile Include="MyClass\Constant.cs" />
     <Compile Include="MyClass\Proc.cs" />
     <Compile Include="MyClass\ConDB.cs" />
@@ -8697,6 +8696,8 @@
     <Content Include="Views\IC\GroupDet.cshtml" />
     <Content Include="Views\IC\Location.cshtml" />
     <Content Include="Views\IC\LocationDet.cshtml" />
+    <Content Include="Views\IC\Currency.cshtml" />
+    <Content Include="Views\IC\CurrencyDet.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

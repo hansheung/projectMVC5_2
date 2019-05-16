@@ -118,7 +118,18 @@
                         <ul class="treeview-menu">
                             <li><a href="@Url.Action("Group","IC")"><i class="fa fa-circle-o"></i> Group</a></li>
                             <li><a href="@Url.Action("Location","IC")"><i class="fa fa-circle-o"></i> Location</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Currency</a></li>
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-circle-o"></i> Currency
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="@Url.Action("Currency","IC", new { id = "Deb" })"><i class="fa fa-circle-o"></i> Debtor Currency</a></li>
+                                    <li><a href="@Url.Action("Currency","IC", new { id = "Ven" })"><i class="fa fa-circle-o"></i> Vendor Currency</a></li>
+                                </ul>
+                            </li>
                             <li><a href="@Url.Action("Stock","IC")"><i class="fa fa-circle-o"></i> Stock</a></li>
                             <li><a href="#"><i class="fa fa-circle-o"></i> Debtor</a></li>
                             <li><a href="#"><i class="fa fa-circle-o"></i> Vendor</a></li>
@@ -231,6 +242,8 @@
     </div>
 
     <script>
+
+
         @*$.sessionTimeout({
             keepAliveUrl:'Password',
         //keepAliveUrl: '../../Content/bootstrap-session-timeout-master/examples/keep-alive.html',
