@@ -11,17 +11,16 @@ namespace BRO.Controllers
 {
     public class ICController : Controller
     {
-        //private ConDB conn = new ConDB();
-        private ConDB conn1 = new ConDB("MySQLConn1");
-        private ConDB conn2 = new ConDB("MySQLConn2");
+        //private ConDB conn2 = new ConDB();
+        private static ConDB conn1 = new ConDB("MySQLConn1");
+        private static ConDB conn2 = new ConDB("MySQLConn2");
         //public Proc proc = new Proc();
-
+        static string sSQL;
         static int TOTAL_ROWS;
         static string TABLENAME;
 
         //static readonly List<DataItem> _data = CreateData();
        // static readonly List<DataItem> _dataGrp = CreateDataGrp();
-
 
         // GET: IC
         public ActionResult Index()
@@ -136,12 +135,12 @@ namespace BRO.Controllers
         {
             List<DataItem> list = new List<DataItem>();
 
-            ConDB conn = new ConDB("MySQLConn2");
-            string sSQL = " SELECT * FROM icstk ";
-            DataTable dt = conn.GetData(sSQL);
+            ConDB conn2 = new ConDB("MySQLConn2");
+            sSQL = " SELECT * FROM icstk ";
+            DataTable dt = conn2.GetData(sSQL);
             TOTAL_ROWS = dt.Rows.Count;
 
-            using (MySqlDataReader dr = conn.ExecuteReader(sSQL))
+            using (MySqlDataReader dr = conn2.ExecuteReader(sSQL))
             {
                 while (dr.Read())
                 {
@@ -154,7 +153,7 @@ namespace BRO.Controllers
                     list.Add(item);
                 }
             }
-            conn.Close();
+            conn2.Close();
 
             return list;
         }
@@ -163,83 +162,12 @@ namespace BRO.Controllers
         {
             List<DataItem> listGrp = new List<DataItem>();
 
-            ConDB conn = new ConDB("MySQLConn1");
             string sSQL = " SELECT * FROM icgrp ";
-
-            //public DataTable GetData(string sSQL)
-            //{
-
-
-            //    MySqlCommand command = new MySqlCommand(sSQL, connection);
-            //    MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-            //    DataTable dt = new DataTable();
-            //    adapter.Fill(dt);
-            //    return dt;
-            //}
-
-            DataTable dt = conn.GetData(sSQL);
+            DataTable dt = conn2.GetData(sSQL);
 
             TOTAL_ROWS = dt.Rows.Count;
 
-            //mysqlconn.Open();
-            //MySqlDataReader dr = conn.ExecuteQuery(sSQL);
-
-            //string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-            //using (MySqlConnection con = new MySqlConnection(constr))
-            //{
-            //    using (MySqlCommand cmd = new MySqlCommand("UPDATE " + TABLENAME +
-            //    "set CURR_PART=@CURR_PART, " +
-            //    "RATE = @RATE" +
-            //    "EDIT_ID = @EDIT_ID, " +
-            //    "DT_EDIT = @DT_EDIT " +
-            //    "WHERE CURR_CODE = @CURR_CODE"))
-            //    {
-            //        using (MySqlDataAdapter sda = new MySqlDataAdapter())
-            //        {
-            //            cmd.Parameters.AddWithValue("@CURR_PART", viewModel.CURR_PART);
-            //            cmd.Parameters.AddWithValue("@RATE", viewModel.RATE);
-            //            cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-            //            cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-            //            cmd.Parameters.AddWithValue("@CURR_CODE", viewModel.CURR_CODE);
-
-            //            cmd.Connection = con;
-            //            con.Open();
-            //            cmd.ExecuteNonQuery();
-            //            con.Close();
-
-            //conn.Open();
-            //MySqlDataReader dr = new MySqlDataAdapter();
-
-            //String connectionString = "<THE CONNECTION STRING HERE>";
-            //String sql = "SELECT * FROM students";
-            //SqlCommand cmd = new SqlCommand(sql, conn);
-
-            //var model = new List<Student>();
-            //using (SqlConnection conn = new SqlConnection(connectionString))
-            //{
-            //    conn.Open();
-            //    SqlDataReader rdr = cmd.ExecuteReader();
-            //    while (rdr.Read())
-
-            //using (MySqlConnection connection = new MySqlConnection(...))
-            //{
-            //    connection.Open();
-            //    using (MySqlCommand cmd = new MySqlCommand("select product_price from product where product_name='@pname';", connection))
-            //    {
-            //        cmd.Parameters.AddWithValue("@pname", x);
-            //        using (MySqlDataReader reader = cmd.ExecuteReader())
-            //        {
-            //            StringBuilder sb = new StringBuilder();
-            //            while (reader.Read())
-            //                sb.Append(reader.GetInt32(0).ToString());
-
-            //            Price_label.Content = sb.ToString();
-            //        }
-            //    }
-            //}
-            //MySqlDataReader dr = conn.ExecuteReader(sSQL);
-            //DataTable dt = conn.GetData(sSQL);
-            using (MySqlDataReader dr = conn.ExecuteReader(sSQL))
+            using (MySqlDataReader dr = conn2.ExecuteReader(sSQL))
             {
                 while (dr.Read())
                 {
@@ -260,12 +188,11 @@ namespace BRO.Controllers
         {
             List<DataItem> listLoc = new List<DataItem>();
 
-            ConDB conn = new ConDB("MySQLConn2");
             string sSQL = " SELECT * FROM icloc ";
-            DataTable dt = conn.GetData(sSQL);
+            DataTable dt = conn2.GetData(sSQL);
             TOTAL_ROWS = dt.Rows.Count;
 
-            using (MySqlDataReader dr = conn.ExecuteReader(sSQL))
+            using (MySqlDataReader dr = conn2.ExecuteReader(sSQL))
             {
                 while (dr.Read())
                 {
@@ -278,7 +205,7 @@ namespace BRO.Controllers
                     listLoc.Add(item);
                 }
             }
-            conn.Close();
+            conn2.Close();
 
             return listLoc;
         }
@@ -287,12 +214,11 @@ namespace BRO.Controllers
         {
             List<DataItem> listCurr = new List<DataItem>();
 
-            ConDB conn = new ConDB("MySQLConn2");
             string sSQL = " SELECT * FROM " + sTableName;
-            DataTable dt = conn.GetData(sSQL);
+            DataTable dt = conn2.GetData(sSQL);
             TOTAL_ROWS = dt.Rows.Count;
 
-            using (MySqlDataReader dr = conn.ExecuteReader(sSQL))
+            using (MySqlDataReader dr = conn2.ExecuteReader(sSQL))
             {
                 DataItem item = new DataItem();
 
@@ -303,7 +229,7 @@ namespace BRO.Controllers
                 item.DT_EDIT = dr["DT_EDIT"].ToString();
                 listCurr.Add(item);
             }
-            conn.Close();
+            conn2.Close();
 
             return listCurr;
         }
@@ -658,21 +584,20 @@ namespace BRO.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-                ICModel rec = new ICModel
-                {
-                    GRP_CODE = "",
-                    GRP_PART = "",
-                    DT_EDIT = "",
-                };
+            //    ICModel rec = new ICModel
+            //    {
+            //        GRP_CODE = "",
+            //        GRP_PART = "",
+            //        DT_EDIT = "",
+            //    };
 
-                ViewBag.FieldValue = rec;
+            //    ViewBag.FieldValue = rec;
                 return View();
             }
             else
             {
-                ConDB conn = new ConDB("MySQLConn2");
                 string sSQL = " SELECT * FROM icgrp where AUTOINC ='" + id + "'";
-                using (MySqlDataReader reader = conn.ExecuteReader(sSQL))
+                using (MySqlDataReader reader = conn2.ExecuteReader(sSQL))
                 {
                     if(reader.Read()) // If you're expecting more than one line, change this to while(reader.Read()).
                     {
@@ -697,7 +622,7 @@ namespace BRO.Controllers
         {
             if (id == "Save")
             {
-                string sSQL = " SELECT * FROM icgrp where GRP_CODE ='" + viewModel.GRP_CODE + "'";
+                sSQL = " SELECT * FROM icgrp where GRP_CODE ='" + viewModel.GRP_CODE + "'";
                 using (MySqlDataReader reader = conn2.ExecuteReader(sSQL))
                 {
                     if (reader.Read())
@@ -706,110 +631,47 @@ namespace BRO.Controllers
                     }
                     else
                     {
-                        sSQL =  " INSERT into icgrp" +
+                        sSQL = " INSERT into icgrp" +
                                 " (GRP_CODE, GRP_PART, EDIT_ID,DT_EDIT,CREATE_ID,DT_CREATE)" +
-                                " values " +
-                                " (@GRP_CODE,@GRP_PART,@EDIT_ID, @DT_EDIT, @CREATE_ID, @DT_CREATE)";
-                        public void CreateMySqlCommand(string myExecuteQuery, MySqlConnection myConnection)
-                        {
-                            MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, myConnection);
-                            myCommand.Connection.Open();
-                            myCommand.ExecuteNonQuery();
-                            myConnection.Close();
-                        }
+                                " values ( " +
+                                  viewModel.GRP_CODE + " , " +
+                                  viewModel.GRP_PART + " , " +
+                                  Session["USER_ID"] + " , " +
+                                  DateTime.Now + " , " +
+                                  Session["USER_ID"] + " , " +
+                                  DateTime.Now + " ) ";
+
+                        conn2.ExecuteQuery(sSQL);
+                        conn2.Close();
+
+                        return Json(new { status = "saved", message = viewModel.GRP_CODE });
                     }
                 }
-               
-                if (dt.Rows.Count > 0)
-                {
-                    
-
-                }
-                else
-                {
-                    string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-                    using (MySqlConnection con = new MySqlConnection(constr))
-                    {
-                        using (MySqlCommand cmd = new MySqlCommand(
-                                " INSERT into icgrp" +
-                                " (GRP_CODE, GRP_PART, EDIT_ID,DT_EDIT,CREATE_ID,DT_CREATE)" +
-                                " values " +
-                                " (@GRP_CODE,@GRP_PART,@EDIT_ID, @DT_EDIT, @CREATE_ID, @DT_CREATE)"
-                            ))
-                        {
-                            using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                            {
-                                cmd.Parameters.AddWithValue("@GRP_CODE", viewModel.GRP_CODE);
-                                cmd.Parameters.AddWithValue("@GRP_PART", viewModel.GRP_PART);
-                                cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@CREATE_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_CREATE", DateTime.Now);
-
-                                cmd.Connection = con;
-                                con.Open();
-                                cmd.ExecuteNonQuery();
-                                con.Close();
-
-                                return Json(new { status = "saved", message = viewModel.GRP_CODE });
-
-                            }
-                        }
-                    }
-                }
-
             }
             else if (id == "Update")
             {
-                string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("UPDATE icgrp " +
-                    "set GRP_PART=@GRP_PART, " +
-                    "EDIT_ID=@EDIT_ID, " +
-                    "DT_EDIT=@DT_EDIT " +
-                    "WHERE GRP_CODE = @GRP_CODE"))
-                    {
-                        using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                        {
-                            cmd.Parameters.AddWithValue("@GRP_PART", viewModel.GRP_PART);
-                            cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-                            cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-                            cmd.Parameters.AddWithValue("@GRP_CODE", viewModel.GRP_CODE);
+                sSQL =  " UPDATE icgrp set" +
+                        " GRP_PART= " + viewModel.GRP_PART + " , " +
+                        " EDIT_ID= " + Session["USER_ID"] + " , " +
+                        " DT_EDIT= " + DateTime.Now +
+                        " WHERE GRP_CODE = " + viewModel.GRP_CODE;
 
-                            cmd.Connection = con;
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
+                conn2.ExecuteQuery(sSQL);
+                conn2.Close();
 
-                            return Json(new { status = "updated", message = viewModel.GRP_CODE });
+                return Json(new { status = "updated", message = viewModel.GRP_CODE });
 
-                        }
-                    }
-                    
-                }
             }
-
             else
             {
-                string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("DELETE from icgrp " +
-                            "WHERE GRP_CODE = @GRP_CODE"))
-                    {
-                        using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                        {
-                            cmd.Parameters.AddWithValue("@GRP_CODE", viewModel.GRP_CODE);
-                            cmd.Connection = con;
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
+                sSQL =  " DELETE FROM icgrp" +
+                        " WHERE GRP_CODE = " + viewModel.GRP_CODE;
 
-                            return Json(new { status = "deleted", message = viewModel.GRP_CODE });
-                        }
-                    }
-                }
+                conn2.ExecuteQuery(sSQL);
+                conn2.Close();
+
+                return Json(new { status = "deleted", message = viewModel.GRP_CODE });
+
             }
         }
 
@@ -817,22 +679,12 @@ namespace BRO.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-
-                ICModel rec = new ICModel
-                {
-                    LOC_CODE = "",
-                    LOC_PART = "",
-                    DT_EDIT = "",
-                };
-
-                ViewBag.FieldValue = rec;
                 return View();
             }
             else
             {
-                ConDB conn = new ConDB("MySQLConn2");
-                string sSQL = " SELECT * FROM icloc where AUTOINC ='" + id + "'";
-                using (MySqlDataReader reader = conn.ExecuteReader(sSQL))
+                sSQL = " SELECT * FROM icloc where AUTOINC ='" + id + "'";
+                using (MySqlDataReader reader = conn2.ExecuteReader(sSQL))
                 {
                     if (reader.Read()) // If you're expecting more than one line, change this to while(reader.Read()).
                     {
@@ -855,102 +707,58 @@ namespace BRO.Controllers
         [HttpPost]
         public ActionResult LocationDet(string id, ICModel viewModel)
         {
-            ConDB2 conn = new ConDB2();
-
             if (id == "Save")
             {
-                string sSQL = " SELECT * FROM icloc where LOC_CODE ='" + viewModel.LOC_CODE + "'";
-                DataTable dt = conn.GetData(sSQL);
-                if (dt.Rows.Count > 0)
+                sSQL = " SELECT * FROM icloc where LOC_CODE ='" + viewModel.LOC_CODE + "'";
+                using (MySqlDataReader reader = conn2.ExecuteReader(sSQL))
                 {
-                    return Json(new { status = "fail", message = "Location Code already exists", fieldname = "LOC_CODE" });
-
-                }
-                else
-                {
-                    string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-                    using (MySqlConnection con = new MySqlConnection(constr))
+                    if (reader.Read())
                     {
-                        using (MySqlCommand cmd = new MySqlCommand(
-                                " INSERT into icloc" +
+                        return Json(new { status = "fail", message = "Location Code already exists", fieldname = "LOC_CODE" });
+                    }
+                    else
+                    {
+                        sSQL =  " INSERT into icloc" +
                                 " (LOC_CODE, LOC_PART, EDIT_ID,DT_EDIT,CREATE_ID,DT_CREATE)" +
-                                " values " +
-                                " (@LOC_CODE,@LOC_PART,@EDIT_ID, @DT_EDIT, @CREATE_ID, @DT_CREATE)"
-                            ))
-                        {
-                            using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                            {
-                                cmd.Parameters.AddWithValue("@LOC_CODE", viewModel.LOC_CODE);
-                                cmd.Parameters.AddWithValue("@LOC_PART", viewModel.LOC_PART);
-                                cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@CREATE_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_CREATE", DateTime.Now);
+                                " values ( " +
+                                  viewModel.LOC_CODE + " , " +
+                                  viewModel.LOC_PART + " , " +
+                                  Session["USER_ID"] + " , " +
+                                  DateTime.Now + " , " +
+                                  Session["USER_ID"] + " , " +
+                                  DateTime.Now + " ) ";
 
-                                cmd.Connection = con;
-                                con.Open();
-                                cmd.ExecuteNonQuery();
-                                con.Close();
+                        conn2.ExecuteQuery(sSQL);
+                        conn2.Close();
 
-                                return Json(new { status = "saved", message = viewModel.LOC_CODE });
-
-                            }
-                        }
+                        return Json(new { status = "saved", message = viewModel.LOC_CODE });
                     }
                 }
-
             }
             else if (id == "Update")
             {
-                string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("UPDATE icloc " +
-                    "set LOC_PART=@LOC_PART, " +
-                    "EDIT_ID=@EDIT_ID, " +
-                    "DT_EDIT=@DT_EDIT " +
-                    "WHERE LOC_CODE = @LOC_CODE"))
-                    {
-                        using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                        {
-                            cmd.Parameters.AddWithValue("@LOC_PART", viewModel.LOC_PART);
-                            cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-                            cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-                            cmd.Parameters.AddWithValue("@LOC_CODE", viewModel.LOC_CODE);
+                sSQL = " UPDATE icloc set" +
+                        " LOC_PART= " + viewModel.LOC_PART + " , " +
+                        " EDIT_ID= " + Session["USER_ID"] + " , " +
+                        " DT_EDIT= " + DateTime.Now +
+                        " WHERE LOC_CODE = " + viewModel.LOC_CODE;
 
-                            cmd.Connection = con;
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
+                conn2.ExecuteQuery(sSQL);
+                conn2.Close();
 
-                            return Json(new { status = "updated", message = viewModel.LOC_CODE });
+                return Json(new { status = "updated", message = viewModel.LOC_CODE });
 
-                        }
-                    }
-
-                }
             }
-
             else
             {
-                string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("DELETE from icloc " +
-                            "WHERE LOC_CODE = @LOC_CODE"))
-                    {
-                        using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                        {
-                            cmd.Parameters.AddWithValue("@LOC_CODE", viewModel.LOC_CODE);
-                            cmd.Connection = con;
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
+                sSQL = " DELETE FROM icloc" +
+                        " WHERE LOC_CODE = " + viewModel.LOC_CODE;
 
-                            return Json(new { status = "deleted", message = viewModel.LOC_CODE });
-                        }
-                    }
-                }
+                conn2.ExecuteQuery(sSQL);
+                conn2.Close();
+
+                return Json(new { status = "deleted", message = viewModel.LOC_CODE });
+
             }
         }
 
@@ -970,24 +778,13 @@ namespace BRO.Controllers
 
             if (string.IsNullOrEmpty(id))
             {
-
-                ICModel rec = new ICModel
-                {
-                    CURR_CODE = "",
-                    CURR_PART = "",
-                    RATE = "",
-                    DT_EDIT = "",
-                };
-
-                ViewBag.FieldValue = rec;
                 return View();
             }
             else
             {
-                ConDB conn = new ConDB("MySQLConn2");
-                string sSQL = " SELECT * FROM " + TABLENAME +
+                sSQL = " SELECT * FROM " + TABLENAME +
                                 "where AUTOINC ='" + id + "'";
-                using (MySqlDataReader reader = conn.ExecuteReader(sSQL))
+                using (MySqlDataReader reader = conn2.ExecuteReader(sSQL))
                 {
                     if (reader.Read()) // If you're expecting more than one line, change this to while(reader.Read()).
                     {
@@ -1012,7 +809,6 @@ namespace BRO.Controllers
         public ActionResult CurrencyDet(string id, ICModel viewModel)
         //public ActionResult CurrencyDet(string id, string sTableName, ICModel viewModel)
         {
-            ConDB2 conn = new ConDB2();
             string sDebOrVen;
 
             if (TABLENAME == "arcurr")
@@ -1026,132 +822,73 @@ namespace BRO.Controllers
 
             if (id == "Save")
             {
-                string sSQL = " SELECT * FROM " + TABLENAME +
-                    " where CURR_CODE ='" + viewModel.CURR_CODE + "'";
-                DataTable dt = conn.GetData(sSQL);
-                if (dt.Rows.Count > 0)
+                sSQL = " SELECT * FROM " + TABLENAME +
+                   " where CURR_CODE ='" + viewModel.CURR_CODE + "'";
+                using (MySqlDataReader reader = conn2.ExecuteReader(sSQL))
                 {
-                    return Json(new { status = "fail", message = "Currency Code already exists", fieldname = "CURR_CODE" });
-
-                }
-                else
-                {
-                    string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-                    using (MySqlConnection con = new MySqlConnection(constr))
+                    if (reader.Read())
                     {
-                        using (MySqlCommand cmd = new MySqlCommand(
-                                " INSERT into " + TABLENAME +
+                        return Json(new { status = "fail", message = "Currency Code already exists", fieldname = "CURR_CODE" });
+                    }
+                    else
+                    {
+                        sSQL = " INSERT into " + TABLENAME +
                                 " (CURR_CODE, CURR_PART, RATE, EDIT_ID,DT_EDIT,CREATE_ID,DT_CREATE)" +
                                 " values " +
-                                " (@CURR_CODE,@CURR_PART,@RATE, @EDIT_ID, @DT_EDIT, @CREATE_ID, @DT_CREATE)"
-                            ))
-                        {
-                            using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                            {
-                                cmd.Parameters.AddWithValue("@CURR_CODE", viewModel.CURR_CODE);
-                                cmd.Parameters.AddWithValue("@CURR_PART", viewModel.CURR_PART);
-                                cmd.Parameters.AddWithValue("@RATE", double.Parse(viewModel.RATE));
-                                cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@CREATE_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_CREATE", DateTime.Now);
+                                  viewModel.CURR_CODE + " , " +
+                                  viewModel.CURR_PART + " , " +
+                                  Session["USER_ID"] + " , " +
+                                  DateTime.Now + " , " +
+                                  Session["USER_ID"] + " , " +
+                                  DateTime.Now + " ) ";
 
-                                cmd.Connection = con;
-                                con.Open();
-                                cmd.ExecuteNonQuery();
-                                con.Close();
+                        conn2.ExecuteQuery(sSQL);
+                        conn2.Close();
 
-                                return Json(new { status = "saved", message = viewModel.CURR_CODE, DebOrVen=sDebOrVen});
-
-                            }
-                        }
+                        return Json(new { status = "saved", message = viewModel.CURR_CODE, DebOrVen = sDebOrVen });
                     }
                 }
-
             }
             else if (id == "Update")
             {
-                string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("UPDATE " + TABLENAME +
-                    "set CURR_PART=@CURR_PART, " +
-                    "RATE = @RATE" +
-                    "EDIT_ID = @EDIT_ID, " +
-                    "DT_EDIT = @DT_EDIT " +
-                    "WHERE CURR_CODE = @CURR_CODE"))
-                    {
-                        using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                        {
-                            cmd.Parameters.AddWithValue("@CURR_PART", viewModel.CURR_PART);
-                            cmd.Parameters.AddWithValue("@RATE", viewModel.RATE);
-                            cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-                            cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-                            cmd.Parameters.AddWithValue("@CURR_CODE", viewModel.CURR_CODE);
+                sSQL =  " UPDATE " + TABLENAME + " set" +
+                        " CURR_PART= " + viewModel.CURR_PART + " , " +
+                        " RATE= " + viewModel.RATE + " , " +
+                        " EDIT_ID= " + Session["USER_ID"] + " , " +
+                        " DT_EDIT= " + DateTime.Now +
+                        " WHERE CURR_CODE = " + viewModel.CURR_CODE;
 
-                            cmd.Connection = con;
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
+                conn2.ExecuteQuery(sSQL);
+                conn2.Close();
 
-                            return Json(new { status = "updated", message = viewModel.CURR_CODE, DebOrVen = sDebOrVen });
+                return Json(new { status = "updated", message = viewModel.CURR_CODE, DebOrVen = sDebOrVen });
 
-                        }
-                    }
-
-                }
             }
-
             else
             {
-                string constr = ConfigurationManager.ConnectionStrings["MySQLConnection2"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("DELETE from " + TABLENAME +
-                                                                "WHERE CURR_CODE = @CURR_CODE"))
-                    {
-                        using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                        {
-                            cmd.Parameters.AddWithValue("@CURR_CODE", viewModel.CURR_CODE);
-                            cmd.Connection = con;
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
+                sSQL = " DELETE from " + TABLENAME +
+                       " WHERE CURR_CODE = " + viewModel.CURR_CODE;
 
-                            return Json(new { status = "deleted", message = viewModel.CURR_CODE, DebOrVen = sDebOrVen });
-                        }
-                    }
-                }
+                conn2.ExecuteQuery(sSQL);
+                conn2.Close();
+
+                return Json(new { status = "deleted", message = viewModel.CURR_CODE, DebOrVen = sDebOrVen });
+
             }
-        }
 
+        }
 
         public ActionResult StockDet(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-
-                ICModel rec = new ICModel
-                {   AUTOINC = "",                    
-                    STKCODE = "",
-                    PART = "",
-                    PART1 = "",
-                    PART2 = "",
-                    GRP_CODE = "",
-                    GRP_PART = "",
-                    LOC_CODE ="",
-                    LOC_PART = "",
-                };
-
-                ViewBag.FieldValue = rec;
                 return View();
             }
             else
             {
-                ConDB conn = new ConDB("MySQLConn2");
                 string sSQL = " SELECT * FROM icstk " +
                                 "where AUTOINC ='" + id + "'";
-                using (MySqlDataReader reader = conn.ExecuteReader(sSQL))
+                using (MySqlDataReader reader = conn2.ExecuteReader(sSQL))
                 {
                     if (reader.Read()) // If you're expecting more than one line, change this to while(reader.Read()).
                     {

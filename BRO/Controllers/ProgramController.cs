@@ -13,25 +13,26 @@ namespace BRO.Controllers
 {
     public class ProgramController : Controller
     {
+        private static ConDB conn1 = new ConDB("MySQLConn1");
+        static string sSQL;
+
         public ActionResult Program()
         {
-            ConDB conn = new ConDB();
-            //Proc proc = new Proc();
-
-            string sSQL = " SELECT * FROM mainpath ";
-            DataTable dt = conn.GetData(sSQL);
-            if (dt.Rows.Count > 0)
+            sSQL = " SELECT * FROM mainpath";
+            using (MySqlDataReader dr = conn1.ExecuteReader(sSQL))
             {
-                ProgramModel rec = new ProgramModel
+                if (dr.Read()) // If you're expecting more than one line, change this to while(reader.Read()).
                 {
-                    txtCoName = dt.Rows[0]["CONAME"].ToString(),
-                    txtAdd1 = dt.Rows[0]["ADD1"].ToString(),
-                    txtLengthMenu = dt.Rows[0]["LENGTHMENU"].ToString(),
-                };
+                    ProgramModel rec = new ProgramModel
+                    {
+                        txtCoName = dr["CONAME"].ToString(),
+                        txtAdd1 = dr["ADD1"].ToString(),
+                        txtLengthMenu = dr["LENGTHMENU"].ToString(),
+                    };
 
-                ViewBag.FieldValue = rec;
-                return View();
-
+                    ViewBag.FieldValue = rec;
+                    return View();
+                }
             }
 
             return View();
@@ -40,37 +41,20 @@ namespace BRO.Controllers
         [HttpPost]
         public ActionResult Program( ProgramModel viewModel )
         {
-            string constr = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString;
-            using (MySqlConnection con = new MySqlConnection(constr))
-            {
-                using (MySqlCommand cmd = new MySqlCommand("UPDATE mainpath " +
-                "set CONAME=@CoName, " +
-                "ADD1 = @Add1, " +
-                "LENGTHMENU = @LengthMenu, " +
-                "EDIT_ID=@EditID, " +
-                "DT_EDIT=@DtEdit " +
-                "WHERE CONAME = @CoName"))
-                {
-                    using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                    {
-                        cmd.Parameters.AddWithValue("@CoName", viewModel.txtCoName);
-                        cmd.Parameters.AddWithValue("@Add1", viewModel.txtAdd1);
-                        cmd.Parameters.AddWithValue("@LengthMenu", viewModel.txtLengthMenu);
-                        cmd.Parameters.AddWithValue("@EditID", Session["USER_ID"]);
-                        cmd.Parameters.AddWithValue("@DtEdit", DateTime.Now);
-                        System.Diagnostics.Debug.WriteLine(" sSQL : ");
-                        System.Diagnostics.Debug.WriteLine(cmd);
-                        cmd.Connection = con;
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
+            sSQL =  " UPDATE mainpath set " +
+                " CONAME=" + viewModel.txtCoName +
+                " ADD1 = " + viewModel.txtAdd1 + " , " +
+                " LENGTHMENU = " + viewModel.txtLengthMenu + " , " +
+                " EDIT_ID= " + Session["USER_ID"] + " , " +
+                " DT_EDIT= " + DateTime.Now +
+                " WHERE CONAME = " + viewModel.txtCoName;
 
-                        Session["LENGTH1"] = viewModel.txtLengthMenu;
+            conn1.ExecuteQuery(sSQL);
+            conn1.Close();
 
-                        return Json(new { status = "updated", message = "Successfully updated" });
-                    }
-                }
-            }
+            Session["LENGTH1"] = viewModel.txtLengthMenu;
+
+            return Json(new { status = "updated", message = "Successfully updated" });
         }
     }
 }

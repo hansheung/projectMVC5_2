@@ -22,13 +22,13 @@
                 {
                     @Html.AntiForgeryToken()
                     //if(ViewBag.Message != null) {
-                    var data = ViewBag.FieldValue;
+                    //var data = ViewBag.FieldValue;
                     //}
                     <div class="box-body">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Group Code : </label>
                             <div id="divGRP_CODE" class="col-sm-3">
-                                @if (data.GRP_CODE == "")
+                                @if (ViewBag.FieldValue == null)
                                 {
                                     <input class="form-control" id="GRP_CODE" name="GRP_CODE"
                                            onfocus="clearError('GRP_CODE');" maxlength="10" primaryKey>
@@ -36,21 +36,21 @@
                                 }
                                 else
                                 {
-                                    <span class="mod-form-control">@data.GRP_CODE</span>
-                                    <input type="hidden" id="GRP_CODE" name="GRP_CODE" value="@data.GRP_CODE">
+                                    <span class="mod-form-control">@ViewBag.FieldValue.GRP_CODE</span>
+                                    <input type="hidden" id="GRP_CODE" name="GRP_CODE" value="@ViewBag.FieldValue.GRP_CODE">
                                 }
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Description : </label>
                             <div id="divGRP_CODE" class="col-sm-5">
-                                <input class="form-control" id="GRP_PART" name="GRP_PART" maxlength="30" value="@data.GRP_PART" autofocus>
+                                <input class="form-control" id="GRP_PART" name="GRP_PART" maxlength="30" value="@ViewBag.FieldValue.GRP_PART" autofocus>
                             </div>
                         </div>
                     </div>
 
                     <div class="box-footer">
-                        @if (data.GRP_CODE == "")
+                        @if (ViewBag.FieldValue == null)
                         {
                             <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save" onclick="fSaveUpDel('Save');">Save</button>
                         }

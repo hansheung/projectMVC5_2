@@ -15,8 +15,8 @@ namespace BRO.Controllers
 {
     public class HomeController : Controller
     {
-        private ConDB conn = new ConDB();
         public Proc proc = new Proc();
+        static string sSQL;
 
         public ActionResult Company()
         {
@@ -48,86 +48,77 @@ namespace BRO.Controllers
         {
             if (ModelState.IsValid)
             {
+                ConDB conn1 = new ConDB("MySQLConn1"); //===Correct
+
                 var sLOGIN_ID = Request.Form["txtLOGIN_ID"];
                 var sPASSWORD = Request.Form["txtPASSWORD"];
 
-                string sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + sLOGIN_ID + "'";
-                DataTable dt = conn.GetData(sSQL);
+                sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + sLOGIN_ID + "'";
+                using (MySqlDataReader dr = conn1.ExecuteReader(sSQL)) {   //=== Correct
 
-                if (dt.Rows.Count > 0)
-                {
-                    double ddtLastUse;
-
-                    string sdtLastUse = dt.Rows[0]["DATELASTUSE"].ToString();
-                    string sPassword = dt.Rows[0]["PASSWORD"].ToString();
-
-                    int iPassword = proc.pPassConv(sPASSWORD);
-
-                    if (DBNull.Value.Equals(dt.Rows[0]["DATELASTUSE"]))
+                    if (dr.Read())
                     {
-                        DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
-                        ddtLastUse = (double)(0 - (d2.ToOADate()));
-                    }
-                    else
-                    {
-                        DateTime d1 = DateTime.Parse(sdtLastUse);
-                        DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+                        double ddtLastUse;
+                        string sdtLastUse = dr["DATELASTUSE"].ToString();
+                        string sPassword = dr["PASSWORD"].ToString();
 
-                        ddtLastUse = (double)(d1.ToOADate() - d2.ToOADate());
-                    }
+                        int iPassword = proc.pPassConv(sPASSWORD);
 
-                    int iCheckPass = iPassword + (int)Math.Round(ddtLastUse);
-
-                    if (sPassword == iCheckPass.ToString())
-                    {
-                        DateTime d1 = DateTime.Now;
-                        DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
-
-                        double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
-                        int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
-
-                        string constr = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString;
-                        using (MySqlConnection con = new MySqlConnection(constr))
+                        if (DBNull.Value.Equals(dr["DATELASTUSE"]))
                         {
-                            using (MySqlCommand cmd = new MySqlCommand("UPDATE mainpass " +
-                                "set DATELASTUSE = @DATELASTUSE, " +
-                                "PASSWORD=@PASSWORD " +
-                                "WHERE LOGIN_ID = @LOGIN_ID"))
+                            DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+                            ddtLastUse = (double)(0 - (d2.ToOADate()));
+                        }
+                        else
+                        {
+                            DateTime d1 = DateTime.Parse(sdtLastUse);
+                            DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+
+                            ddtLastUse = (double)(d1.ToOADate() - d2.ToOADate());
+                        }
+
+                        int iCheckPass = iPassword + (int)Math.Round(ddtLastUse);
+
+                        if (sPassword == iCheckPass.ToString())
+                        {
+                            DateTime d1 = DateTime.Now;
+                            DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+
+                            double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
+                            int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
+
+                            Session["USER_ID"] = dr["LOGIN_ID"].ToString();
+                            Session["USER_NAME"] = dr["NAME"].ToString();
+
+                            sSQL = " UPDATE mainpass set" +
+                                    " DATELASTUSE='" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "' , " +
+                                    " PASSWORD='" + iUpdatedPass.ToString() + "'" +
+                                    " WHERE LOGIN_ID='" + viewModel.txtLOGIN_ID + "'";
+                            //conn1.Close(); //=== Correct
+                            conn1.ExecuteQuery(sSQL); //== Correct
+
+                            sSQL = " SELECT * FROM mainpath";
+                            using (MySqlDataReader drpath = conn1.ExeReader(sSQL))
                             {
-                                using (MySqlDataAdapter sda = new MySqlDataAdapter())
+                                if (drpath.Read())
                                 {
-                                    cmd.Parameters.AddWithValue("@DATELASTUSE", DateTime.Now);
-                                    cmd.Parameters.AddWithValue("@PASSWORD", iUpdatedPass.ToString());
-                                    cmd.Parameters.AddWithValue("@LOGIN_ID", sLOGIN_ID);
-                                    cmd.Connection = con;
-                                    con.Open();
-                                    cmd.ExecuteNonQuery();
-                                    con.Close();
+                                    Session["LENGTH1"] = drpath["LENGTHMENU"].ToString();
                                 }
                             }
-                        }
-
-                        Session["USER_ID"] = dt.Rows[0]["LOGIN_ID"].ToString();
-                        Session["USER_NAME"] = dt.Rows[0]["NAME"].ToString();
-
-                        string sSQL2 = " SELECT * FROM mainpath";
-                        DataTable dt2 = conn.GetData(sSQL2);
-                        if (dt2.Rows.Count > 0)
-                        {
-                            Session["LENGTH1"] = dt2.Rows[0]["LENGTHMENU"].ToString();
-                        }
-
                             return Json(new { status = "success", message = "Login Successful" });
 
+                        }
+                        else
+                        {
+                            return Json(new { status = "fail", message = "Password is incorrect", fieldname = "PASSWORD" });
+                        }
                     }
                     else
                     {
-                        return Json(new { status = "fail", message = "Password is incorrect", fieldname = "PASSWORD" });
+                        return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LOGIN_ID" });
                     }
-                }
-                else
-                {
-                    return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LOGIN_ID" });
+
+                    //conn1.Close();
                 }
             }
 

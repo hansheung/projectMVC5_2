@@ -40,20 +40,48 @@ namespace BRO.MyClass
             return dt;
         }
 
-        public void ExecuteQuery(string sSQL)
+        public void ExecuteQuery(string myExecuteQuery)  //=== Correct
         {
-            MySqlCommand command = new MySqlCommand("", connection);
-            command.Connection = connection;
-            command.CommandText = sSQL;
-            command.CommandType = CommandType.Text;
-            command.ExecuteNonQuery();
+            connection.Close();
+            MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, connection);
+            myCommand.Connection.Open();
+            myCommand.ExecuteNonQuery();
+            myCommand.Connection.Close();
         }
 
-        public MySqlDataReader ExecuteReader(string sSQL)
+        public void ExeQuery(string myExecuteQuery)
+        {
+            MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, connection);
+            myCommand.Connection.Open();
+            myCommand.ExecuteNonQuery();
+            myCommand.Connection.Close();
+        }
+
+        //public void ExecuteQuery(string sSQL)
+        //{
+        //    MySqlCommand command = new MySqlCommand("", connection);
+        //    command.Connection = connection;
+        //    command.CommandText = sSQL;
+        //    command.CommandType = CommandType.Text;
+        //    command.ExecuteNonQuery();
+        //    //int numRowsAffected = command.ExecuteNonQuery();
+        //    //Console.WriteLine(numRowsAffected);
+        //}
+
+        public MySqlDataReader ExecuteReader(string sSQL) //=== Correct
         {
             MySqlCommand command = new MySqlCommand(sSQL, connection);
+            //command.Connection.Open();
             MySqlDataReader dr = command.ExecuteReader();
             return dr;
+        }
+
+        public MySqlDataReader ExeReader(string sSQL)
+        {
+            MySqlCommand command = new MySqlCommand(sSQL, connection);
+            command.Connection.Open();
+            MySqlDataReader drpath = command.ExecuteReader();
+            return drpath;
         }
 
         private bool Open_Local_Connection()

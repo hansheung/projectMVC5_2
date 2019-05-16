@@ -12,19 +12,20 @@ namespace BRO.Controllers
 {
     public class PasswordController : Controller
     {
-        private ConDB conn = new ConDB();
+        private static ConDB conn1 = new ConDB("MySQLConn1");
         public Proc proc = new Proc();
 
+        static string sSQL;
         static int TOTAL_ROWS;
 
-        static readonly List<DataItem> _data = CreateData();
+        //static readonly List<DataItem> _data = CreateData();
 
         public class DataItem
         {
             public string AUTOINC { get; set; }
             public string LOGIN_ID { get; set; }
             public string NAME { get; set; }
-            public string DT_CREATE { get; set; }
+            public string DT_EDIT { get; set; }
         }
 
         public class DataTableData
@@ -39,36 +40,24 @@ namespace BRO.Controllers
         {
             List<DataItem> list = new List<DataItem>();
 
-            string mainconn = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString;
-            MySqlConnection mysqlconn = new MySqlConnection(mainconn);
-            string sSQL = " SELECT * FROM mainpass ";
-            MySqlCommand comm = new MySqlCommand(sSQL);
-            comm.Connection = mysqlconn;
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter(comm);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-
+            sSQL = " SELECT * FROM mainpass ";
+            DataTable dt = conn1.GetData(sSQL);
             TOTAL_ROWS = dt.Rows.Count;
 
-            mysqlconn.Open();
-            MySqlDataReader dr = comm.ExecuteReader();
-
-            while (dr.Read())
+            using (MySqlDataReader dr = conn1.ExecuteReader(sSQL))
             {
-                DataItem item = new DataItem();
+                while (dr.Read())
+                {
+                    DataItem item = new DataItem();
 
-                item.AUTOINC = dr["AUTOINC"].ToString();
-                item.LOGIN_ID = dr["LOGIN_ID"].ToString();
-                item.NAME = dr["NAME"].ToString();
-                item.DT_CREATE = dr["DT_CREATE"].ToString();
-                list.Add(item);
+                    item.AUTOINC = dr["AUTOINC"].ToString();
+                    item.LOGIN_ID = dr["LOGIN_ID"].ToString();
+                    item.NAME = dr["NAME"].ToString();
+                    item.DT_EDIT = dr["DT_EDIT"].ToString();
+                    list.Add(item);
+                }
             }
-
-
-            mysqlconn.Close();
             return list;
-
         }
 
         private int SortString(string s1, string s2, string sortDirection)
@@ -109,7 +98,7 @@ namespace BRO.Controllers
                     if (
                         dataItem.LOGIN_ID.ToUpper().Contains(search.ToUpper()) ||
                         dataItem.NAME.ToString().Contains(search.ToUpper()) ||
-                        dataItem.DT_CREATE.ToString().Contains(search.ToUpper())
+                        dataItem.DT_EDIT.ToString().Contains(search.ToUpper())
                         )
                     {
                         list.Add(dataItem);
@@ -129,7 +118,7 @@ namespace BRO.Controllers
             }
             else if (sortColumn == 3)
             {   // sort DT_CREATE
-                list.Sort((x, y) => SortDateTime(x.DT_CREATE, y.DT_CREATE, sortDirection));
+                list.Sort((x, y) => SortDateTime(x.DT_EDIT, y.DT_EDIT, sortDirection));
             }
 
             recordFiltered = list.Count;
@@ -208,38 +197,27 @@ namespace BRO.Controllers
 
         public ActionResult PasswordDet(string id)
         {
-            if (id is null)
+            if (string.IsNullOrEmpty(id))
             {
-
-                PasswordModel rec = new PasswordModel
-                {
-                    txtLOGIN_ID = "",
-                    txtNAME = "",
-                    txtPASSWORD = "",
-                };
-
-                ViewBag.FieldValue = rec;
                 return View();
             }
             else
             {
-                ConDB conn = new ConDB();
-                Proc proc = new Proc();
-
-                string sSQL = " SELECT * FROM mainpass where AUTOINC ='" + id + "'";
-                DataTable dt = conn.GetData(sSQL);
-                if (dt.Rows.Count > 0)
+                sSQL = " SELECT * FROM mainpass where AUTOINC ='" + id + "'";
+                using (MySqlDataReader reader = conn1.ExecuteReader(sSQL))
                 {
-                    PasswordModel rec = new PasswordModel
+                    if (reader.Read()) // If you're expecting more than one line, change this to while(reader.Read()).
                     {
-                        txtLOGIN_ID = dt.Rows[0]["LOGIN_ID"].ToString(),
-                        txtNAME = dt.Rows[0]["NAME"].ToString(),
-                        txtPASSWORD = dt.Rows[0]["PASSWORD"].ToString(),
-                    };
+                        PasswordModel rec = new PasswordModel
+                        {
+                            txtLOGIN_ID = reader["LOGIN_IN"].ToString(),
+                            txtNAME = reader["NAME"].ToString(),
+                            txtPASSWORD = reader["PASSWORD"].ToString(),
+                        };
 
-                    ViewBag.FieldValue = rec;
-                    return View();
-
+                        ViewBag.FieldValue = rec;
+                        return View();
+                    }
                 }
             }
 
@@ -249,153 +227,76 @@ namespace BRO.Controllers
         [HttpPost]
         public ActionResult PasswordDet(string id, PasswordModel viewModel)
         {
-            //ConDB conn = new ConDB();
-            //Proc proc = new Proc();
+            int iPassword = proc.pPassConv(viewModel.txtPASSWORD.ToString());
+
+            DateTime d1 = DateTime.Now;
+            DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+
+            double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
+            int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
+
             if (id == "Save")
             {
-                int iPassword = proc.pPassConv(viewModel.txtPASSWORD.ToString());
-
-                DateTime d1 = DateTime.Now;
-                DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
-
-                double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
-                int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
-
-                string sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + viewModel.txtLOGIN_ID + "'";
-                DataTable dt = conn.GetData(sSQL);
-                if (dt.Rows.Count > 0)
+                sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + viewModel.txtLOGIN_ID + "'";
+                using (MySqlDataReader reader = conn1.ExecuteReader(sSQL))
                 {
-                    return Json(new { status = "fail", message = "Login ID already exists", fieldname = "LOGIN_ID" });
-
-                }
-                else
-                {
-                    string constr = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString;
-                    using (MySqlConnection con = new MySqlConnection(constr))
+                    if (reader.Read())
                     {
-                        using (MySqlCommand cmd = new MySqlCommand(
-                                " INSERT into mainpass" +
-                                " (LOGIN_ID, NAME, PASSWORD,DATELASTUSE,EDIT_ID,DT_EDIT,CREATE_ID,DT_CREATE)" +
-                                " values " +
-                                " (@LOGIN_ID,@NAME, @PASSWORD, @DATELASTUSE, @EDIT_ID, @DT_EDIT, @CREATE_ID, @DT_CREATE)"
-                            ))
-                        {
-                            using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                            {
-                                cmd.Parameters.AddWithValue("@LOGIN_ID", viewModel.txtLOGIN_ID);
-                                cmd.Parameters.AddWithValue("@NAME", viewModel.txtNAME);
-                                cmd.Parameters.AddWithValue("@PASSWORD", iUpdatedPass);
-                                cmd.Parameters.AddWithValue("@DATELASTUSE", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@CREATE_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_CREATE", DateTime.Now);
-
-                                cmd.Connection = con;
-                                con.Open();
-                                cmd.ExecuteNonQuery();
-                                con.Close();
-
-                                return Json(new { status = "saved", message = viewModel.txtLOGIN_ID });
-
-                            }
-                        }
-                    }
-                }
-
-            }
-            else if  (id == "Update")
-            {
-                string constr = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
-                {
-                    if (string.IsNullOrEmpty(viewModel.txtPASSWORD))
-                    {
-                        using (MySqlCommand cmd = new MySqlCommand("UPDATE mainpass " +
-                        "set NAME=@NAME, " +
-                        "DATELASTUSE = @DATELASTUSE, " +
-                        "EDIT_ID=@EDIT_ID, " +
-                        "DT_EDIT=@DT_EDIT " +
-                        "WHERE LOGIN_ID = @LOGIN_ID"))
-                        {
-                            using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                            {
-                                cmd.Parameters.AddWithValue("@NAME", viewModel.txtNAME);
-                                cmd.Parameters.AddWithValue("@DATELASTUSE", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@LOGIN_ID", viewModel.txtLOGIN_ID);
-
-                                cmd.Connection = con;
-                                con.Open();
-                                cmd.ExecuteNonQuery();
-                                con.Close();
-
-                                return Json(new { status = "updated", message = viewModel.txtLOGIN_ID });
-                            }
-                        }
+                        return Json(new { status = "fail", message = "Login ID already exists", fieldname = "LOGIN_ID" });
                     }
                     else
                     {
-                        int iPassword = proc.pPassConv(viewModel.txtPASSWORD.ToString());
+                        sSQL =  " INSERT into mainpass" +
+                                " (LOGIN_ID, NAME, PASSWORD,DATELASTUSE,EDIT_ID,DT_EDIT,CREATE_ID,DT_CREATE)" +
+                                " values " +
+                                  viewModel.txtLOGIN_ID + " , " +
+                                  viewModel.txtNAME + " , " +
+                                  iUpdatedPass + " , " +
+                                  Session["USER_ID"] + " , " +
+                                  DateTime.Now + " , " +
+                                  Session["USER_ID"] + " , " +
+                                  DateTime.Now + " ) ";
 
-                        DateTime d1 = DateTime.Now;
-                        DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+                        conn1.ExecuteQuery(sSQL);
+                        conn1.Close();
 
-                        double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
-                        int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
-
-                        using (MySqlCommand cmd = new MySqlCommand("UPDATE mainpass " +
-                        "set NAME=@NAME, " +
-                        "PASSWORD=@PASSWORD, " +
-                        "DATELASTUSE = @DATELASTUSE, " +
-                        "EDIT_ID=@EDIT_ID, " +
-                        "DT_EDIT=@DT_EDIT " +
-                        "WHERE LOGIN_ID = @LOGIN_ID"))
-                        {
-                            using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                            {
-                                cmd.Parameters.AddWithValue("@NAME", viewModel.txtNAME);
-                                cmd.Parameters.AddWithValue("@PASSWORD", iUpdatedPass);
-                                cmd.Parameters.AddWithValue("@DATELASTUSE", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@EDIT_ID", Session["USER_ID"]);
-                                cmd.Parameters.AddWithValue("@DT_EDIT", DateTime.Now);
-                                cmd.Parameters.AddWithValue("@LOGIN_ID", viewModel.txtLOGIN_ID);
-
-                                cmd.Connection = con;
-                                con.Open();
-                                cmd.ExecuteNonQuery();
-                                con.Close();
-
-                                return Json(new { status = "updated", message = viewModel.txtLOGIN_ID });
-
-                            }
-                        }
+                        return Json(new { status = "saved", message = viewModel.txtLOGIN_ID });
                     }
                 }
             }
+            else if (id == "Update")
+            {
+                string sUpdatePass;
 
+                if (!string.IsNullOrEmpty(viewModel.txtPASSWORD))
+                {
+                    sUpdatePass = "PASSWORD=" + iUpdatedPass + ",";
+                }
+                else
+                {
+                    sUpdatePass = "";
+                }
+
+                sSQL =  " UPDATE mainpass set " +
+                        " NAME=" + viewModel.txtNAME + " , " + sUpdatePass +
+                        " EDIT_ID= " + Session["USER_ID"] + " , " +
+                        " DT_EDIT= " + DateTime.Now +
+                        " WHERE LOGIN_ID = " + viewModel.txtLOGIN_ID;
+
+                    conn1.ExecuteQuery(sSQL);
+                    conn1.Close();
+                    return Json(new { status = "updated", message = viewModel.txtLOGIN_ID });
+            }
             else
             {
-                string constr = ConfigurationManager.ConnectionStrings["MySQLConnection"].ConnectionString;
-                using (MySqlConnection con = new MySqlConnection(constr))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("DELETE from mainpass " +
-                            "WHERE LOGIN_ID = @LOGIN_ID"))
-                    {
-                        using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                        {
-                            cmd.Parameters.AddWithValue("@LOGIN_ID", viewModel.txtLOGIN_ID);
+                sSQL = " DELETE FROM mainpass" +
+                        " WHERE LOGIN_ID = " + viewModel.txtLOGIN_ID;
 
-                            cmd.Connection = con;
-                            con.Open();
-                            cmd.ExecuteNonQuery();
-                            con.Close();
+                conn1.ExecuteQuery(sSQL);
+                conn1.Close();
 
-                            return Json(new { status = "deleted", message = viewModel.txtLOGIN_ID });
-                        }
-                    }
-                }
+                return Json(new { status = "deleted", message = viewModel.txtLOGIN_ID });
+
             }
         }
 
@@ -407,12 +308,10 @@ namespace BRO.Controllers
         [HttpPost]
         public ActionResult ForgotPassword(PasswordModel model)
         {
-            if (ModelState.IsValid)
+            sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + model.txtLOGIN_ID + "'";
+            using (MySqlDataReader reader = conn1.ExecuteReader(sSQL))
             {
-                string sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + model.txtLOGIN_ID + "'";
-                DataTable dt = conn.GetData(sSQL);
-
-                if (dt.Rows.Count > 0)
+                if (reader.Read())
                 {
                     return Json(new { status = "success", message = "Successfully saved" });
 
@@ -422,8 +321,6 @@ namespace BRO.Controllers
                     return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LOGIN_ID" });
                 }
             }
-
-            return Json(model, "json");
         }
     }
 }

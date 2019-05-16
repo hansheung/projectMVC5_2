@@ -23,13 +23,13 @@
                 {
                     @Html.AntiForgeryToken()
                     //if(ViewBag.Message != null) {
-                    var data = ViewBag.FieldValue;
+                    //var data = ViewBag.FieldValue;
                     //}
                     <div class="box-body">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Company Name : </label>
                             <div id="divCoName" class="col-sm-4">
-                                <input class="form-control" id="txtCoName" name="txtCoName" value="@data.txtCoName"
+                                <input class="form-control" id="txtCoName" name="txtCoName" value="@ViewBag.FieldValue.txtCoName"
                                     maxlength="30" primaryKey>
                                 <span id="errorCoName" class="help-block"></span>
                             </div>
@@ -37,13 +37,13 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Address : </label>
                             <div id="divAdd1" class="col-sm-6">
-                                <input class="form-control" id="txtAdd1" name="txtAdd1" maxlength="40" value="@data.txtAdd1">
+                                <input class="form-control" id="txtAdd1" name="txtAdd1" maxlength="40" value="@ViewBag.FieldValue.txtAdd1">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Length Menu : </label>
                             <div id="divAdd1" class="col-sm-6">
-                                <input class="form-control" id="txtLengthMenu" name="txtLengthMenu" maxlength="3" value="@data.txtLengthMenu">
+                                <input class="form-control" id="txtLengthMenu" name="txtLengthMenu" maxlength="3" value="@ViewBag.FieldValue.txtLengthMenu">
                             </div>
                         </div>
                         
