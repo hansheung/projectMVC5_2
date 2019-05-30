@@ -31,8 +31,21 @@ namespace BRO.MyClass
             }
         }
 
+        public void execute(string sSQL, string sMySQLConn)
+        {
+            string constr = ConfigurationManager.ConnectionStrings[sMySQLConn].ConnectionString;
+            MySqlConnection MyConn = new MySqlConnection(constr);
+            MySqlCommand MyCommand = new MySqlCommand(sSQL, MyConn);
+            MySqlDataReader MyReader;
+            MyConn.Open();
+            MyReader = MyCommand.ExecuteReader();
+            MyConn.Close();
+        }
+
+
         public DataTable GetData(string sSQL)
         {
+           
             MySqlCommand command = new MySqlCommand(sSQL, connection);
             MySqlDataAdapter adapter = new MySqlDataAdapter(command);
             DataTable dt = new DataTable();
@@ -42,7 +55,7 @@ namespace BRO.MyClass
 
         public void ExecuteQuery(string myExecuteQuery)  //=== Correct
         {
-            connection.Close();
+            //connection.Close();
             MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, connection);
             myCommand.Connection.Open();
             myCommand.ExecuteNonQuery();
