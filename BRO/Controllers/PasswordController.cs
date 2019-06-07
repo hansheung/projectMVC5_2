@@ -12,7 +12,7 @@ namespace BRO.Controllers
 {
     public class PasswordController : Controller
     {
-        private static ConDB conn1 = new ConDB("MySQLConn1");
+        private static ConDB conn1 = new ConDB("bronet");
         public Proc proc = new Proc();
 
         static string sSQL;
@@ -40,12 +40,14 @@ namespace BRO.Controllers
         {
             List<DataItem> list = new List<DataItem>();
 
-            sSQL = " SELECT * FROM mainpass ";
-            DataTable dt = conn1.GetData(sSQL);
-            TOTAL_ROWS = dt.Rows.Count;
-
-            using (MySqlDataReader dr = conn1.ExecuteReader(sSQL))
+            try
             {
+                sSQL = "SELECT * FROM mainpass";
+
+                DataTable dt = conn1.GetData(sSQL);
+                TOTAL_ROWS = dt.Rows.Count;
+
+                MySqlDataReader dr = conn1.ExecuteReader(sSQL);
                 while (dr.Read())
                 {
                     DataItem item = new DataItem();
@@ -56,7 +58,13 @@ namespace BRO.Controllers
                     item.DT_EDIT = dr["DT_EDIT"].ToString();
                     list.Add(item);
                 }
+
             }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+
             return list;
         }
 
@@ -79,20 +87,53 @@ namespace BRO.Controllers
             return sortDirection == "asc" ? d1.CompareTo(d2) : d2.CompareTo(d1);
         }
 
-        // here we simulate SQL search, sorting and paging operations
-        // !!!! DO NOT DO THIS IN REAL APPLICATION !!!!
-        private List<DataItem> FilterData(ref int recordFiltered, int start, int length, string search, int sortColumn, string sortDirection)
+        private List<DataItem> FilterData(ref int recordFiltered, int start, int length, string search, string searchLOGIN_ID, string searchNAME, string searchDT_EDIT, int sortColumn, string sortDirection)
         {
             List<DataItem> _data = CreateData();
 
             List<DataItem> list = new List<DataItem>();
-            if (search == null)
+
+            if (!string.IsNullOrEmpty(searchLOGIN_ID))
             {
-                list = _data;
+                foreach (DataItem dataItem in _data)
+                {
+                    if (
+                        dataItem.LOGIN_ID.ToUpper().Contains(searchLOGIN_ID.ToUpper())
+                        )
+                    {
+                        list.Add(dataItem);
+                    }
+                }
             }
-            else
+
+            if (!string.IsNullOrEmpty(searchNAME))
             {
-                // simulate search
+                foreach (DataItem dataItem in _data)
+                {
+                    if (
+                        dataItem.NAME.ToUpper().Contains(searchNAME.ToUpper())
+                        )
+                    {
+                        list.Add(dataItem);
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(searchDT_EDIT))
+            {
+                foreach (DataItem dataItem in _data)
+                {
+                    if (
+                        dataItem.DT_EDIT.ToUpper().Contains(searchDT_EDIT.ToUpper())
+                        )
+                    {
+                        list.Add(dataItem);
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(searchLOGIN_ID) && !string.IsNullOrEmpty(searchNAME) && !string.IsNullOrEmpty(searchDT_EDIT))
+            {
                 foreach (DataItem dataItem in _data)
                 {
                     if (
@@ -104,6 +145,69 @@ namespace BRO.Controllers
                         list.Add(dataItem);
                     }
                 }
+            }
+
+            if (!string.IsNullOrEmpty(searchLOGIN_ID) && !string.IsNullOrEmpty(searchNAME))
+            {
+                foreach (DataItem dataItem in _data)
+                {
+                    if (
+                        dataItem.LOGIN_ID.ToUpper().Contains(searchLOGIN_ID.ToUpper()) ||
+                        dataItem.NAME.ToUpper().Contains(searchNAME.ToUpper())
+                        )
+                    {
+                        list.Add(dataItem);
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(searchLOGIN_ID) && !string.IsNullOrEmpty(searchDT_EDIT))
+            {
+                foreach (DataItem dataItem in _data)
+                {
+                    if (
+                        dataItem.LOGIN_ID.ToUpper().Contains(searchLOGIN_ID.ToUpper()) ||
+                        dataItem.DT_EDIT.ToUpper().Contains(searchDT_EDIT.ToUpper())
+                        )
+                    {
+                        list.Add(dataItem);
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(searchNAME) && !string.IsNullOrEmpty(searchDT_EDIT))
+            {
+
+                foreach (DataItem dataItem in _data)
+                {
+                    if (
+                        dataItem.NAME.ToUpper().Contains(searchNAME.ToUpper()) ||
+                        dataItem.DT_EDIT.ToUpper().Contains(searchDT_EDIT.ToUpper())
+                        )
+                    {
+                        list.Add(dataItem);
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                foreach (DataItem dataItem in _data)
+                {
+                    if (
+                        dataItem.LOGIN_ID.ToUpper().Contains(search.ToUpper()) ||
+                        dataItem.NAME.ToString().Contains(search.ToUpper()) ||
+                        dataItem.DT_EDIT.ToString().Contains(search.ToUpper())
+                        )
+                    {
+                        list.Add(dataItem);
+                    }
+                }
+            }
+            
+            if(string.IsNullOrEmpty(search) && string.IsNullOrEmpty(searchLOGIN_ID) && string.IsNullOrEmpty(searchNAME) && string.IsNullOrEmpty(searchDT_EDIT))
+            {
+                list = _data;
             }
 
             // simulate sort
@@ -132,31 +236,25 @@ namespace BRO.Controllers
         // this ajax function is called by the client for each draw of the information on the page (i.e. when paging, ordering, searching, etc.). 
         public ActionResult AjaxGetJsonData(int draw, int start, int length)
         {
-            //string search4 = Request.Form.GetValues("search[value]")[0];
-            //string draw4 = Request.Form.GetValues("draw")[0];
-            //string order4 = Request.Form.GetValues("order[0][column]")[0];
-            //string orderDir4 = Request.Form.GetValues("order[0][dir]")[0];
-            //System.Diagnostics.Debug.WriteLine(" search4 : " + search4);
-            //System.Diagnostics.Debug.WriteLine(" draw4 : " + draw4);
-            //System.Diagnostics.Debug.WriteLine(" oreder4 : " + order4);
-            //System.Diagnostics.Debug.WriteLine(" direction4 : " + orderDir4);
-
             System.Diagnostics.Debug.WriteLine(" Draw : " + draw);
 
-            var searchParam = Request.QueryString["columns[1]search[value]"];
-            System.Diagnostics.Debug.WriteLine(" RequestQueryString : " + searchParam);
+            var searchLOGIN_ID = Request.QueryString["columns[1][search][value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestParam1 : " + searchLOGIN_ID);
 
-            string search1 = Request.Form["search[value]"];
-            System.Diagnostics.Debug.WriteLine(" RequestForm1 : " + search1);
+            var searchNAME = Request.QueryString["columns[2][search][value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestParam2 : " + searchNAME);
 
-            string search2 = Request.QueryString["search[value]"];
-            System.Diagnostics.Debug.WriteLine(" RequestQueryString2 : " + search2);
+            var searchDT_EDIT = Request.QueryString["columns[3][search][value]"];
+            System.Diagnostics.Debug.WriteLine(" RequestParam3 : " + searchDT_EDIT);
 
-            string whichcolumn = Request.QueryString["order[0][column]"];
-            System.Diagnostics.Debug.WriteLine(" Which Column : " + whichcolumn);
+            //string whichcolumn = Request.QueryString["order[0][column]"];
+            //System.Diagnostics.Debug.WriteLine(" Sort by what Column : " + whichcolumn);
+
+            //string whichdirection = Request.QueryString["order[0][dir]"];
+            //System.Diagnostics.Debug.WriteLine(" Sort by which Direction : " + whichdirection);
 
             string search = Request.QueryString["search[value]"];
-            System.Diagnostics.Debug.WriteLine(" RequestQueryString : " + search);
+            System.Diagnostics.Debug.WriteLine(" search : " + search);
 
             int sortColumn = -1;
             string sortDirection = "asc";
@@ -179,15 +277,10 @@ namespace BRO.Controllers
             dataTableData.draw = draw;
             dataTableData.recordsTotal = TOTAL_ROWS;
             int recordsFiltered = 0;
-            dataTableData.data = FilterData(ref recordsFiltered, start, length, search, sortColumn, sortDirection);
+            dataTableData.data = FilterData(ref recordsFiltered, start, length, search, searchLOGIN_ID, searchNAME, searchDT_EDIT, sortColumn, sortDirection);
             dataTableData.recordsFiltered = recordsFiltered;
 
             return Json(dataTableData, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult Index()
-        {
-            return View();
         }
 
         public ActionResult Password()
@@ -199,25 +292,38 @@ namespace BRO.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
+                PasswordModel rec = new PasswordModel
+                {
+                    txtLOGIN_ID = "",
+                    txtNAME = "",
+                    //txtPASSWORD = "",
+                };
+
+                ViewBag.FieldValue = rec;
                 return View();
             }
             else
             {
-                sSQL = " SELECT * FROM mainpass where AUTOINC ='" + id + "'";
-                using (MySqlDataReader reader = conn1.ExecuteReader(sSQL))
+                try
                 {
-                    if (reader.Read()) // If you're expecting more than one line, change this to while(reader.Read()).
+                    sSQL = " SELECT * FROM mainpass where AUTOINC ='" + id + "'";
+                    MySqlDataReader dr = conn1.ExecuteReader(sSQL);
+                    if (dr.Read())
                     {
                         PasswordModel rec = new PasswordModel
                         {
-                            txtLOGIN_ID = reader["LOGIN_IN"].ToString(),
-                            txtNAME = reader["NAME"].ToString(),
-                            txtPASSWORD = reader["PASSWORD"].ToString(),
+                            txtLOGIN_ID = dr["LOGIN_ID"].ToString(),
+                            txtNAME = dr["NAME"].ToString(),
+                           // txtPASSWORD = dr["PASSWORD"].ToString(),
                         };
 
                         ViewBag.FieldValue = rec;
                         return View();
                     }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
                 }
             }
 
@@ -227,42 +333,49 @@ namespace BRO.Controllers
         [HttpPost]
         public ActionResult PasswordDet(string id, PasswordModel viewModel)
         {
-            int iPassword = proc.pPassConv(viewModel.txtPASSWORD.ToString());
-
-            DateTime d1 = DateTime.Now;
-            DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
-
-            double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
-            int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
-
             if (id == "Save")
             {
-                sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + viewModel.txtLOGIN_ID + "'";
-                using (MySqlDataReader reader = conn1.ExecuteReader(sSQL))
+
+                int iPassword = proc.pPassConv(viewModel.txtPASSWORD.ToString());
+
+                DateTime d1 = DateTime.Now;
+                DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+
+                double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
+                int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
+
+                try
                 {
-                    if (reader.Read())
+                    sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + viewModel.txtLOGIN_ID + "'";
+                    MySqlDataReader dr = conn1.ExecuteReader(sSQL);
+                    if (dr.Read())
                     {
                         return Json(new { status = "fail", message = "Login ID already exists", fieldname = "LOGIN_ID" });
                     }
                     else
                     {
-                        sSQL =  " INSERT into mainpass" +
+                        sSQL = " INSERT into mainpass" +
                                 " (LOGIN_ID, NAME, PASSWORD,DATELASTUSE,EDIT_ID,DT_EDIT,CREATE_ID,DT_CREATE)" +
-                                " values " +
-                                  viewModel.txtLOGIN_ID + " , " +
-                                  viewModel.txtNAME + " , " +
-                                  iUpdatedPass + " , " +
-                                  Session["USER_ID"] + " , " +
-                                  DateTime.Now + " , " +
-                                  Session["USER_ID"] + " , " +
-                                  DateTime.Now + " ) ";
-
-                        conn1.ExecuteQuery(sSQL);
-                        conn1.Close();
+                                " values ( " +
+                                "'" +  viewModel.txtLOGIN_ID + "', " +
+                                "'" + viewModel.txtNAME + "', " +
+                                "'" + iUpdatedPass + "', " +
+                                "'" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                                "'" + Session["USER_ID"] + "' , " +
+                                "'" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                                "'" + Session["USER_ID"] + "', " +
+                                "'" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "' ) ";
+                        conn1.execute(sSQL);
 
                         return Json(new { status = "saved", message = viewModel.txtLOGIN_ID });
                     }
                 }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
+
+                return View();
             }
             else if (id == "Update")
             {
@@ -270,6 +383,14 @@ namespace BRO.Controllers
 
                 if (!string.IsNullOrEmpty(viewModel.txtPASSWORD))
                 {
+                    int iPassword = proc.pPassConv(viewModel.txtPASSWORD.ToString());
+
+                    DateTime d1 = DateTime.Now;
+                    DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+
+                    double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
+                    int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
+
                     sUpdatePass = "PASSWORD=" + iUpdatedPass + ",";
                 }
                 else
@@ -277,26 +398,22 @@ namespace BRO.Controllers
                     sUpdatePass = "";
                 }
 
-                sSQL =  " UPDATE mainpass set " +
-                        " NAME=" + viewModel.txtNAME + " , " + sUpdatePass +
-                        " EDIT_ID= " + Session["USER_ID"] + " , " +
-                        " DT_EDIT= " + DateTime.Now +
-                        " WHERE LOGIN_ID = " + viewModel.txtLOGIN_ID;
+                sSQL =  " UPDATE mainpass set" +
+                        " NAME= '" + viewModel.txtNAME + "'," +
+                            sUpdatePass +
+                        " DATELASTUSE='" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "'" +
+                        " WHERE LOGIN_ID='" + viewModel.txtLOGIN_ID + "'";
+                        conn1.execute(sSQL);
 
-                    conn1.ExecuteQuery(sSQL);
-                    conn1.Close();
-                    return Json(new { status = "updated", message = viewModel.txtLOGIN_ID });
+                return Json(new { status = "updated", message = viewModel.txtLOGIN_ID });
             }
             else
             {
                 sSQL = " DELETE FROM mainpass" +
-                        " WHERE LOGIN_ID = " + viewModel.txtLOGIN_ID;
-
-                conn1.ExecuteQuery(sSQL);
-                conn1.Close();
+                        " WHERE LOGIN_ID = '" + viewModel.txtLOGIN_ID + "'";
+                conn1.execute(sSQL);
 
                 return Json(new { status = "deleted", message = viewModel.txtLOGIN_ID });
-
             }
         }
 
@@ -306,21 +423,27 @@ namespace BRO.Controllers
         }
 
         [HttpPost]
-        public ActionResult ForgotPassword(PasswordModel model)
+        public ActionResult ForgotPassword(PasswordModel viewModel)
         {
-            sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + model.txtLOGIN_ID + "'";
-            using (MySqlDataReader reader = conn1.ExecuteReader(sSQL))
+            try
             {
-                if (reader.Read())
+                sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + viewModel.txtLOGIN_ID + "'";
+                MySqlDataReader dr = conn1.ExecuteReader(sSQL);
+                if (dr.Read())
                 {
                     return Json(new { status = "success", message = "Successfully saved" });
-
                 }
                 else
                 {
                     return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LOGIN_ID" });
                 }
             }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+
+            return View();
         }
     }
 }

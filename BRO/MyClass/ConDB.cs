@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BRO.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,27 +12,29 @@ namespace BRO.MyClass
 {
     public class ConDB
     {
-        private bool connection_open;
-        private MySqlConnection connection;
+        static string sMySQLConn;
 
-        public ConDB(string sMySQLConn)
+        public ConDB(string sDatabase)
         {
-            connection_open = false;
-
-            connection = new MySqlConnection();
-            connection.ConnectionString = ConfigurationManager.ConnectionStrings[sMySQLConn].ConnectionString;
-            
-            if (Open_Local_Connection())
+            if (sDatabase == "bronet")
             {
-                connection_open = true;
+                sMySQLConn = "MySQLConn1";
             }
             else
             {
-                Console.Error.WriteLine("Error - Database Connection Error");
+                sMySQLConn = "MySQLConn2";
             }
         }
 
-        public void execute(string sSQL, string sMySQLConn)
+        //public void save(string sTable, PasswordModel viewModel)
+        //{
+        //    foreach (string Fieldname in sFieldName)
+        //    {
+
+        //    }
+        //}
+
+        public void execute(string sSQL)
         {
             string constr = ConfigurationManager.ConnectionStrings[sMySQLConn].ConnectionString;
             MySqlConnection MyConn = new MySqlConnection(constr);
@@ -42,11 +45,21 @@ namespace BRO.MyClass
             MyConn.Close();
         }
 
+        public MySqlDataReader ExecuteReader(string sSQL) //=== Correct
+        {
+            string constr = ConfigurationManager.ConnectionStrings[sMySQLConn].ConnectionString;
+            MySqlConnection MyConn = new MySqlConnection(constr);
+            MySqlCommand command = new MySqlCommand(sSQL, MyConn);
+            command.Connection.Open();
+            MySqlDataReader dr = command.ExecuteReader();
+            return dr;
+        }
 
         public DataTable GetData(string sSQL)
         {
-           
-            MySqlCommand command = new MySqlCommand(sSQL, connection);
+            string constr = ConfigurationManager.ConnectionStrings[sMySQLConn].ConnectionString;
+            MySqlConnection MyConn = new MySqlConnection(constr);
+            MySqlCommand command = new MySqlCommand(sSQL, MyConn);
             MySqlDataAdapter adapter = new MySqlDataAdapter(command);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
@@ -56,7 +69,9 @@ namespace BRO.MyClass
         public void ExecuteQuery(string myExecuteQuery)  //=== Correct
         {
             //connection.Close();
-            MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, connection);
+            string constr = ConfigurationManager.ConnectionStrings["MySQLConn1"].ConnectionString;
+            MySqlConnection MyConn = new MySqlConnection(constr);
+            MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, MyConn);
             myCommand.Connection.Open();
             myCommand.ExecuteNonQuery();
             myCommand.Connection.Close();
@@ -64,44 +79,27 @@ namespace BRO.MyClass
 
         public void ExeQuery(string myExecuteQuery)
         {
-            MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, connection);
-            myCommand.Connection.Open();
-            myCommand.ExecuteNonQuery();
-            myCommand.Connection.Close();
+            //MySqlCommand myCommand = new MySqlCommand(myExecuteQuery, connection);
+            //myCommand.Connection.Open();
+            //myCommand.ExecuteNonQuery();
+            //myCommand.Connection.Close();
         }
 
-        //public void ExecuteQuery(string sSQL)
+       
+
+        //public MySqlDataReader ExeReader(string sSQL)
         //{
-        //    MySqlCommand command = new MySqlCommand("", connection);
-        //    command.Connection = connection;
-        //    command.CommandText = sSQL;
-        //    command.CommandType = CommandType.Text;
-        //    command.ExecuteNonQuery();
-        //    //int numRowsAffected = command.ExecuteNonQuery();
-        //    //Console.WriteLine(numRowsAffected);
+        //    //MySqlCommand command = new MySqlCommand(sSQL, connection);
+        //    //command.Connection.Open();
+        //    //MySqlDataReader drpath = command.ExecuteReader();
+        //    //return drpath;
         //}
-
-        public MySqlDataReader ExecuteReader(string sSQL) //=== Correct
-        {
-            MySqlCommand command = new MySqlCommand(sSQL, connection);
-            //command.Connection.Open();
-            MySqlDataReader dr = command.ExecuteReader();
-            return dr;
-        }
-
-        public MySqlDataReader ExeReader(string sSQL)
-        {
-            MySqlCommand command = new MySqlCommand(sSQL, connection);
-            command.Connection.Open();
-            MySqlDataReader drpath = command.ExecuteReader();
-            return drpath;
-        }
 
         private bool Open_Local_Connection()
         {
             try
             {
-                connection.Open();
+                //connection.Open();
                 return true;
             }
             catch (Exception e)
@@ -115,7 +113,7 @@ namespace BRO.MyClass
         {
             try
             {
-                connection.Close();
+                //connection.Close();
                 
             }
             catch (Exception e)

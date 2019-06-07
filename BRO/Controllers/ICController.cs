@@ -38,6 +38,11 @@ namespace BRO.Controllers
             return View();
         }
 
+        public ActionResult Location()
+        {
+            return View();
+        }
+
         public ActionResult Currency(string id)
         {
             if (id == "Deb")
@@ -584,14 +589,14 @@ namespace BRO.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-            //    ICModel rec = new ICModel
-            //    {
-            //        GRP_CODE = "",
-            //        GRP_PART = "",
-            //        DT_EDIT = "",
-            //    };
+                ICModel rec = new ICModel
+                {
+                    GRP_CODE = "",
+                    GRP_PART = "",
+                    DT_EDIT = "",
+                };
 
-            //    ViewBag.FieldValue = rec;
+                ViewBag.FieldValue = rec;
                 return View();
             }
             else

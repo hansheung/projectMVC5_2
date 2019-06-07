@@ -22,13 +22,13 @@
                 {
                     @Html.AntiForgeryToken()
                     //if(ViewBag.Message != null) {
-                    //var data = ViewBag.FieldValue;
+                    var data = ViewBag.FieldValue;
                     //}
                     <div class="box-body">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Group Code : </label>
                             <div id="divGRP_CODE" class="col-sm-3">
-                                @if (ViewBag.FieldValue == null)
+                                @if (string.IsNullOrEmpty(data.GRP_CODE))
                                 {
                                     <input class="form-control" id="GRP_CODE" name="GRP_CODE"
                                            onfocus="clearError('GRP_CODE');" maxlength="10" primaryKey>
@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="box-footer">
-                        @if (ViewBag.FieldValue == null)
+                        @if (string.IsNullOrEmpty(data.GRP_CODE))
                         {
                             <button type="button" id="btnSubmit" class="btn btn-info pull-right" value="Save" onclick="fSaveUpDel('Save');">Save</button>
                         }

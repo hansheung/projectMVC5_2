@@ -16,6 +16,7 @@ namespace BRO.Controllers
     public class HomeController : Controller
     {
         public Proc proc = new Proc();
+        public ConDB conn1 = new ConDB("bronet");
         static string sSQL;
 
         public ActionResult Company()
@@ -52,13 +53,8 @@ namespace BRO.Controllers
 
             try
             {
-                string constr = ConfigurationManager.ConnectionStrings["MySQLConn1"].ConnectionString;
                 sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + sLOGIN_ID + "'";
-                MySqlConnection MyConn = new MySqlConnection(constr);
-                MySqlCommand MyCommand = new MySqlCommand(sSQL, MyConn);
-                MySqlDataReader dr;
-                MyConn.Open();
-                dr = MyCommand.ExecuteReader();
+                MySqlDataReader dr = conn1.ExecuteReader(sSQL);
 
                 if (dr.Read())
                 {
@@ -100,29 +96,14 @@ namespace BRO.Controllers
                                 " DATELASTUSE='" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "' , " +
                                 " PASSWORD='" + iUpdatedPass.ToString() + "'" +
                                 " WHERE LOGIN_ID='" + viewModel.txtLOGIN_ID + "'";
-
-                            public ConDB conn = new ConDB("MySQLConn1");
-                            conn.execute(sSQL,"MySqlConn1");
-
-                            //MySqlConnection MyConn2 = new MySqlConnection(constr);
-                            //MySqlCommand MyCommand2 = new MySqlCommand(sSQL, MyConn2);
-                            //MySqlDataReader MyReader2;
-                            //MyConn2.Open();
-                            //MyReader2 = MyCommand2.ExecuteReader();
-                            //MyConn2.Close();
+                            conn1.execute(sSQL);
 
                             sSQL = " SELECT * FROM mainpath";
-                            MySqlConnection MyConn3 = new MySqlConnection(constr);
-                            MySqlCommand MyCommand3 = new MySqlCommand(sSQL, MyConn3);
-                            MySqlDataReader dr3;
-                            MyConn3.Open();
-                            dr3 = MyCommand3.ExecuteReader();
-
-                            if (dr3.Read())
+                            MySqlDataReader dr1 = conn1.ExecuteReader(sSQL);
+                            if (dr1.Read())
                             {
-                                Session["LENGTH1"] = dr3["LENGTHMENU"].ToString();
+                                Session["LENGTH1"] = dr1["LENGTHMENU"].ToString();
                             }
-                            MyConn3.Close();
 
                             return Json(new { status = "success", message = "Login Successful" });
 
@@ -131,17 +112,6 @@ namespace BRO.Controllers
                         {
                             System.Diagnostics.Debug.WriteLine(ex);
                         }
-
-
-                        //sSQL = " SELECT * FROM mainpath";
-                        //using (MySqlDataReader drpath = conn1.ExeReader(sSQL))
-                        //{
-                        //    if (drpath.Read())
-                        //    {
-                        //        Session["LENGTH1"] = drpath["LENGTHMENU"].ToString();
-                        //    }
-                        //}
-                                    
 
                     }
                     else
@@ -153,13 +123,12 @@ namespace BRO.Controllers
                 {
                     return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LOGIN_ID" });
                 }
-                MyConn.Close();
+
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex);
             }
-
 
             return Json(viewModel, "json");
         }

@@ -13,15 +13,17 @@ namespace BRO.Controllers
 {
     public class ProgramController : Controller
     {
-        private static ConDB conn1 = new ConDB("MySQLConn1");
+        public ConDB conn1 = new ConDB("bronet");
         static string sSQL;
 
         public ActionResult Program()
         {
-            sSQL = " SELECT * FROM mainpath";
-            using (MySqlDataReader dr = conn1.ExecuteReader(sSQL))
+            try
             {
-                if (dr.Read()) // If you're expecting more than one line, change this to while(reader.Read()).
+                sSQL = " SELECT * FROM mainpath";
+                MySqlDataReader dr = conn1.ExecuteReader(sSQL);
+
+                if (dr.Read())
                 {
                     ProgramModel rec = new ProgramModel
                     {
@@ -34,6 +36,10 @@ namespace BRO.Controllers
                     return View();
                 }
             }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
 
             return View();
         }
@@ -42,15 +48,13 @@ namespace BRO.Controllers
         public ActionResult Program( ProgramModel viewModel )
         {
             sSQL =  " UPDATE mainpath set " +
-                " CONAME=" + viewModel.txtCoName +
-                " ADD1 = " + viewModel.txtAdd1 + " , " +
-                " LENGTHMENU = " + viewModel.txtLengthMenu + " , " +
-                " EDIT_ID= " + Session["USER_ID"] + " , " +
-                " DT_EDIT= " + DateTime.Now +
-                " WHERE CONAME = " + viewModel.txtCoName;
-
-            conn1.ExecuteQuery(sSQL);
-            conn1.Close();
+                    " CONAME='" + viewModel.txtCoName + "', " +
+                    " ADD1 = '" + viewModel.txtAdd1 + "', " +
+                    " LENGTHMENU = '" + viewModel.txtLengthMenu + "', " +
+                    " EDIT_ID= '" + Session["USER_ID"] + "', " +
+                    " DT_EDIT= '" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "'" +
+                    " WHERE CONAME = '" + viewModel.txtCoName + "'";
+                    conn1.execute(sSQL);
 
             Session["LENGTH1"] = viewModel.txtLengthMenu;
 
