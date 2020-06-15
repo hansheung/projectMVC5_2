@@ -51,83 +51,76 @@ namespace BRO.Controllers
             var sLOGIN_ID = Request.Form["txtLOGIN_ID"];
             var sPASSWORD = Request.Form["txtPASSWORD"];
 
-            try
+            
+            sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + sLOGIN_ID + "'";
+            MySqlDataReader dr = conn1.ExecuteReader(sSQL);
+
+            if (dr.Read())
             {
-                sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + sLOGIN_ID + "'";
-                MySqlDataReader dr = conn1.ExecuteReader(sSQL);
+                double ddtLastUse;
+                string sdtLastUse = dr["DATELASTUSE"].ToString();
+                string sPassword = dr["PASSWORD"].ToString();
 
-                if (dr.Read())
+                int iPassword = proc.pPassConv(sPASSWORD);
+
+                if (DBNull.Value.Equals(dr["DATELASTUSE"]))
                 {
-                    double ddtLastUse;
-                    string sdtLastUse = dr["DATELASTUSE"].ToString();
-                    string sPassword = dr["PASSWORD"].ToString();
-
-                    int iPassword = proc.pPassConv(sPASSWORD);
-
-                    if (DBNull.Value.Equals(dr["DATELASTUSE"]))
-                    {
-                        DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
-                        ddtLastUse = (double)(0 - (d2.ToOADate()));
-                    }
-                    else
-                    {
-                        DateTime d1 = DateTime.Parse(sdtLastUse);
-                        DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
-
-                        ddtLastUse = (double)(d1.ToOADate() - d2.ToOADate());
-                    }
-
-                    int iCheckPass = iPassword + (int)Math.Round(ddtLastUse);
-
-                    if (sPassword == iCheckPass.ToString())
-                    {
-                        Session["USER_ID"] = dr["LOGIN_ID"].ToString();
-                        Session["USER_NAME"] = dr["NAME"].ToString();
-
-                        DateTime d1 = DateTime.Now;
-                        DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
-
-                        double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
-                        int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
-
-                        try
-                        {
-                            sSQL = " UPDATE mainpass set" +
-                                " DATELASTUSE='" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "' , " +
-                                " PASSWORD='" + iUpdatedPass.ToString() + "'" +
-                                " WHERE LOGIN_ID='" + viewModel.txtLOGIN_ID + "'";
-                            conn1.execute(sSQL);
-
-                            sSQL = " SELECT * FROM mainpath";
-                            MySqlDataReader dr1 = conn1.ExecuteReader(sSQL);
-                            if (dr1.Read())
-                            {
-                                Session["LENGTH1"] = dr1["LENGTHMENU"].ToString();
-                            }
-
-                            return Json(new { status = "success", message = "Login Successful" });
-
-                        }
-                        catch (Exception ex)
-                        {
-                            System.Diagnostics.Debug.WriteLine(ex);
-                        }
-
-                    }
-                    else
-                    {
-                        return Json(new { status = "fail", message = "Password is incorrect", fieldname = "PASSWORD" });
-                    }
+                    DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+                    ddtLastUse = (double)(0 - (d2.ToOADate()));
                 }
                 else
                 {
-                    return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LOGIN_ID" });
+                    DateTime d1 = DateTime.Parse(sdtLastUse);
+                    DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+
+                    ddtLastUse = (double)(d1.ToOADate() - d2.ToOADate());
                 }
 
+                int iCheckPass = iPassword + (int)Math.Round(ddtLastUse);
+
+                if (sPassword == iCheckPass.ToString())
+                {
+                    Session["USER_ID"] = dr["LOGIN_ID"].ToString();
+                    Session["USER_NAME"] = dr["NAME"].ToString();
+
+                    DateTime d1 = DateTime.Now;
+                    DateTime d2 = new DateTime(1980, 1, 1, 0, 0, 0);
+
+                    double dUpdate = (double)(d1.ToOADate() - d2.ToOADate());
+                    int iUpdatedPass = iPassword + (int)Math.Round(dUpdate);
+
+                    try
+                    {
+                        sSQL = " UPDATE mainpass set" +
+                            " DATELASTUSE='" + DateTime.Now.ToString("yyyy-MM-dd H:mm:ss") + "' , " +
+                            " PASSWORD='" + iUpdatedPass.ToString() + "'" +
+                            " WHERE LOGIN_ID='" + viewModel.txtLOGIN_ID + "'";
+                        conn1.execute(sSQL);
+
+                        sSQL = " SELECT * FROM mainpath";
+                        MySqlDataReader dr1 = conn1.ExecuteReader(sSQL);
+                        if (dr1.Read())
+                        {
+                            Session["LENGTH1"] = dr1["LENGTHMENU"].ToString();
+                        }
+
+                        return Json(new { status = "success", message = "Login Successful" });
+
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+
+                }
+                else
+                {
+                    return Json(new { status = "fail", message = "Password is incorrect", fieldname = "PASSWORD" });
+                }
             }
-            catch (Exception ex)
+            else
             {
-                System.Diagnostics.Debug.WriteLine(ex);
+                return Json(new { status = "fail", message = "Invalid Login ID", fieldname = "LOGIN_ID" });
             }
 
             return Json(viewModel, "json");
