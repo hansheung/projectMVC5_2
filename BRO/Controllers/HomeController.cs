@@ -51,9 +51,10 @@ namespace BRO.Controllers
             var sLOGIN_ID = Request.Form["txtLOGIN_ID"];
             var sPASSWORD = Request.Form["txtPASSWORD"];
 
-            
-            sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + sLOGIN_ID + "'";
-            MySqlDataReader dr = conn1.ExecuteReader(sSQL);
+            try
+            {
+                sSQL = " SELECT * FROM mainpass where LOGIN_ID ='" + sLOGIN_ID + "'";
+                MySqlDataReader dr = conn1.ExecuteReader(sSQL);
 
             if (dr.Read())
             {
